@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+.ant-menu-item-selected {
+  background: red;
+  color: white !important;
+}
+*/
+
+.menu-icon {
+  transition: all 0.1s ease;
+  color: white;
+  filter: brightness(0) invert(1);
+}
+.active-icon {
+  filter: brightness(0) invert(1);
+}
+.active-menu-item {
+  color: white !important;
+}
+
+/*  custom gradient backgrounds */
+.gradient-blue {
+  background: linear-gradient(to right, #faf060, #e63bf6);
+}
+
+.gradient-purple {
+  background: linear-gradient(to right, #a78bfa, #8b5cf6);
+}
+
+.gradient-green {
+  background: linear-gradient(to right, #34d399, #10b981);
+}
+
+.gradient-light-purple {
+  background: linear-gradient(to right, #d8b4fe, #c084fc);
+}

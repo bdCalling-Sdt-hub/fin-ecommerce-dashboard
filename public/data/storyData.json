@@ -1,0 +1,193 @@
+[
+  {
+    "key": "1",
+    "serialId": "1234",
+    "author": "John Doe",
+    "email": "johndoe@gmail.com",
+    "storyTitle": "My Veteran Friend",
+    "storyHeader": "A Story About My Veteran Friend",
+    "uploadedDate": "25-09-2024",
+    "storyDetails": "George A. Torres was more than just a friend; he was a brother in arms, a man who dedicated his life to protecting his country. As a Captain in the U.S. Army, George led his troops with bravery and honor, facing numerous battles with a heart full of courage. His story is one of sacrifice, loyalty, and love for his country. Despite the dangers, George never wavered in his commitment to his fellow soldiers, always putting their needs above his own. His life was tragically cut short during a mission, but his legacy lives on in the hearts of those who knew him. This story is a tribute to George’s unwavering spirit and the ultimate price he paid for freedom.",
+    "hero": "George A. Torres",
+    "profession": "Captain",
+    "professionalInstitute": "U.S. Army",
+    "dateOfBirth": "09-11-1976",
+    "dateOfDeath": "15-09-1992",
+    "images": [
+      "https://images.pexels.com/photos/1619704/pexels-photo-1619704.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/256297/pexels-photo-256297.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/333560/pexels-photo-333560.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "2",
+    "serialId": "1235",
+    "author": "Jane Smith",
+    "email": "janesmith@gmail.com",
+    "storyTitle": "A Journey to Remember",
+    "storyHeader": "A Memorable Journey Through Time",
+    "uploadedDate": "24-09-2024",
+    "storyDetails": "Emily Brown was more than just a nurse; she was a beacon of hope for countless patients at St. Mary's Hospital. Her gentle touch and compassionate heart provided comfort to those in their darkest hours. Emily's journey through life was marked by her unwavering dedication to caring for others, often putting her own needs aside to ensure her patients were well taken care of. Tragically, Emily’s life was cut short during the height of a global pandemic. Her story is one of selflessness and love, a testament to the impact one person can have on the lives of many. This story honors Emily's legacy and the profound difference she made in her community.",
+    "hero": "Emily Brown",
+    "profession": "Nurse",
+    "professionalInstitute": "St. Mary's Hospital",
+    "dateOfBirth": "12-03-1980",
+    "dateOfDeath": "01-12-2020",
+    "images": [
+      "https://images.pexels.com/photos/3845805/pexels-photo-3845805.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/4173239/pexels-photo-4173239.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "3",
+    "serialId": "1236",
+    "author": "Samuel Green",
+    "email": "samuelgreen@gmail.com",
+    "storyTitle": "The Last Goodbye",
+    "storyHeader": "A Heartfelt Farewell",
+    "uploadedDate": "23-09-2024",
+    "storyDetails": "William Johnson was a firefighter who dedicated his life to saving others. He was known for his bravery, quick thinking, and unwavering dedication to his job. William served in the New York Fire Department for over 20 years, becoming a beloved figure in his community. His life was tragically taken during a heroic rescue operation, where he saved several lives at the cost of his own. William’s story is one of courage, self-sacrifice, and the enduring spirit of a true hero. This story celebrates William's life, his commitment to his community, and the legacy he leaves behind.",
+    "hero": "William Johnson",
+    "profession": "Firefighter",
+    "professionalInstitute": "New York Fire Department",
+    "dateOfBirth": "02-07-1975",
+    "dateOfDeath": "15-05-2018",
+    "images": [
+      "https://images.pexels.com/photos/2760282/pexels-photo-2760282.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/3554438/pexels-photo-3554438.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "4",
+    "serialId": "1237",
+    "author": "Emily White",
+    "email": "emilywhite@gmail.com",
+    "storyTitle": "Cherished Memories",
+    "storyHeader": "Memories to Last a Lifetime",
+    "uploadedDate": "22-09-2024",
+    "storyDetails": "Laura Davis was a dedicated teacher at Springfield High School, where she inspired generations of students with her passion for learning and her love for teaching. Laura believed in the potential of every student and worked tirelessly to ensure they all had the opportunity to succeed. Her classroom was a place of discovery and growth, where students felt valued and supported. Laura's life was tragically cut short due to illness, but her influence continues to resonate in the lives of her students. This story is a tribute to Laura's legacy, her commitment to education, and the countless lives she touched.",
+    "hero": "Laura Davis",
+    "profession": "Teacher",
+    "professionalInstitute": "Springfield High School",
+    "dateOfBirth": "10-10-1965",
+    "dateOfDeath": "20-06-2019",
+    "images": [
+      "https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/2341399/pexels-photo-2341399.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "5",
+    "serialId": "1238",
+    "author": "Michael Brown",
+    "email": "michaelbrown@gmail.com",
+    "storyTitle": "Forever in Our Hearts",
+    "storyHeader": "A Tribute to Love and Loss",
+    "uploadedDate": "21-09-2024",
+    "storyDetails": "Benjamin Lee was a dedicated police officer who served with honor and integrity at the Los Angeles Police Department. Known for his compassion and fairness, Benjamin was a pillar of strength in his community. He was committed to protecting and serving, often going above and beyond the call of duty. Benjamin's life was tragically taken in the line of duty, but his courage and dedication continue to inspire those who knew him. This story is a tribute to Benjamin's life, his service, and the indelible mark he left on his community.",
+    "hero": "Benjamin Lee",
+    "profession": "Police Officer",
+    "professionalInstitute": "Los Angeles Police Department",
+    "dateOfBirth": "05-05-1985",
+    "dateOfDeath": "12-11-2020",
+    "images": [
+      "https://images.pexels.com/photos/6760360/pexels-photo-6760360.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/7167620/pexels-photo-7167620.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "6",
+    "serialId": "1239",
+    "author": "Jessica Taylor",
+    "email": "jessicataylor@gmail.com",
+    "storyTitle": "A Life Well Lived",
+    "storyHeader": "Celebrating a Life of Purpose",
+    "uploadedDate": "20-09-2024",
+    "storyDetails": "Dr. Charles King was a renowned physician at the Mayo Clinic, where he spent decades healing and comforting patients. His gentle bedside manner and vast medical knowledge made him a beloved figure among his peers and patients alike. Dr. King was not only a healer but also a mentor to many young doctors, sharing his wisdom and experience freely. His life was one of service, dedication, and compassion. This story honors Dr. King's legacy, his contributions to medicine, and the lives he saved throughout his illustrious career.",
+    "hero": "Charles King",
+    "profession": "Doctor",
+    "professionalInstitute": "Mayo Clinic",
+    "dateOfBirth": "25-12-1950",
+    "dateOfDeath": "01-04-2021",
+    "images": [
+      "https://images.pexels.com/photos/4386462/pexels-photo-4386462.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/5723674/pexels-photo-5723674.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "7",
+    "serialId": "1240",
+    "author": "David Wilson",
+    "email": "davidwilson@gmail.com",
+    "storyTitle": "Remembering You Always",
+    "storyHeader": "A Remembrance of Art and Life",
+    "uploadedDate": "19-09-2024",
+    "storyDetails": "Sarah Parker was an independent artist whose vibrant paintings brought joy and inspiration to all who saw them. She was known for her unique style and her ability to capture the beauty of everyday life in her work. Sarah's art was a reflection of her soul—bright, colorful, and full of life. Though her time was short, her impact on the art world was profound. This story celebrates Sarah's life, her artistic legacy, and the light she brought into the world through her creativity.",
+    "hero": "Sarah Parker",
+    "profession": "Artist",
+    "professionalInstitute": "Independent Artist",
+    "dateOfBirth": "15-08-1983",
+    "dateOfDeath": "20-02-2021",
+    "images": [
+      "https://images.pexels.com/photos/1552122/pexels-photo-1552122.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/4597994/pexels-photo-4597994.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "8",
+    "serialId": "1241",
+    "author": "Sophia Johnson",
+    "email": "sophiajohnson@gmail.com",
+    "storyTitle": "A Mother’s Love",
+    "storyHeader": "A Tribute to Maternal Love",
+    "uploadedDate": "18-09-2024",
+    "storyDetails": "Linda Adams was a devoted mother who dedicated her life to raising her children with love and care. As a homemaker, Linda created a warm and nurturing environment for her family, always putting their needs first. Her home was filled with laughter, love, and the delicious smell of homemade meals. Linda's legacy lives on in her children, who continue to cherish the values she instilled in them. This story is a tribute to Linda’s unwavering love, her sacrifices, and the beautiful life she created for her family.",
+    "hero": "Linda Adams",
+    "profession": "Homemaker",
+    "professionalInstitute": "Adams Family",
+    "dateOfBirth": "14-09-1960",
+    "dateOfDeath": "02-08-2021",
+    "images": [
+      "https://images.pexels.com/photos/158775/mother-child-love-people-158775.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/3526971/pexels-photo-3526971.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "9",
+    "serialId": "1242",
+    "author": "James Davis",
+    "email": "jamesdavis@gmail.com",
+    "storyTitle": "Eternal Rest",
+    "storyHeader": "A Peaceful Farewell",
+    "uploadedDate": "17-09-2024",
+    "storyDetails": "Margaret Thompson was a writer whose words touched the hearts of many. As a journalist for the New York Times, Margaret reported on some of the most significant events of her time, always with a keen eye for detail and a deep sense of empathy. Her writing had the power to inform, inspire, and move people to action. Margaret's life was a testament to the power of words and the importance of truth. This story honors Margaret's contributions to journalism, her unwavering integrity, and the legacy she leaves behind in her writings.",
+    "hero": "Margaret Thompson",
+    "profession": "Writer",
+    "professionalInstitute": "New York Times",
+    "dateOfBirth": "01-11-1957",
+    "dateOfDeath": "25-03-2021",
+    "images": [
+      "https://images.pexels.com/photos/1445412/pexels-photo-1445412.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/461355/pexels-photo-461355.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  },
+  {
+    "key": "10",
+    "serialId": "1243",
+    "author": "Olivia Martinez",
+    "email": "oliviamartinez@gmail.com",
+    "storyTitle": "Gone but Not Forgotten",
+    "storyHeader": "A Tribute to a Life Well Lived",
+    "uploadedDate": "16-09-2024",
+    "storyDetails": "Robert Scott was a brilliant engineer who contributed to some of NASA’s most important projects. His passion for space exploration and his commitment to innovation made him a key figure in the scientific community. Robert’s work helped pave the way for new discoveries and advancements in technology. Despite the challenges, he remained dedicated to pushing the boundaries of what was possible. Robert's story is one of perseverance, intellect, and a lifelong pursuit of knowledge. This story celebrates Robert's achievements, his contributions to science, and the legacy he leaves behind.",
+    "hero": "Robert Scott",
+    "profession": "Engineer",
+    "professionalInstitute": "NASA",
+    "dateOfBirth": "30-06-1972",
+    "dateOfDeath": "17-10-2021",
+    "images": [
+      "https://images.pexels.com/photos/1029581/pexels-photo-1029581.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "https://images.pexels.com/photos/220201/pexels-photo-220201.jpeg?auto=compress&cs=tinysrgb&w=400"
+    ]
+  }
+]

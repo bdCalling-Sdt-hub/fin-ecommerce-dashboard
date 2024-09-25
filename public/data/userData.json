@@ -1,0 +1,92 @@
+[
+  {
+    "serialId": 1,
+    "customerName": "John Doe",
+    "email": "johndoe@example.com",
+    "contactNumber": "+1-202-555-0171",
+    "uploadedStory": 15,
+    "joiningDate": "2022-01-15",
+    "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "serialId": 2,
+    "customerName": "Jane Smith",
+    "email": "janesmith@example.com",
+    "contactNumber": "+1-202-555-0156",
+    "uploadedStory": 8,
+    "joiningDate": "2021-11-23",
+    "avatar": "https://randomuser.me/api/portraits/women/2.jpg"
+  },
+  {
+    "serialId": 3,
+    "customerName": "Michael Brown",
+    "email": "michaelbrown@example.com",
+    "contactNumber": "+1-202-555-0198",
+    "uploadedStory": 22,
+    "joiningDate": "2020-07-08",
+    "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
+  },
+  {
+    "serialId": 4,
+    "customerName": "Emily Davis",
+    "email": "emilydavis@example.com",
+    "contactNumber": "+1-202-555-0162",
+    "uploadedStory": 5,
+    "joiningDate": "2021-03-12",
+    "avatar": "https://randomuser.me/api/portraits/women/4.jpg"
+  },
+  {
+    "serialId": 5,
+    "customerName": "William Johnson",
+    "email": "williamjohnson@example.com",
+    "contactNumber": "+1-202-555-0134",
+    "uploadedStory": 19,
+    "joiningDate": "2019-10-30",
+    "avatar": "https://randomuser.me/api/portraits/men/5.jpg"
+  },
+  {
+    "serialId": 6,
+    "customerName": "Sophia Martinez",
+    "email": "sophiamartinez@example.com",
+    "contactNumber": "+1-202-555-0128",
+    "uploadedStory": 10,
+    "joiningDate": "2022-05-25",
+    "avatar": "https://randomuser.me/api/portraits/women/6.jpg"
+  },
+  {
+    "serialId": 7,
+    "customerName": "David Garcia",
+    "email": "davidgarcia@example.com",
+    "contactNumber": "+1-202-555-0189",
+    "uploadedStory": 7,
+    "joiningDate": "2020-12-05",
+    "avatar": "https://randomuser.me/api/portraits/men/7.jpg"
+  },
+  {
+    "serialId": 8,
+    "customerName": "Isabella Rodriguez",
+    "email": "isabellarodriguez@example.com",
+    "contactNumber": "+1-202-555-0147",
+    "uploadedStory": 12,
+    "joiningDate": "2021-08-18",
+    "avatar": "https://randomuser.me/api/portraits/women/8.jpg"
+  },
+  {
+    "serialId": 9,
+    "customerName": "James Wilson",
+    "email": "jameswilson@example.com",
+    "contactNumber": "+1-202-555-0114",
+    "uploadedStory": 20,
+    "joiningDate": "2022-03-29",
+    "avatar": "https://randomuser.me/api/portraits/men/9.jpg"
+  },
+  {
+    "serialId": 10,
+    "customerName": "Olivia Lee",
+    "email": "olivialee@example.com",
+    "contactNumber": "+1-202-555-0175",
+    "uploadedStory": 6,
+    "joiningDate": "2021-06-15",
+    "avatar": "https://randomuser.me/api/portraits/women/10.jpg"
+  }
+]
