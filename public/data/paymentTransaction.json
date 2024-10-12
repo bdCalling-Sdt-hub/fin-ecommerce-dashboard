@@ -1,0 +1,174 @@
+[
+    {
+        "bankDetails": {
+            "accountNumber": "1234567890",
+            "accountName": "John Doe",
+            "bankName": "Bank of America",
+            "routingNumber": "123456789"
+        },
+        "_id": "66fa3a31809904a54f6c57ac",
+        "taskId": {
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    -74.1723667,
+                    40.735657
+                ]
+            },
+            "_id": "66fb868987b7a84fc41b3e0f",
+            "provider": "66e55d4649ac5e507a29dad7",
+            "taskName": "Room Clear",
+            "taskDetails": "Fix the leaking pipe under the kitchen sink.",
+            "taskDate": "2024-10-10T09:00:00.000Z",
+            "category": "Home Maintenance",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727760009373-126709301.jpg"
+            ],
+            "taskPrice": 250,
+            "taskStatus": "pending",
+            "workType": "in-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "isReview": false,
+            "isPayment": "adminPayment",
+            "createdAt": "2024-10-01T05:20:09.485Z",
+            "updatedAt": "2024-10-01T05:20:09.485Z",
+            "__v": 0
+        },
+        "workerId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e68edab572f464137e8f03",
+            "fullName": "Humayon bro",
+            "phone": "+1234567890",
+            "email": "worker@gmail.com",
+            "password": "$2b$10$88xxhZXm6KF9Y3DxvglO2..DujvzJ/m2ejkPTBsjV8FlaZeoPrHe6",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T07:38:02.951Z",
+            "updatedAt": "2024-10-02T10:04:17.493Z",
+            "__v": 0
+        },
+        "providerId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "isBlocked": false,
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+        "amount": 500,
+        "method": "bank",
+        "status": true,
+        "transactionId": "txn_123456789",
+        "transactionDate": "2024-09-30T05:42:09.537Z",
+        "createdAt": "2024-09-30T05:42:09.539Z",
+        "updatedAt": "2024-09-30T05:42:09.539Z"
+    },
+    {
+        "bankDetails": {
+            "accountNumber": "1234567890",
+            "accountName": "John Doe",
+            "bankName": "Bank of America",
+            "routingNumber": "123456789"
+        },
+        "_id": "66fa3a31809904a54f6c57ac",
+        "taskId": {
+            "location": {
+                "type": "Point",
+                "coordinates": [
+                    -74.1723667,
+                    40.735657
+                ]
+            },
+            "_id": "66fb868987b7a84fc41b3e0f",
+            "providerId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "isBlocked": false,
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+            "taskName": "Room Clear-2",
+            "taskDetails": "Fix the leaking pipe under the kitchen sink.",
+            "taskDate": "2024-10-10T09:00:00.000Z",
+            "category": "Home Maintenance",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727760009373-126709301.jpg"
+            ],
+            "taskPrice": 250,
+            "taskStatus": "pending",
+            "workType": "in-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "isReview": false,
+            "isPayment": "adminPayment",
+            "createdAt": "2024-10-01T05:20:09.485Z",
+            "updatedAt": "2024-10-01T05:20:09.485Z",
+            "__v": 0
+        },
+        "workerId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e68edab572f464137e8f03",
+            "fullName": "Humayon bro",
+            "phone": "+1234567890",
+            "email": "worker@gmail.com",
+            "password": "$2b$10$88xxhZXm6KF9Y3DxvglO2..DujvzJ/m2ejkPTBsjV8FlaZeoPrHe6",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T07:38:02.951Z",
+            "updatedAt": "2024-10-02T10:04:17.493Z",
+            "__v": 0
+        },
+        "providerId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "isBlocked": false,
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe-2",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+        "amount": 500,
+        "method": "bank",
+        "status": true,
+        "transactionId": "txn_1234567810",
+        "transactionDate": "2024-09-30T05:42:09.537Z",
+        "createdAt": "2024-09-30T05:42:09.539Z",
+        "updatedAt": "2024-09-30T05:42:09.539Z"
+    }
+]

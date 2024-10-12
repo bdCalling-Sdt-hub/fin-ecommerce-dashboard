@@ -1,15 +1,11 @@
 import Topbar from "../Shared/Topbar";
 import logo from "/images/small-logo.png";
 import dashboardLogo from "../../../public/images/dashboard-logo/dashboard.svg";
-import earnings from "../../../public/images/dashboard-logo/Earnings.svg";
 import users from "../../../public/images/dashboard-logo/users.svg";
-import stories from "../../../public/images/dashboard-logo/stories.svg";
-import music from "../../../public/images/dashboard-logo/music.svg";
 import setting from "../../../public/images/dashboard-logo/Setting.svg";
-import subscription from "../../../public/images/dashboard-logo/subscription.svg";
 import logout from "../../../public/images/dashboard-logo/logout.svg";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
-import { Layout, Menu } from "antd";
+import { ConfigProvider, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { useState, useEffect } from "react";
@@ -33,7 +29,7 @@ const DashboardLayout = () => {
 
   return (
     <div className="h-screen">
-      <Layout>
+      <Layout className="min-h-[100vh]">
         <Sider
           width={200}
           theme="light"
@@ -41,7 +37,7 @@ const DashboardLayout = () => {
           collapsible
           collapsed={collapsed}
           style={{
-            background: "#023E8A",
+            background: "#d3e6f9",
             // marginRight: "10px",
             // borderRadius: "5px",
           }}
@@ -55,254 +51,204 @@ const DashboardLayout = () => {
               className="my-7 mx-auto rounded-lg"
             />
           </Link>
-          <Menu
-            theme="light"
-            mode="inline"
-            openKeys={openKeys}
-            onOpenChange={(keys) => setOpenKeys(keys)}
-            defaultSelectedKeys={["dashboard"]}
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
+          <ConfigProvider
+            theme={{
+              // components: {
+              //   Button: {
+              //     defaultHoverBg: "#97C6EA",
+              //     defaultHoverColor: "#1A1A1A",
+              //   },
+              // },
+              token: {
+                colorBgBase: "rgb(211,230,249)",
+                colorInfo: "#023E8A",
+              },
             }}
-            items={[
-              {
-                key: "dashboard",
-                icon: (
-                  <img
-                    src={dashboardLogo}
-                    alt="dashboard"
-                    className={`h-5 menu-icon ${
-                      location.pathname.includes("dashboard")
-                        ? "active-icon"
-                        : ""
-                    }`}
-                  />
-                ),
-                label: (
-                  <NavLink
-                    to="dashboard"
-                    className={({ isActive }) =>
-                      isActive ? "active-menu-item" : ""
-                    }
-                  >
-                    Dashboard
-                  </NavLink>
-                ),
-              },
-              {
-                key: "users",
-                icon: (
-                  <img
-                    src={users}
-                    alt="users"
-                    className={`h-5 menu-icon ${
-                      location.pathname.includes("users") ? "active-icon" : ""
-                    }`}
-                  />
-                ),
-                label: (
-                  <NavLink
-                    to="users"
-                    className={({ isActive }) =>
-                      isActive ? "active-menu-item" : ""
-                    }
-                  >
-                    Users
-                  </NavLink>
-                ),
-              },
-              {
-                key: "stories",
-                icon: (
-                  <img
-                    src={stories}
-                    alt="stories"
-                    width={15}
-                    height={15}
-                    className="menu-icon"
-                    // className={`menu-icon ${
-                    //   isSubMenuActive(["all-stories", "story-request"])
-                    //     ? "active-icon"
-                    //     : ""
-                    // }`}
-                  />
-                ),
-                label: (
-                  <span
-                    // className={
-                    //   isSubMenuActive(["all-stories", "story-request"])
-                    //     ? "active-menu-item"
-                    //     : ""
-                    // }
-                    className="text-white active:bg-white active:text-white"
-                  >
-                    Stories
-                  </span>
-                ),
-                children: [
-                  {
-                    key: "all-stories",
-                    icon: <span>&#8226;</span>,
-                    label: (
-                      <NavLink
-                        to="all-stories"
-                        className={({ isActive }) =>
-                          isActive ? "active-menu-item" : ""
-                        }
-                      >
-                        All Stories
-                      </NavLink>
-                    ),
-                  },
-                  {
-                    key: "story-request",
-                    icon: <span>&#8226;</span>,
-                    label: (
-                      <NavLink
-                        to="story-request"
-                        className={({ isActive }) =>
-                          isActive ? "active-menu-item" : ""
-                        }
-                      >
-                        Story Request
-                      </NavLink>
-                    ),
-                  },
-                ],
-              },
-              {
-                key: "earning",
-                icon: (
-                  <img
-                    src={earnings}
-                    alt="earning"
-                    width={15}
-                    height={15}
-                    className={`menu-icon ${
-                      location.pathname.includes("earning") ? "active-icon" : ""
-                    }`}
-                  />
-                ),
-                label: (
-                  <NavLink
-                    to="earning"
-                    className={({ isActive }) =>
-                      isActive ? "active-menu-item" : ""
-                    }
-                  >
-                    Earning
-                  </NavLink>
-                ),
-              },
-              {
-                key: "subscription",
-                icon: (
-                  <img
-                    src={subscription}
-                    alt="subscription"
-                    width={15}
-                    height={15}
-                    className={`menu-icon ${
-                      location.pathname.includes("subscription")
-                        ? "active-icon"
-                        : ""
-                    }`}
-                  />
-                ),
-                label: (
-                  <NavLink
-                    to="subscription"
-                    className={({ isActive }) =>
-                      isActive ? "active-menu-item" : ""
-                    }
-                  >
-                    Subscription
-                  </NavLink>
-                ),
-              },
-              {
-                key: "music",
-                icon: (
-                  <img
-                    src={music}
-                    alt="music"
-                    width={15}
-                    height={15}
-                    className={`menu-icon ${
-                      location.pathname.includes("music") ? "active-icon" : ""
-                    }`}
-                  />
-                ),
-                label: (
-                  <NavLink
-                    to="music"
-                    className={({ isActive }) =>
-                      isActive ? "active-menu-item" : ""
-                    }
-                  >
-                    Music
-                  </NavLink>
-                ),
-              },
-              {
-                key: "settings",
-                icon: (
-                  <img
-                    src={setting}
-                    alt="settings"
-                    width={15}
-                    height={15}
-                    className={`menu-icon ${
-                      location.pathname.includes("settings")
-                        ? "active-icon"
-                        : ""
-                    }`}
-                  />
-                ),
-                label: (
-                  <NavLink
-                    to="/settings"
-                    className={({ isActive }) =>
-                      isActive ? "active-menu-item" : ""
-                    }
-                  >
-                    Setting
-                  </NavLink>
-                ),
-              },
-              {
-                key: "logout",
-                icon: (
-                  <img
-                    src={logout}
-                    alt="logout"
-                    width={15}
-                    height={15}
-                    className={`menu-icon ${
-                      location.pathname.includes("signin") ? "active-icon" : ""
-                    }`}
-                  />
-                ),
-                label: (
-                  <NavLink
-                    to="signin"
-                    className={({ isActive }) =>
-                      isActive ? "active-menu-item" : ""
-                    }
-                  >
-                    Logout
-                  </NavLink>
-                ),
-              },
-            ]}
-          />
+          >
+            <Menu
+              theme="light"
+              mode="inline"
+              openKeys={openKeys}
+              onOpenChange={(keys) => setOpenKeys(keys)}
+              defaultSelectedKeys={["dashboard"]}
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+              }}
+              items={[
+                {
+                  key: "dashboard",
+                  icon: (
+                    <img
+                      src={dashboardLogo}
+                      alt="dashboard"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("dashboard") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="dashboard"
+                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                    >
+                      Dashboard
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "users",
+                  icon: (
+                    <img
+                      src={users}
+                      alt="users"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("users") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="users"
+                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                    >
+                      Users
+                    </NavLink>
+                  ),
+                },
+             
+                {
+                  key: "settings",
+                  icon: (
+                    <img
+                      src={setting}
+                      alt="settings"
+                      width={15}
+                      height={15}
+                      className="menu-icon"
+                      // className={`menu-icon ${
+                      //   isSubMenuActive(["all-stories", "story-request"])
+                      //     ? "active-icon"
+                      //     : ""
+                      // }`}
+                    />
+                  ),
+                  label: (
+                    <span
+                      // className={
+                      //   isSubMenuActive(["all-stories", "story-request"])
+                      //     ? "active-menu-item"
+                      //     : ""
+                      // }
+                      className="text-white active:bg-white active:text-white"
+                    >
+                      Setting
+                    </span>
+                  ),
+                  children: [
+                    {
+                      key: "settings/change-password",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="settings/change-password"
+                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                        >
+                          Change Password
+                        </NavLink>
+                      ),
+                    },
+                    {
+                      key: "settings/about-us",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="settings/about-us"
+                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                        >
+                          About Us
+                        </NavLink>
+                      ),
+                    },
+                    {
+                      key: "settings/terms-and-condition",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="settings/terms-of-service"
+                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                        >
+                          Terms Of Service
+                        </NavLink>
+                      ),
+                    },
+                    {
+                      key: "settings/privacy-policy",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="settings/privacy-policy"
+                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                        >
+                          Privacy And Policy
+                        </NavLink>
+                      ),
+                    },
+                  ],
+                },
+
+                
+                {
+                  key: "dashboard/create-admin",
+                  icon: (
+                    <img
+                      src={users}
+                      alt="users"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("users") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="dashboard/create-admin"
+                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                    >
+                      Create New Admin
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "logout",
+                  icon: (
+                    <img
+                      src={logout}
+                      alt="logout"
+                      width={15}
+                      height={15}
+                      className={`menu-icon ${
+                        location.pathname.includes("signin") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="signin"
+                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                    >
+                      Logout
+                    </NavLink>
+                  ),
+                },
+              ]}
+            />
+          </ConfigProvider>
         </Sider>
         <Layout style={{ background: "white" }}>
-          <Header style={{ marginBottom: "20px", borderRadius: "10px" }}>
+          <Header style={{ borderRadius: "10px" }}>
             <Topbar collapsed={collapsed} setCollapsed={setCollapsed} />
           </Header>
-          <Content>
+          <Content style={{ padding: "25px" }}>
             <Outlet />
           </Content>
         </Layout>

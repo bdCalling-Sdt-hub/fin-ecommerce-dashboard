@@ -2,12 +2,49 @@ import { Button, ConfigProvider, Form, Input, Typography } from "antd";
 
 import changePasswordImg from "/images/authImages/updatePass.png";
 import { useNavigate } from "react-router-dom";
+import { useChangePasswordMutation } from "../../Redux/api/authApi";
+import Swal from "sweetalert2";
 
 const ChangePassword = () => {
+  // const [changePassword] =useChangePasswordMutation(); 
   const navigate = useNavigate();
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("Success:", values);
-    navigate("/signin");
+  
+    // try {
+    //   const data = {
+    //     newPassword: values.newPassword,
+    //     oldPassword: values.currentPassword,
+    //   };
+      
+    //   // Await the mutation response
+    //   const res = await changePassword(data).unwrap();
+    //   console.log('Change password response:', res);
+  
+    //   if (res.success) {
+    //     Swal.fire({
+    //       title: "Successfully Changed Password!",
+    //       text: "Your password has been changed successfully.",
+    //       icon: "success",
+    //     });
+    //     navigate("/signin");
+    //   } else {
+    //     Swal.fire({
+    //       title: "Error",
+    //       text: res.message || "There was an issue changing the password.",
+    //       icon: "error",
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error("Error changing password:", error);
+    //   const errorMessage = error.data?.message || "Something went wrong while changing the password.";
+  
+    //   Swal.fire({
+    //     title: "Error",
+    //     text: errorMessage,
+    //     icon: "error",
+    //   });
+    // }
   };
 
   return (

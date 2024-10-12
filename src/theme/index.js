@@ -1,7 +1,7 @@
 export const mainTheme = {
   // token: {
-  //   colorPrimary: "#293b44",
-  //   colorInfo: "#293b44",
+  //   colorBgBase: "#023E8A",
+  //   colorInfo: "#023E8A",
   // },
   components: {
     Table: {
@@ -15,16 +15,24 @@ export const mainTheme = {
       colorLinkActive: "rgb(107, 114, 128)",
       headerSplitColor: "rgb(107, 114, 128)",
     },
+    // Menu: {
+    //   iconSize: 20,
+    //   collapsedIconSize: 10,
+    //   itemSelectedBg: "rgb(31,40,82)",
+    //   itemActiveBg: "rgb(31,40,82)",
+    //   itemHoverBg: "rgb(31,40,82)",
+    //   itemActiveColor: "rgb(255,255,255)",
+    //   itemHoverColor: "rgb(245,249,254)",
+    //   itemColor: "rgb(245,249,254)",
+    //   itemSelectedColor: "rgb(245,249,254)",
+    // },
     Menu: {
-      iconSize: 20,
-      collapsedIconSize: 10,
-      itemSelectedBg: "rgb(31,40,82)",
-      itemActiveBg: "rgb(31,40,82)",
-      itemHoverBg: "rgb(31,40,82)",
-      itemActiveColor: "rgb(255,255,255)",
-      itemHoverColor: "rgb(245,249,254)",
-      itemColor: "rgb(245,249,254)",
-      itemSelectedColor: "rgb(245,249,254)",
+      iconSize: 24,
+      itemActiveBg: "#1F2852",
+      itemHoverColor: "#ffffff",
+      itemColor: "#ffffff",
+      itemSelectedBg: "rgb(51,153,255)",
+      itemSelectedColor: "#ffffff",
     },
     Form: {
       labelColor: "rgb(255, 255, 255)",

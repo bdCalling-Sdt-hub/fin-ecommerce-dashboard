@@ -5,6 +5,8 @@ import { Button, ConfigProvider, Input, Modal, Table, Tooltip } from "antd";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GoEye } from "react-icons/go";
+import { useBlockedUserMutation, useGetAllUserQuery } from "../../Redux/api/authApi";
+import Swal from "sweetalert2";
 
 export default function Users() {
   const [searchText, setSearchText] = useState("");
@@ -15,6 +17,17 @@ export default function Users() {
   const [isBlockModalVisible, setIsBlockModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
+
+  // const { data: usersData, isLoading } = useGetAllUserQuery(null);
+  // const [blockedUser] = useBlockedUserMutation();
+
+  // useEffect(() => {
+  //   if (usersData && usersData.data) {
+  //     setUserData(usersData.data); // Ensure only valid data is set
+  //   }
+  // }, [usersData]);
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -74,7 +87,7 @@ export default function Users() {
 
   return (
     <div className="min-h-[90vh]">
-      <div className="bg-[#013564] rounded-lg">
+     <div className="bg-[#013564] rounded-lg">
         <div className="flex justify-between p-6">
           <h1 className="text-3xl font-bold text-white">Users List</h1>
           <div className="flex gap-4 items-center">
@@ -126,7 +139,7 @@ export default function Users() {
             <Table
               dataSource={filteredData}
               loading={loading}
-              pagination={{ pageSize: 15 }}
+              pagination={{ pageSize: 8 }}
               rowKey={(record) => record.serialId}
               scroll={{ x: true }}
             >

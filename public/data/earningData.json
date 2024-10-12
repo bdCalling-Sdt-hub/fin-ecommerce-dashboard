@@ -1,112 +1,380 @@
 [
-  {
-    "serialId": 1,
-    "name": "John Doe",
-    "email": "johndoe@example.com",
-    "accountNumber": "ACC123456",
-    "packageName": "Basic Plan",
-    "timeAndDate": "2023-09-01T10:30:00Z",
-    "amount": 49.99,
-    "paymentMethod": "Credit Card",
-    "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
-  },
-  {
-    "serialId": 2,
-    "name": "Jane Smith",
-    "email": "janesmith@example.com",
-    "accountNumber": "ACC654321",
-    "packageName": "Premium Plan",
-    "timeAndDate": "2023-09-02T12:15:00Z",
-    "amount": 99.99,
-    "paymentMethod": "Debit Card",
-    "avatar": "https://randomuser.me/api/portraits/women/2.jpg"
-  },
-  {
-    "serialId": 3,
-    "name": "Michael Brown",
-    "email": "michaelbrown@example.com",
-    "accountNumber": "ACC112233",
-    "packageName": "Standard Plan",
-    "timeAndDate": "2023-09-03T14:45:00Z",
-    "amount": 69.99,
-    "paymentMethod": "PayPal",
-    "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
-  },
-  {
-    "serialId": 4,
-    "name": "Emily Davis",
-    "email": "emilydavis@example.com",
-    "accountNumber": "ACC445566",
-    "packageName": "Enterprise Plan",
-    "timeAndDate": "2023-09-04T16:00:00Z",
-    "amount": 199.99,
-    "paymentMethod": "Credit Card",
-    "avatar": "https://randomuser.me/api/portraits/women/4.jpg"
-  },
-  {
-    "serialId": 5,
-    "name": "William Johnson",
-    "email": "williamjohnson@example.com",
-    "accountNumber": "ACC778899",
-    "packageName": "Basic Plan",
-    "timeAndDate": "2023-09-05T09:30:00Z",
-    "amount": 49.99,
-    "paymentMethod": "Debit Card",
-    "avatar": "https://randomuser.me/api/portraits/men/5.jpg"
-  },
-  {
-    "serialId": 6,
-    "name": "Sophia Martinez",
-    "email": "sophiamartinez@example.com",
-    "accountNumber": "ACC998877",
-    "packageName": "Premium Plan",
-    "timeAndDate": "2023-09-06T11:00:00Z",
-    "amount": 99.99,
-    "paymentMethod": "PayPal",
-    "avatar": "https://randomuser.me/api/portraits/women/6.jpg"
-  },
-  {
-    "serialId": 7,
-    "name": "David Garcia",
-    "email": "davidgarcia@example.com",
-    "accountNumber": "ACC223344",
-    "packageName": "Standard Plan",
-    "timeAndDate": "2023-09-07T13:20:00Z",
-    "amount": 69.99,
-    "paymentMethod": "Credit Card",
-    "avatar": "https://randomuser.me/api/portraits/men/7.jpg"
-  },
-  {
-    "serialId": 8,
-    "name": "Isabella Rodriguez",
-    "email": "isabellarodriguez@example.com",
-    "accountNumber": "ACC556677",
-    "packageName": "Enterprise Plan",
-    "timeAndDate": "2023-09-08T15:10:00Z",
-    "amount": 199.99,
-    "paymentMethod": "Debit Card",
-    "avatar": "https://randomuser.me/api/portraits/women/8.jpg"
-  },
-  {
-    "serialId": 9,
-    "name": "James Wilson",
-    "email": "jameswilson@example.com",
-    "accountNumber": "ACC334455",
-    "packageName": "Basic Plan",
-    "timeAndDate": "2023-09-09T08:45:00Z",
-    "amount": 49.99,
-    "paymentMethod": "PayPal",
-    "avatar": "https://randomuser.me/api/portraits/men/9.jpg"
-  },
-  {
-    "serialId": 10,
-    "name": "Olivia Lee",
-    "email": "olivialee@example.com",
-    "accountNumber": "ACC667788",
-    "packageName": "Premium Plan",
-    "timeAndDate": "2023-09-10T10:50:00Z",
-    "amount": 99.99,
-    "paymentMethod": "Credit Card",
-    "avatar": "https://randomuser.me/api/portraits/women/10.jpg"
-  }
+    {
+        "_id": "66f2a28a66d226f2d7a74861",
+        "userId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "_id": "66e679a28ea1120d58864732",
+            "fullName": "Balam bro",
+            "phone": "+1234567890",
+            "email": "stagpt2024@gmail.com",
+            "password": "$2b$10$I/RKqm5G/4mth0zGobWF6ewzNFLRV2TFj0PEBIyMfx8QoNieLKI12",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T06:07:30.753Z",
+            "updatedAt": "2024-09-15T06:07:30.753Z",
+            "__v": 0
+        },
+        "taskId": {
+            "_id": "66f28705f891607c0277ba0d",
+            "userId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+            "taskName": "Install Ceiling table",
+            "taskDetails": "Install a new ceiling fan in the living room.",
+            "taskDate": "2024-09-30T09:00:00.000Z",
+            "category": "Electrical",
+            "location": "1234 Elm St, Springfield",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727170309006-562667970.jpg"
+            ],
+            "taskPriceType": "Fixed",
+            "taskPrice": 150,
+            "taskStatus": "Completed",
+            "taskAssinStatus": "Cencel",
+            "workType": "In-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "createdAt": "2024-09-24T09:31:49.147Z",
+            "updatedAt": "2024-09-24T12:15:22.269Z",
+            "__v": 0
+        },
+        "taskAssinStatus": "Accept",
+        "paymentStatus": "AdminPaymentRequiest",
+        "isDeleted": false,
+        "createdAt": "2024-09-24T11:29:14.870Z",
+        "updatedAt": "2024-09-24T12:15:22.138Z",
+        "__v": 0,
+        "offerPrice": 101
+    },
+    {
+        "_id": "66f2a28a66d226f2d7a74861",
+        "userId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "_id": "66e679a28ea1120d58864732",
+            "fullName": "Balam bro",
+            "phone": "+1234567890",
+            "email": "stagpt2024@gmail.com",
+            "password": "$2b$10$I/RKqm5G/4mth0zGobWF6ewzNFLRV2TFj0PEBIyMfx8QoNieLKI12",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T06:07:30.753Z",
+            "updatedAt": "2024-09-15T06:07:30.753Z",
+            "__v": 0
+        },
+        "taskId": {
+            "_id": "66f28705f891607c0277ba0d",
+            "userId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+            "taskName": "Install Ceiling table",
+            "taskDetails": "Install a new ceiling fan in the living room.",
+            "taskDate": "2024-09-30T09:00:00.000Z",
+            "category": "Electrical",
+            "location": "1234 Elm St, Springfield",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727170309006-562667970.jpg"
+            ],
+            "taskPriceType": "Fixed",
+            "taskPrice": 150,
+            "taskStatus": "Completed",
+            "taskAssinStatus": "Cencel",
+            "workType": "In-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "createdAt": "2024-09-24T09:31:49.147Z",
+            "updatedAt": "2024-09-24T12:15:22.269Z",
+            "__v": 0
+        },
+        "taskAssinStatus": "Accept",
+        "paymentStatus": "AdminPaymentRequiest",
+        "isDeleted": false,
+        "createdAt": "2024-09-24T11:29:14.870Z",
+        "updatedAt": "2024-09-24T12:15:22.138Z",
+        "__v": 0
+     
+    },
+    {
+        "_id": "66f2a28a66d226f2d7a74861",
+        "userId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "_id": "66e679a28ea1120d58864732",
+            "fullName": "Balam bro",
+            "phone": "+1234567890",
+            "email": "stagpt2024@gmail.com",
+            "password": "$2b$10$I/RKqm5G/4mth0zGobWF6ewzNFLRV2TFj0PEBIyMfx8QoNieLKI12",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T06:07:30.753Z",
+            "updatedAt": "2024-09-15T06:07:30.753Z",
+            "__v": 0
+        },
+        "taskId": {
+            "_id": "66f28705f891607c0277ba0d",
+            "userId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+            "taskName": "Install Ceiling table",
+            "taskDetails": "Install a new ceiling fan in the living room.",
+            "taskDate": "2024-09-30T09:00:00.000Z",
+            "category": "Electrical",
+            "location": "1234 Elm St, Springfield",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727170309006-562667970.jpg"
+            ],
+            "taskPriceType": "Fixed",
+            "taskPrice": 150,
+            "taskStatus": "Completed",
+            "taskAssinStatus": "Cencel",
+            "workType": "In-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "createdAt": "2024-09-24T09:31:49.147Z",
+            "updatedAt": "2024-09-24T12:15:22.269Z",
+            "__v": 0
+        },
+        "taskAssinStatus": "Accept",
+        "paymentStatus": "AdminPaymentRequiest",
+        "isDeleted": false,
+        "createdAt": "2024-09-24T11:29:14.870Z",
+        "updatedAt": "2024-09-24T12:15:22.138Z",
+        "__v": 0,
+        "offerPrice": 101
+    },
+    {
+        "_id": "66f2a28a66d226f2d7a74861",
+        "userId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "_id": "66e679a28ea1120d58864732",
+            "fullName": "Balam bro",
+            "phone": "+1234567890",
+            "email": "stagpt2024@gmail.com",
+            "password": "$2b$10$I/RKqm5G/4mth0zGobWF6ewzNFLRV2TFj0PEBIyMfx8QoNieLKI12",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T06:07:30.753Z",
+            "updatedAt": "2024-09-15T06:07:30.753Z",
+            "__v": 0
+        },
+        "taskId": {
+            "_id": "66f28705f891607c0277ba0d",
+            "userId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+            "taskName": "Install Ceiling table",
+            "taskDetails": "Install a new ceiling fan in the living room.",
+            "taskDate": "2024-09-30T09:00:00.000Z",
+            "category": "Electrical",
+            "location": "1234 Elm St, Springfield",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727170309006-562667970.jpg"
+            ],
+            "taskPriceType": "Fixed",
+            "taskPrice": 150,
+            "taskStatus": "Completed",
+            "taskAssinStatus": "Cencel",
+            "workType": "In-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "createdAt": "2024-09-24T09:31:49.147Z",
+            "updatedAt": "2024-09-24T12:15:22.269Z",
+            "__v": 0
+        },
+        "taskAssinStatus": "Accept",
+        "paymentStatus": "AdminPaymentRequiest",
+        "isDeleted": false,
+        "createdAt": "2024-09-24T11:29:14.870Z",
+        "updatedAt": "2024-09-24T12:15:22.138Z",
+        "__v": 0,
+        "offerPrice": 101
+    },
+    {
+        "_id": "66f2a28a66d226f2d7a74861",
+        "userId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "_id": "66e679a28ea1120d58864732",
+            "fullName": "Balam bro",
+            "phone": "+1234567890",
+            "email": "stagpt2024@gmail.com",
+            "password": "$2b$10$I/RKqm5G/4mth0zGobWF6ewzNFLRV2TFj0PEBIyMfx8QoNieLKI12",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T06:07:30.753Z",
+            "updatedAt": "2024-09-15T06:07:30.753Z",
+            "__v": 0
+        },
+        "taskId": {
+            "_id": "66f28705f891607c0277ba0d",
+            "userId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+            "taskName": "Install Ceiling table",
+            "taskDetails": "Install a new ceiling fan in the living room.",
+            "taskDate": "2024-09-30T09:00:00.000Z",
+            "category": "Electrical",
+            "location": "1234 Elm St, Springfield",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727170309006-562667970.jpg"
+            ],
+            "taskPriceType": "Fixed",
+            "taskPrice": 150,
+            "taskStatus": "Completed",
+            "taskAssinStatus": "Cencel",
+            "workType": "In-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "createdAt": "2024-09-24T09:31:49.147Z",
+            "updatedAt": "2024-09-24T12:15:22.269Z",
+            "__v": 0
+        },
+        "taskAssinStatus": "Accept",
+        "paymentStatus": "AdminPaymentRequiest",
+        "isDeleted": false,
+        "createdAt": "2024-09-24T11:29:14.870Z",
+        "updatedAt": "2024-09-24T12:15:22.138Z",
+        "__v": 0,
+        "offerPrice": 101
+    },
+    {
+        "_id": "66f2a28a66d226f2d7a74861",
+        "userId": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "_id": "66e679a28ea1120d58864732",
+            "fullName": "Balam bro",
+            "phone": "+1234567890",
+            "email": "stagpt2024@gmail.com",
+            "password": "$2b$10$I/RKqm5G/4mth0zGobWF6ewzNFLRV2TFj0PEBIyMfx8QoNieLKI12",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T06:07:30.753Z",
+            "updatedAt": "2024-09-15T06:07:30.753Z",
+            "__v": 0
+        },
+        "taskId": {
+            "_id": "66f28705f891607c0277ba0d",
+            "userId": {
+                "location": {
+                    "type": "Point",
+                    "coordinates": []
+                },
+                "_id": "66e55d4649ac5e507a29dad7",
+                "fullName": "John Doe",
+                "phone": "+1234567890",
+                "email": "dev.humayonforid44@gmail.com",
+                "password": "$2b$10$H45kdVjWgdtkXC0UB5.KGeCgt62Rh1OmN3IF6P3819HI/z.qzcBjK",
+                "role": "provider",
+                "isDelete": "no",
+                "createdAt": "2024-09-14T09:54:14.340Z",
+                "updatedAt": "2024-09-14T09:54:14.340Z",
+                "__v": 0
+            },
+            "taskName": "Install Ceiling table",
+            "taskDetails": "Install a new ceiling fan in the living room.",
+            "taskDate": "2024-09-30T09:00:00.000Z",
+            "category": "Electrical",
+            "location": "1234 Elm St, Springfield",
+            "images": [
+                "/uploads/taskPhoto/nando-jpeg-quality-001-1727170309006-562667970.jpg"
+            ],
+            "taskPriceType": "Fixed",
+            "taskPrice": 150,
+            "taskStatus": "Completed",
+            "taskAssinStatus": "Cencel",
+            "workType": "In-person",
+            "taskTime": "Morning-9AM-12PM",
+            "isDeleted": false,
+            "createdAt": "2024-09-24T09:31:49.147Z",
+            "updatedAt": "2024-09-24T12:15:22.269Z",
+            "__v": 0
+        },
+        "taskAssinStatus": "Accept",
+        "paymentStatus": "AdminPaymentRequiest",
+        "isDeleted": false,
+        "createdAt": "2024-09-24T11:29:14.870Z",
+        "updatedAt": "2024-09-24T12:15:22.138Z",
+        "__v": 0
+  
+    }
 ]

@@ -1,0 +1,64 @@
+[
+    {
+        "googlePayDetails": {
+            "googleEmail": "user@example.com",
+            "googleId": "google-12345google-12345google-12345google-12345google-12345google-12345google-12345google-12345google-12345google-12345google-12345google-12345"
+        },
+        "_id": "66fa87bb63156aab1e92ae75",
+        "worker": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e68edab572f464137e8f03",
+            "fullName": "Balahal bro",
+            "phone": "+1234567890",
+            "email": "worker@gmail.com",
+            "password": "$2b$10$88xxhZXm6KF9Y3DxvglO2..DujvzJ/m2ejkPTBsjV8FlaZeoPrHe6",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T07:38:02.951Z",
+            "updatedAt": "2024-10-02T10:04:17.493Z",
+            "__v": 0
+        },
+        "amount": 150,
+        "method": "google_pay",
+        "status": "paid",
+        "transactionId": "txn_9876543210",
+        "transactionDate": "2024-09-30T11:12:59.244Z",
+        "createdAt": "2024-09-30T11:12:59.246Z",
+        "updatedAt": "2024-09-30T11:43:16.940Z"
+    },
+    {
+        "googlePayDetails": {
+            "googleEmail": "user@example.com",
+            "googleId": "google-12345"
+        },
+        "_id": "66fa87bb63156aab1e92ae76",
+        "worker": {
+            "location": {
+                "type": "Point",
+                "coordinates": []
+            },
+            "isBlocked": false,
+            "_id": "66e68edab572f464137e8f03",
+            "fullName": "Humayon bro",
+            "phone": "+1234567890",
+            "email": "worker@gmail.com",
+            "password": "$2b$10$88xxhZXm6KF9Y3DxvglO2..DujvzJ/m2ejkPTBsjV8FlaZeoPrHe6",
+            "role": "worker",
+            "isDelete": "no",
+            "createdAt": "2024-09-15T07:38:02.951Z",
+            "updatedAt": "2024-10-02T10:04:17.493Z",
+            "__v": 0
+        },
+        "amount": 170,
+        "method": "google_pay",
+        "status": "pending",
+        "transactionId": "txn_9876543210",
+        "transactionDate": "2024-09-30T11:12:59.244Z",
+        "createdAt": "2024-09-30T11:12:59.246Z",
+        "updatedAt": "2024-09-30T11:43:16.940Z"
+    }
+]

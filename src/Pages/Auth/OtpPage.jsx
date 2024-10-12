@@ -3,20 +3,103 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../public/images/logo.png";
 import OTPInput from "react-otp-input";
+import { useResendOptCodeMutation, useVerifyForgetPasswordMutation } from "../../Redux/api/authApi";
+import Swal from "sweetalert2";
+import { jwtDecode } from "jwt-decode";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState("");
-
+  const [verifyOtpPassword] = useVerifyForgetPasswordMutation();
+  const [resendOptCodeSend] = useResendOptCodeMutation();
   const navigate = useNavigate();
 
-  const handleOTPSubmit = () => {
+  const handleOTPSubmit = async() => {
     if (otp.length < 4) {
       alert("Please fill in all OTP fields");
     } else {
-      // Proceed with form submission logic
-      console.log("OTP submitted:", otp);
-      navigate("/update-password");
+      
+      const otpToken = localStorage.getItem('otpToken');
+    const data = {
+        otp: otp,
+        verifyToken: otpToken
+    
     }
+    try {
+      // Await the mutation response
+      const res = await verifyOtpPassword(data).unwrap();
+    
+      console.log('verify otp password res', res);
+      // localStorage.setItem("otpToken", res.data);
+       // Storing tokens separately
+      if (res.success) {
+        Swal.fire({
+          title: "Verify OTP Succesfull !!",
+          text: "The user has been verify successfull!.",
+          icon: "success",
+        });
+        navigate("/update-password");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "There was an issue otp verify success .",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error user otp verify :", error);
+      if(error.data){
+        Swal.fire({
+            title: `${error?.data?.message}`,
+            text: "Something went wrong while otp verify.",
+            icon: "error",
+          });
+      }
+      
+    }
+      
+    }
+  };
+
+  const handleOTPResendSubmit = async() => {
+    
+    try {
+      // Await the mutation response
+      const otpToken = localStorage.getItem('otpToken');
+      const tokenData = jwtDecode(otpToken)._doc;
+    const data = {
+        email: tokenData.email
+    
+    }
+      const res = await resendOptCodeSend(data).unwrap();
+    
+      console.log('verify otp password res', res);
+      // localStorage.setItem("otpToken", res.data);
+       // Storing tokens separately
+      if (res.success) {
+        Swal.fire({
+          title: "Check email for OTP !!",
+          text: "The user has been verify successfull!.",
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "There was an issue otp verify success .",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error user otp verify :", error);
+      if(error.data){
+        Swal.fire({
+            title: `${error?.data?.message}`,
+            text: "Something went wrong while otp verify.",
+            icon: "error",
+          });
+      }
+      
+    }
+
   };
 
   return (
@@ -66,6 +149,7 @@ const OtpPage = () => {
                   <Link
                     href="/otp-verification"
                     className="text-[#FFAC76] font-semibold !underline"
+                    onClick={handleOTPResendSubmit}
                   >
                     Resend
                   </Link>

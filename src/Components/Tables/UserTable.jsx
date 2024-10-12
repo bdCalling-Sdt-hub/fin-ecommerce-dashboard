@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { ConfigProvider, Table, Tag } from "antd";
+import { ConfigProvider, Table } from "antd";
+// import { useGetAllUserQuery } from "../../Redux/api/authApi";
 
 const columns = [
   {
     title: "S.ID",
     dataIndex: "serialId",
-    responsive: ["md"], // Hide on smaller screens if needed
+    responsive: ["md"], // Hide on smaller screens (below medium)
+    render: (text, record, index) => index + 1,
   },
   {
-    title: "Customer Name",
-    dataIndex: "customerName",
+    title: "Users Name",
+    dataIndex: "fullName",
     render: (text, record) => (
       <div style={{ display: "flex", alignItems: "center" }}>
-        <img
+        {/* <img
           src={record.avatar}
           alt={record.customerName}
           style={{
@@ -22,21 +24,31 @@ const columns = [
             borderRadius: "50%",
             marginRight: 8,
           }}
-        />
+        /> */}
         {text}
       </div>
     ),
-    responsive: ["sm"], // Adjust visibility based on screen size
+    responsive: ["xs", "sm"], // Visible on small and extra-small screens
   },
   {
     title: "Email",
     dataIndex: "email",
-    responsive: ["md"], // Hide on smaller screens if needed
+    responsive: ["lg"], // Hide on screens smaller than large
   },
   {
-    title: "Date",
-    dataIndex: "joiningDate",
-    responsive: ["sm"], // Adjust visibility based on screen size
+    title: "Contact Number",
+    dataIndex: "contactNumber",
+    responsive: ["md"], // Hide on smaller screens
+  },
+  {
+    title: "Delete Users",
+    dataIndex: "isDelete",
+    responsive: ["md"], // Hide on smaller screens
+  },
+  {
+    title: "Role",
+    dataIndex: "role",
+    responsive: ["xs", "sm", "md"], // Visible on all screen sizes
   },
 ];
 
@@ -69,25 +81,25 @@ const UserTable = () => {
       theme={{
         components: {
           Table: {
-            headerBg: "rgb(1,53,100)",
-            headerColor: "rgba(255,255,255,0.88)",
+            headerBg: "#FAFAFA",
+            headerColor: "#1F2852",
             colorBgContainer: "rgb(255,255,255)",
             colorText: "rgb(0,0,0)",
             headerSplitColor: "rgba(151, 198, 234, 1)",
-            // borderRadius: 24,
           },
         },
       }}
     >
-      <div className="w-full overflow-x-auto border-2 border-[#013564] rounded-xl">
+      <div className="w-full overflow-x-auto rounded-xl p-4">
         <Table
           columns={columns}
           dataSource={data}
           loading={loading}
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 5, responsive: true }}
+          // pagination={{ pageSize: 5, showSizeChanger: true, responsive: true }}
           onChange={onChange}
           className="user-table"
-          scroll={{ x: true }} // Allows horizontal scrolling for overflow content
+          scroll={{ x: "100%" }} // Ensure horizontal scroll on small screens
         />
       </div>
     </ConfigProvider>

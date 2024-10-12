@@ -10,6 +10,7 @@
     "storyDetails": "George A. Torres was more than just a friend; he was a brother in arms, a man who dedicated his life to protecting his country. As a Captain in the U.S. Army, George led his troops with bravery and honor, facing numerous battles with a heart full of courage. His story is one of sacrifice, loyalty, and love for his country. Despite the dangers, George never wavered in his commitment to his fellow soldiers, always putting their needs above his own. His life was tragically cut short during a mission, but his legacy lives on in the hearts of those who knew him. This story is a tribute to George’s unwavering spirit and the ultimate price he paid for freedom.",
     "hero": "George A. Torres",
     "profession": "Captain",
+    "price":10,
     "professionalInstitute": "U.S. Army",
     "dateOfBirth": "09-11-1976",
     "dateOfDeath": "15-09-1992",
@@ -30,6 +31,7 @@
     "storyDetails": "Emily Brown was more than just a nurse; she was a beacon of hope for countless patients at St. Mary's Hospital. Her gentle touch and compassionate heart provided comfort to those in their darkest hours. Emily's journey through life was marked by her unwavering dedication to caring for others, often putting her own needs aside to ensure her patients were well taken care of. Tragically, Emily’s life was cut short during the height of a global pandemic. Her story is one of selflessness and love, a testament to the impact one person can have on the lives of many. This story honors Emily's legacy and the profound difference she made in her community.",
     "hero": "Emily Brown",
     "profession": "Nurse",
+    "price":10,
     "professionalInstitute": "St. Mary's Hospital",
     "dateOfBirth": "12-03-1980",
     "dateOfDeath": "01-12-2020",
@@ -49,6 +51,7 @@
     "storyDetails": "William Johnson was a firefighter who dedicated his life to saving others. He was known for his bravery, quick thinking, and unwavering dedication to his job. William served in the New York Fire Department for over 20 years, becoming a beloved figure in his community. His life was tragically taken during a heroic rescue operation, where he saved several lives at the cost of his own. William’s story is one of courage, self-sacrifice, and the enduring spirit of a true hero. This story celebrates William's life, his commitment to his community, and the legacy he leaves behind.",
     "hero": "William Johnson",
     "profession": "Firefighter",
+    "price":10,
     "professionalInstitute": "New York Fire Department",
     "dateOfBirth": "02-07-1975",
     "dateOfDeath": "15-05-2018",
@@ -68,6 +71,7 @@
     "storyDetails": "Laura Davis was a dedicated teacher at Springfield High School, where she inspired generations of students with her passion for learning and her love for teaching. Laura believed in the potential of every student and worked tirelessly to ensure they all had the opportunity to succeed. Her classroom was a place of discovery and growth, where students felt valued and supported. Laura's life was tragically cut short due to illness, but her influence continues to resonate in the lives of her students. This story is a tribute to Laura's legacy, her commitment to education, and the countless lives she touched.",
     "hero": "Laura Davis",
     "profession": "Teacher",
+    "price":10,
     "professionalInstitute": "Springfield High School",
     "dateOfBirth": "10-10-1965",
     "dateOfDeath": "20-06-2019",
@@ -189,5 +193,52 @@
       "https://images.pexels.com/photos/1029581/pexels-photo-1029581.jpeg?auto=compress&cs=tinysrgb&w=400",
       "https://images.pexels.com/photos/220201/pexels-photo-220201.jpeg?auto=compress&cs=tinysrgb&w=400"
     ]
-  }
+  },
+  {
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            102.523483,
+            -22.875534
+        ]
+    },
+    "_id": "6702576ff62c90902ece8f6b",
+    "provider": {
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -73.935242,
+                40.73061
+            ]
+        },
+        "_id": "66fb7f7866e69af2e941a999",
+        "fullName": "Monoara Moni",
+        "phone": "+1234567890",
+        "email": "monoaramoni125@gmail.com",
+        "password": "$2b$10$U.vYuairBDOwySDxAU75new3VF.bUOowlEuxPocuvTfyBb7iW6Yle",
+        "role": "provider",
+        "isDelete": "no",
+        "isBlocked": false,
+        "createdAt": "2024-10-01T04:50:00.025Z",
+        "updatedAt": "2024-10-01T04:50:00.025Z",
+        "__v": 0
+    },
+    "taskName": "Furniture Assembly",
+    "taskDetails": "Assemble a 4-piece living room furniture set, including a coffee table and chairs..",
+    "taskDate": "2024-11-05T14:00:00.000Z",
+    "category": "Outdoor Maintenance",
+    "images": [
+        "/uploads/taskPhoto/nando-jpeg-quality-001-1728206703322-183935763.jpg",
+        "/uploads/taskPhoto/nando-jpeg-quality-001-1728206703323-411022563.jpg"
+    ],
+    "taskPrice": 320,
+    "taskStatus": "pending",
+    "workType": "in-person",
+    "taskTime": "Afternoon-3PM-7PM",
+    "isDeleted": false,
+    "isReview": false,
+    "isPayment": "pending",
+    "createdAt": "2024-10-06T09:25:03.455Z",
+    "updatedAt": "2024-10-06T09:25:03.455Z"
+}
 ]

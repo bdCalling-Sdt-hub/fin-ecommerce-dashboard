@@ -1,57 +1,95 @@
 import { Button, ConfigProvider, Form, Input, Select, Upload } from "antd";
 import profileImage from "/images/profileImage.jpg";
-import { useState } from "react";
-import {
-  CalendarOutlined,
-  EditOutlined,
-  LeftOutlined,
-} from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import moment from "moment";
+import { jwtDecode } from "jwt-decode";
+import { useSingleUserQuery, useUpdateProfileMutation } from "../../Redux/api/authApi";
+import Swal from "sweetalert2";
 
 const EditProfile = () => {
   const navigate = useNavigate();
+  const [userUpdateData] = useUpdateProfileMutation();
+  const userToken = localStorage.getItem('accessToken');
+  const userData = jwtDecode(userToken);
+  const {data:singleUserData} = useSingleUserQuery(userData.id);
+  // console.log('singleUserData',singleUserData?.data?.photo);
+
+  // const [imageUrl, setImageUrl] = useState('');
   const [imageUrl, setImageUrl] = useState(profileImage);
-  const [selectedBirthday, setSelectedBirthday] = useState(
-    new Date("1990-01-01")
-  );
-  const [isPickerVisible, setIsPickerVisible] = useState(false);
 
-  const countryCodes = [
-    { label: "+1", value: "US", flag: "https://flagcdn.com/w320/us.png" },
-    { label: "+44", value: "UK", flag: "https://flagcdn.com/w320/gb.png" },
-    { label: "+91", value: "IN", flag: "https://flagcdn.com/w320/in.png" },
-    { label: "+880", value: "BD", flag: "https://flagcdn.com/w320/bd.png" },
-    { label: "+92", value: "PK", flag: "https://flagcdn.com/w320/pk.png" },
-    { label: "+54", value: "AR", flag: "https://flagcdn.com/w320/ar.png" },
-    { label: "+90", value: "TR", flag: "https://flagcdn.com/w320/tr.png" },
-  ];
+  const [uploadedFile, setUploadedFile] = useState(null);
 
+  useEffect(() => {
+    if (singleUserData?.data?.photo) {
+      setImageUrl(singleUserData.data.photo); // Update image URL if available
+    }
+  }, [singleUserData]);
+  console.log('imageurl', imageUrl);
   const handleUploadChange = (info) => {
-    if (info.file.status === "done") {
-      getBase64(info.file.originFileObj, (imageUrl) => setImageUrl(imageUrl));
+    console.log('info', info.file);
+    
+      setImageUrl(info.file); 
+      setUploadedFile(info.file);
+      
+     // If the file is being uploaded, show the preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImageUrl(e.target.result); // Set the image preview URL
+    };
+    console.log('info.file.originFileObj',info.file.originFileObj)
+    reader.readAsDataURL(info.file); 
+   
+  };
+
+  const onFinish = async (values) => {
+
+    // Create a FormData object
+    const data = new FormData();
+     // Use the original file for upload
+    if (uploadedFile) {
+      data.append('photo', uploadedFile); // Append the file
+    }
+    data.append('photo', imageUrl); // Append the image URL or file
+    data.append('fullName', values.fullName);
+    data.append('phone', values.phone);
+    data.append('email', values.email);
+
+
+   
+    console.log('updateUserData', data);
+
+    try {
+      // Await the mutation response
+      const res = await userUpdateData({ id: userData.id, data }).unwrap();
+      console.log('update res user', res);
+   
+      if (res.success) {
+        Swal.fire({
+          title: "Profile updated successfully",
+          text: "The user has been updated.",
+          icon: "success",
+        });
+        navigate("/profile");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "There was an issue updating the user.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      if (error.data) {
+        Swal.fire({
+          title: `${error.data.message}`,
+          text: "Something went wrong while updating the profile.",
+          icon: "error",
+        });
+      }
     }
   };
-
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
-
-  const onFinish = (values) => {
-    console.log("Form Values:", values);
-    console.log("Selected Birthday:", selectedBirthday);
-    navigate("/profile");
-  };
-
-  const handleDateChange = (date) => {
-    setSelectedBirthday(date);
-    setIsPickerVisible(false); // Hide the picker once a date is selected
-  };
-
   return (
     <div className="p-4 lg:p-8 min-h-screen">
       <div className="flex justify-between items-center mb-8 mx-10 xl:mx-40">
@@ -60,43 +98,41 @@ const EditProfile = () => {
             className="text-black text-xl mr-4 cursor-pointer"
             onClick={() => navigate(-1)}
           />
-          <h2 className="text-black text-2xl font-semibold">
-            Profile Information
-          </h2>
+          <h2 className="text-black text-2xl font-semibold">Profile Information</h2>
         </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6 md:mx-10 xl:mx-40">
-        <div className="flex items-center gap-8 lg:gap-20">
-          <div className="relative flex flex-col items-center w-96">
+        <div className="relative flex flex-col items-center bg-[#3565A1] p-5 rounded mb-5">
             <img
               src={imageUrl}
               alt="Profile"
-              className="rounded-full md:w-28 md:h-28 lg:h-32 lg:w-32 xl:w-36 xl:h-36 object-cover mb-4"
+              className="rounded-full md:w-28 md:h-28 lg:h-32 lg:w-32 xl:w-36 xl:h-36 object-cover mb-2"
             />
             <Upload
               name="avatar"
               showUploadList={false}
               onChange={handleUploadChange}
-              beforeUpload={() => false} // Prevent automatic upload
+              beforeUpload={() => false} 
             >
-              <div className="absolute h-5 lg:h-8 w-20 lg:w-24 xl:w-24 inset-0 top-8 xl:top-24 md:top-20 md:left-12 xl:left-36 flex items-center justify-center bg-blue-800 bg-opacity-50 rounded-full opacity-100 cursor-pointer">
+              <div className="absolute h-5 lg:h-8 w-20  left-[550px] lg:w-24 xl:w-24 inset-0 top-8 xl:top-24 md:top-20  flex items-center justify-center bg-blue-800 bg-opacity-50 rounded-full opacity-100 cursor-pointer">
                 <span className="text-white text-xs lg:text-sm">
                   Change Image
                 </span>
               </div>
             </Upload>
-            <h3 className="text-base font-semibold">Admin</h3>
-            <h2 className="text-lg font-bold">Dr Mathews</h2>
+            <h2 className="text-lg font-bold text-white">{userData.fullName}</h2>
           </div>
+       
+        <div className="">
           <div className="flex-1">
             <ConfigProvider
               theme={{
                 components: {
                   Input: {
                     colorTextPlaceholder: "rgba(255,255,255,0.7)",
-                    hoverBg: "rgb(113,185,249)",
-                    activeBg: "rgb(115,185,247)",
+                    // hoverBg: "rgb(113,185,249)",
+                    activeBg: "#3565A1",
                   },
                 },
               }}
@@ -106,127 +142,70 @@ const EditProfile = () => {
                 id="editProfileForm"
                 onFinish={onFinish}
                 initialValues={{
-                  firstName: "Dr",
-                  lastName: "Mathews",
-                  email: "dr.mathews@example.com",
-                  phoneCode: "BD",
-                  phoneNumber: "01846875456",
-                  birthday: "1990-01-01",
+                  fullName: userData.fullName,
+                  email: userData.email,
+                  phone: userData.phone,
                 }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col">
                   <Form.Item
                     label={
-                      <label className="text-black font-bold text-lg">
-                        First Name
+                      <label
+                        style={{
+                          color: "black",
+                          fontWeight: "bold",
+                          fontSize: "18px",
+                        }}
+                      >
+                        Full Name
                       </label>
                     }
-                    name="firstName"
+                    name="fullName"
                   >
-                    <Input
-                      className="bg-[#8BC4F7] rounded-lg h-10 font-semibold"
-                      placeholder="Enter Your First Name"
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    label={
-                      <label className="text-black font-bold text-lg">
-                        Last Name
-                      </label>
-                    }
-                    name="lastName"
-                  >
-                    <Input
-                      className="bg-[#8BC4F7] rounded-lg h-10 font-semibold"
-                      placeholder="Enter Your Last Name"
-                    />
+                    <Input className=" rounded-lg h-10 font-semibold " />
                   </Form.Item>
                 </div>
                 <Form.Item
                   label={
-                    <label className="text-black font-bold text-lg">
+                    <label
+                      style={{
+                        color: "black",
+                        fontWeight: "bold",
+                        fontSize: "18px",
+                      }}
+                    >
                       Email
                     </label>
                   }
                   name="email"
                 >
-                  <Input
-                    className="bg-[#8BC4F7] rounded-lg h-10 font-semibold"
-                    placeholder="Type Your Email"
-                  />
+                  <Input className=" rounded-lg h-10 font-semibold" />
                 </Form.Item>
-                <Form.Item
-                  label={
-                    <label className="text-black font-bold text-lg">
-                      Phone Number
-                    </label>
-                  }
-                  name="phoneCode"
-                >
-                  <div className="flex gap-2">
-                    <Select
-                      className="h-10"
-                      style={{ width: 250 }}
-                      options={countryCodes.map((country) => ({
-                        label: (
-                          <div className="flex items-center">
-                            <img
-                              src={country.flag}
-                              alt={`${country.value} Flag`}
-                              className="w-5 h-3 inline-block mr-2"
-                            />
-                            {country.label}
-                          </div>
-                        ),
-                        value: country.value,
-                      }))}
-                    />
-                    <Form.Item name="phoneNumber" noStyle>
-                      <Input
-                        className="bg-[#8BC4F7] rounded-lg h-10 font-semibold"
-                        placeholder="Type Your Phone Number"
-                      />
-                    </Form.Item>
-                  </div>
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <label className="text-black font-bold text-lg">
-                      Birthday
-                    </label>
-                  }
-                  name="birthday"
-                >
-                  <div
-                    className="bg-[#8BC4F7] rounded-lg h-10 font-semibold w-full flex items-center justify-between cursor-pointer"
-                    onClick={() => setIsPickerVisible(!isPickerVisible)}
+                <div className="flex flex-col">
+                  <Form.Item
+                    label={
+                      <label
+                        style={{
+                          color: "black",
+                          fontWeight: "bold",
+                          fontSize: "18px",
+                        }}
+                      >
+                        Phone Number
+                      </label>
+                    }
+                    name="phone"
                   >
-                    <span className="ml-2">
-                      {selectedBirthday
-                        ? moment(selectedBirthday).format("YYYY-MM-DD")
-                        : "Select Your Birthday"}
-                    </span>
-                    <CalendarOutlined style={{ marginRight: "10px" }} />
-                  </div>
-                </Form.Item>
-
-                {/* Calendar as an absolute positioned overlay */}
-                {isPickerVisible && (
-                  <div className="absolute right-56 top-56 z-10 bg-white p-2 shadow-lg rounded-md">
-                    <DayPicker
-                      mode="single"
-                      selected={selectedBirthday}
-                      onSelect={handleDateChange}
-                    />
-                  </div>
-                )}
-
+                    <Input className="  rounded-lg h-10 font-semibold" />
+                  </Form.Item>
+                </div>
                 <Button
                   block
                   form="editProfileForm"
                   key="submit"
                   htmlType="submit"
                   className="bg-[#013564] text-white h-10 py-5 rounded-xl font-semibold"
+                  style={{background:"#013564"}}
                 >
                   Save Changes
                 </Button>

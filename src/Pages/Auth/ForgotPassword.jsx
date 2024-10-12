@@ -2,13 +2,51 @@ import { Button, ConfigProvider, Form, Input } from "antd";
 
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/images/logo.png";
+import { useForgetPasswordMutation } from "../../Redux/api/authApi";
+import Swal from "sweetalert2";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const [forgatePassword] = useForgetPasswordMutation();
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    navigate("/verify-otp");
+  const onFinish = async(values) => {
+    const data = {
+      email:values.email,
+    }
+    try {
+      // Await the mutation response
+      const res = await forgatePassword(data).unwrap();
+  
+       // Storing tokens separately
+    localStorage.setItem("otpToken", res.data);
+   
+    
+      if (res.success) {
+        Swal.fire({
+          title: "Verify OTP! Check Email!!",
+          text: "The user has been Check Email!.",
+          icon: "success",
+        });
+        navigate("/verify-otp");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "There was an issue user Check Email .",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error user forgate:", error);
+      if(error.data){
+        Swal.fire({
+            title: `${error.data.message}`,
+            text: "Something went wrong while OPT.",
+            icon: "error",
+          });
+      }
+      
+    }
+   
   };
   return (
     <div className="min-h-screen">

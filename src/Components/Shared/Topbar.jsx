@@ -2,7 +2,8 @@ import { BarsOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge, Button, ConfigProvider, Dropdown, Grid } from "antd";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useState, useEffect } from "react";
-import profileImg from "../../../public/images/profile.svg";
+// import profileImg from "../../../public/images/profile.svg";
+import profileImg from "../../../public/images/user.svg";
 
 const { useBreakpoint } = Grid;
 
@@ -98,6 +99,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
       ))}
       <Button
         onClick={loadNotifications}
+        style={{background:'#013564', color:"white"}}
         className="w-2/3 mx-auto text-center bg-[#013564] text-white rounded-xl h-10 py-2 font-semibold"
       >
         Load More
@@ -115,14 +117,14 @@ const Topbar = ({ collapsed, setCollapsed }) => {
       )}
       <div
         className={`mx-[-50px] flex justify-between items-center relative z-50 ${
-          isDropdownVisible ? "bg-gray-400 opacity-75" : "bg-[#023E8A]"
+          isDropdownVisible ? "bg-gray-400 opacity-75" : "bg-[#D3E6F9]"
         }`}
       >
         <div className="flex items-center gap-2 text-white ml-4">
-          <p className="text-[#013564]">
+          <p >
             <BarsOutlined
               onClick={() => setCollapsed(!collapsed)}
-              className="text-3xl text-white"
+              className="text-3xl text-[rgb(51,153,255)]"
             />
           </p>
         </div>
@@ -163,7 +165,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
             <img
               src={profileImg}
               alt="profile_pic"
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: "20px", height: "20px",  }}
               className="rounded"
             />
           </Link>
