@@ -1,7 +1,8 @@
 import { Button, ConfigProvider, Form } from "antd";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../../public/images/logo.png";
+// import logo from "../../../public/images/logo.png";
+import logo from "/images/4 1.png";
 import OTPInput from "react-otp-input";
 import { useResendOptCodeMutation, useVerifyForgetPasswordMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
@@ -24,39 +25,39 @@ const OtpPage = () => {
         verifyToken: otpToken
     
     }
-    try {
-      // Await the mutation response
-      const res = await verifyOtpPassword(data).unwrap();
+    // try {
+    //   // Await the mutation response
+    //   const res = await verifyOtpPassword(data).unwrap();
     
-      console.log('verify otp password res', res);
-      // localStorage.setItem("otpToken", res.data);
-       // Storing tokens separately
-      if (res.success) {
-        Swal.fire({
-          title: "Verify OTP Succesfull !!",
-          text: "The user has been verify successfull!.",
-          icon: "success",
-        });
-        navigate("/update-password");
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: "There was an issue otp verify success .",
-          icon: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error user otp verify :", error);
-      if(error.data){
-        Swal.fire({
-            title: `${error?.data?.message}`,
-            text: "Something went wrong while otp verify.",
-            icon: "error",
-          });
-      }
+    //   console.log('verify otp password res', res);
+    //   // localStorage.setItem("otpToken", res.data);
+    //    // Storing tokens separately
+    //   if (res.success) {
+    //     Swal.fire({
+    //       title: "Verify OTP Succesfull !!",
+    //       text: "The user has been verify successfull!.",
+    //       icon: "success",
+    //     });
+    //     navigate("/update-password");
+    //   } else {
+    //     Swal.fire({
+    //       title: "Error",
+    //       text: "There was an issue otp verify success .",
+    //       icon: "error",
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error("Error user otp verify :", error);
+    //   if(error.data){
+    //     Swal.fire({
+    //         title: `${error?.data?.message}`,
+    //         text: "Something went wrong while otp verify.",
+    //         icon: "error",
+    //       });
+    //   }
       
-    }
-      
+    // }
+    navigate("/update-password");
     }
   };
 
@@ -159,6 +160,7 @@ const OtpPage = () => {
                   <Button
                     className="w-full py-5 sm:py-7 border text-lg sm:text-2xl text-white bg-[#013564] border-[#97C6EA] hover:border-[#97C6EA] font-semibold rounded-2xl mt-5 sm:mt-14"
                     onClick={handleOTPSubmit}
+                    style={{background:"#3399ff", border:"white"}}
                   >
                     Get OTP
                   </Button>

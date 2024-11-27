@@ -1,9 +1,10 @@
 import { Button, ConfigProvider, Form, Input } from "antd";
 
 import { useNavigate } from "react-router-dom";
-import logo from "../../../public/images/logo.png";
+// import logo from "../../../public/images/logo.png";
 import { useForgetPasswordMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
+import logo from "/images/4 1.png";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -13,40 +14,40 @@ const ForgotPassword = () => {
     const data = {
       email:values.email,
     }
-    try {
-      // Await the mutation response
-      const res = await forgatePassword(data).unwrap();
+    // try {
+    //   // Await the mutation response
+    //   const res = await forgatePassword(data).unwrap();
   
-       // Storing tokens separately
-    localStorage.setItem("otpToken", res.data);
+    //    // Storing tokens separately
+    // localStorage.setItem("otpToken", res.data);
    
     
-      if (res.success) {
-        Swal.fire({
-          title: "Verify OTP! Check Email!!",
-          text: "The user has been Check Email!.",
-          icon: "success",
-        });
-        navigate("/verify-otp");
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: "There was an issue user Check Email .",
-          icon: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error user forgate:", error);
-      if(error.data){
-        Swal.fire({
-            title: `${error.data.message}`,
-            text: "Something went wrong while OPT.",
-            icon: "error",
-          });
-      }
+    //   if (res.success) {
+    //     Swal.fire({
+    //       title: "Verify OTP! Check Email!!",
+    //       text: "The user has been Check Email!.",
+    //       icon: "success",
+    //     });
+    //     navigate("/verify-otp");
+    //   } else {
+    //     Swal.fire({
+    //       title: "Error",
+    //       text: "There was an issue user Check Email .",
+    //       icon: "error",
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error("Error user forgate:", error);
+    //   if(error.data){
+    //     Swal.fire({
+    //         title: `${error.data.message}`,
+    //         text: "Something went wrong while OPT.",
+    //         icon: "error",
+    //       });
+    //   }
       
-    }
-   
+    // }
+    navigate("/verify-otp");
   };
   return (
     <div className="min-h-screen">
@@ -113,6 +114,7 @@ const ForgotPassword = () => {
                   <Button
                     className="w-full py-5 sm:py-7 border text-lg sm:text-2xl text-white bg-[#013564] border-[#97C6EA] hover:border-[#97C6EA] font-semibold rounded-2xl mt-5 sm:mt-8"
                     htmlType="submit"
+                    style={{background:"#3399ff", border:"white"}}
                   >
                     Get OTP
                   </Button>

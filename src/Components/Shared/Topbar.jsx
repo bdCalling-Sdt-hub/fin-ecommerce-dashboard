@@ -124,13 +124,13 @@ const Topbar = ({ collapsed, setCollapsed }) => {
           <p >
             <BarsOutlined
               onClick={() => setCollapsed(!collapsed)}
-              className="text-3xl text-[rgb(51,153,255)]"
+              className="text-3xl text-black font-semibold"
             />
           </p>
         </div>
         <div className="flex items-center justify-center gap-3 mr-5">
           {/* notification */}
-          <div className="border border-white rounded-full px-2 py-2 h-10 flex cursor-pointer">
+          <div className="border border-black rounded-full px-2 py-2 h-10 flex cursor-pointer">
             <ConfigProvider
               theme={{
                 components: {
@@ -151,7 +151,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
                   <BellOutlined
                     shape="circle"
                     size="small"
-                    className="text-lg font-bold text-white"
+                    className="text-lg font-bold text-black"
                   />
                 </Badge>
               </Dropdown>
@@ -160,13 +160,13 @@ const Topbar = ({ collapsed, setCollapsed }) => {
 
           <Link
             to="profile"
-            className="flex items-center justify-center text-center gap-2 bg-transparent border rounded-full border-white p-2 mr-5"
+            className="flex items-center justify-center text-center gap-2 bg-transparent border rounded-full border-black p-2 mr-5"
           >
             <img
               src={profileImg}
               alt="profile_pic"
-              style={{ width: "20px", height: "20px",  }}
-              className="rounded"
+              style={{ width: "20px", height: "20px",  color:'white' }}
+              className="rounded text-black"
             />
           </Link>
         </div>

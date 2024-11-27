@@ -30,7 +30,7 @@ export const mainTheme = {
       iconSize: 24,
       itemActiveBg: "#1F2852",
       itemHoverColor: "#ffffff",
-      itemColor: "#ffffff",
+      itemColor: "#000",
       itemSelectedBg: "rgb(51,153,255)",
       itemSelectedColor: "#ffffff",
     },

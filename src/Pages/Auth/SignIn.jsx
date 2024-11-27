@@ -7,9 +7,10 @@ import {
   Typography,
 } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../../public/images/logo.png";
+// import logo from "../../../public/images/logo.png";
 import { useSignInMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
+import logo from "/images/4 1.png";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -137,8 +138,9 @@ const SignIn = () => {
               <Form.Item>
                 {/* <Link to="/"> */}
                 <Button
-                  className="w-full py-6 border text-lg sm:text-xl text-white font-semibold rounded-2xl mt-8"
+                  className="w-full py-6 border border-white text-lg sm:text-xl text-white font-semibold rounded-2xl mt-8"
                   htmlType="submit"
+                  style={{background:"#3399ff", border:"white"}}
                 >
                   Sign In
                 </Button>

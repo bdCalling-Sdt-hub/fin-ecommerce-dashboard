@@ -26,6 +26,13 @@ import SettingsChangePassword from "../Dashboard/settings/SettingsChangePassword
 import Users from "../Dashboard/Users";
 import TermsAndCondition from "../Dashboard/settings/TermsAndCondition";
 import CreateAdmin from "../Dashboard/CreateAdmin";
+import QRCodesGenerated from "../Dashboard/QRCodesGenerated/QRCodesGenerated";
+import Shop from "../Dashboard/Shop/Shop";
+import OrdersReceived from "../Dashboard/OrdersReceived/OrdersReceived";
+import PremiumSubscription from "../Dashboard/PremiumSubscription/PremiumSubscription";
+import ScanStatistics from "../Dashboard/ScanStatistics/ScanStatistics";
+import OrdersDeliveryDetails from "../Dashboard/OrdersReceived/ordersDeliveryDetails";
+import QRCodeGeneratedDetails from "../Dashboard/QRCodesGenerated/QRCodeGeneratedDetails";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +78,34 @@ const router = createBrowserRouter([
           {
             path: "users",
             element: <Users />,
+          },    
+          {
+            path: "qr-code-generated",
+            element: <QRCodesGenerated />,
+          },    
+          {
+            path: "qr-code-generated/:id",
+            element: <QRCodeGeneratedDetails />,
+          },    
+          {
+            path: "shop",
+            element: <Shop />,
+          },    
+          {
+            path: "orders-received",
+            element: <OrdersReceived />,
+          },    
+          {
+            path: "orders-received-details/:id",
+            element: <OrdersDeliveryDetails />,
+          },    
+          {
+            path: "premium-subscription",
+            element: <PremiumSubscription />,
+          },    
+          {
+            path: "scan-statistics",
+            element: <ScanStatistics />,
           },    
           {
             path: "profile",

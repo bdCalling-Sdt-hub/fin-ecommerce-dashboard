@@ -30,7 +30,7 @@ const Dashboard = () => {
       {/* Overview Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="flex flex-col gap-6 mb-10">
-  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-900 mb-1">
+  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#3399ff] mb-1">
     Overview
   </h1>
   
@@ -70,7 +70,7 @@ const Dashboard = () => {
         {/* Task Overview and Income Section */}
         <div className="rounded-lg p-1">
           <div className="flex justify-between mb-4">
-            <h1 className="text-2xl lg:text-3xl font-bold text-blue-900 mb-1">
+            <h1 className="text-2xl lg:text-3xl font-bold text-[#3399ff] mb-1">
               Orders overview
             </h1>
             {/* <select className="bg-gray-100 px-2 py-1 rounded-lg text-sm lg:text-base">
@@ -84,7 +84,7 @@ const Dashboard = () => {
         {/* Income Card */}
         <div className=" rounded-lg px-2 py-3 h-auto lg:h-[92%]">
           <div className="flex justify-between mb-2">
-            <h1 className="text-2xl lg:text-3xl font-bold text-blue-900 mb-1">
+            <h1 className="text-2xl lg:text-3xl font-bold text-[#3399ff] mb-1">
               Income
             </h1>
             {/* <select className="bg-gray-100 px-2 py-1 rounded-lg text-sm lg:text-base">
@@ -100,11 +100,11 @@ const Dashboard = () => {
       <div className="flex flex-col lg:flex-row gap-3 mt-5">
         <div className="lg:flex-1">
           <div className="flex justify-between items-center mb-2">
-            <p className="text-lg lg:text-xl font-bold text-[#1F2852] mb-1">
+            <p className="text-lg lg:text-xl font-bold text-[#3399ff] mb-1">
               Recent users
             </p>
-            <NavLink to="/all-recent-users">
-              <p className="text-sm lg:text-base text-[#1F2852] underline font-bold">
+            <NavLink to="/users">
+              <p className="text-sm lg:text-base text-[#3399ff] underline font-bold">
                 View All
               </p>
             </NavLink>

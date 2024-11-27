@@ -1,0 +1,33 @@
+[
+    {
+      "serialId": 1,
+      "name": "Category",
+      "available": "20256",
+      "categoryID":"5681",
+      "img": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    {
+      "serialId": 2,
+      "name": "Category-2",
+      "available": "20257",
+      "categoryID":"5684",
+      "img": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    {
+      "serialId": 3,
+      "name": "Category-3",
+      "available": "20258",
+      "categoryID":"5685",
+      "img": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    {
+      "serialId": 4,
+      "name": "Category-4",
+      "available": "20259",
+      "categoryID":"5682",
+      "img": "https://randomuser.me/api/portraits/men/1.jpg"
+    }
+    
+    
+  ]
+  

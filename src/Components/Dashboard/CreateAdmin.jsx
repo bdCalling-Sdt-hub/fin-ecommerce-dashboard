@@ -55,7 +55,7 @@ const CreateAdmin = () => {
       <div className="max-w-[1350px] w-[90%] mx-auto flex flex-col lg:flex-row gap-20 lg:gap-20 items-center justify-center min-h-screen py-10">
         <div className="w-full lg:w-[50%] bg-[#E6ECF3] px-10 rounded-lg py-6">
           <div className="text-center mb-10">
-            <h1 className="text-[#023E8A] text-sm sm:text-4xl font-semibold sm:font-semibold mb-4">
+            <h1 className="text-[#3399ff] text-sm sm:text-4xl font-semibold sm:font-semibold mb-4">
               Create new admin
             </h1>
           </div>
@@ -147,8 +147,9 @@ const CreateAdmin = () => {
 
               <Form.Item>
                 <Button
-                  className="w-full py-6 border text-xl font-semibold rounded-2xl mt-14"
+                  className="w-full  py-6 border-[#3399ff] text-xl font-semibold rounded-2xl mt-14"
                   htmlType="submit"
+                  style={{background:"#3399ff"}}
                 >
                   Submit
                 </Button>

@@ -86,13 +86,13 @@ export const TaskOverviewBarChart = () => (
         <Bar
           dataKey="total"
           barSize={10}
-          fill="#1F2852"
+          fill="#3399ff"
           radius={[16, 16, 0, 0]}
         />
         <Bar
           dataKey="ongoing"
           barSize={10}
-          fill="#3565A1"
+          fill="#8095a9"
           radius={[16, 16, 0, 0]}
         />
       </BarChart>
@@ -130,8 +130,8 @@ export const IncomeLineChart = () => {
           {/* Defining Gradient */}
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#838ff8" stopOpacity={0.8} />
-              <stop offset="100%" stopColor="#fdfdfd" stopOpacity={0.1} />
+              <stop offset="0%" stopColor="#000" stopOpacity={0.8} />
+              <stop offset="100%" stopColor="#3399ff" stopOpacity={0.1} />
             </linearGradient>
           </defs>
 
@@ -140,8 +140,8 @@ export const IncomeLineChart = () => {
             formatter={(value) => [`${value}K`, "Income"]}
             labelFormatter={(label) => `Day: ${label}`}
             contentStyle={{
-              backgroundColor: "#1F2852",
-              borderColor: "#4f6ef9",
+              backgroundColor: "#3399ff",
+              borderColor: "#000",
               color: "#FFF",
             }} // Custom styling
             itemStyle={{ color: "#FFF" }}
@@ -151,7 +151,7 @@ export const IncomeLineChart = () => {
           <Area
             type="monotone"
             dataKey="value"
-            stroke="#023E8A"
+            stroke="#3399ff"
             fill="url(#colorUv)" // Applying the gradient here
             strokeWidth={3}
             fillOpacity={1}

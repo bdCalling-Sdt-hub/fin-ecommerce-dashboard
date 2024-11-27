@@ -1,5 +1,6 @@
 import { Button, ConfigProvider, Form, Input, Typography } from "antd";
-import logo from "../../../public/images/logo.png";
+// import logo from "../../../public/images/logo.png";
+import logo from "/images/4 1.png";
 import { useNavigate } from "react-router-dom";
 import { useResetPasswordMutation } from "../../Redux/api/authApi";
 import Swal from "sweetalert2";
@@ -16,36 +17,36 @@ const ChangePassword = () => {
       verifyToken: otpToken
   }
   // console.log('data response ', data);
-    try {
-      // Await the mutation response
-      const res = await updatePassword(data).unwrap();
-      // console.log('respon change password', res)
+    // try {
+    //   // Await the mutation response
+    //   const res = await updatePassword(data).unwrap();
+    //   // console.log('respon change password', res)
     
-      if (res.success) {
-        Swal.fire({
-          title: "Password Updated Successfully!!",
-          text: "The user has been success!.",
-          icon: "success",
-        });
-        navigate("/signin");
-      } else {
-        Swal.fire({
-          title: "Error",
-          text: "There was an issue user password .",
-          icon: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error user forgate:", error);
-      if(error.data){
-        Swal.fire({
-            title: `${error.data.message}`,
-            text: "Something went wrong while password.",
-            icon: "error",
-          });
-      }
+    //   if (res.success) {
+    //     Swal.fire({
+    //       title: "Password Updated Successfully!!",
+    //       text: "The user has been success!.",
+    //       icon: "success",
+    //     });
+    //     navigate("/signin");
+    //   } else {
+    //     Swal.fire({
+    //       title: "Error",
+    //       text: "There was an issue user password .",
+    //       icon: "error",
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.error("Error user forgate:", error);
+    //   if(error.data){
+    //     Swal.fire({
+    //         title: `${error.data.message}`,
+    //         text: "Something went wrong while password.",
+    //         icon: "error",
+    //       });
+    //   }
       
-    }
+    // }
   
   };
 
@@ -131,6 +132,7 @@ const ChangePassword = () => {
                 <Button
                   className="w-full py-6 border text-lg sm:text-xl text-white bg-[#013564] border-[#97C6EA] hover:border-[#97C6EA]  font-semibold rounded-2xl mt-5 lg:mt-8"
                   htmlType="submit"
+                  style={{background:"#3399ff", border:"white"}}
                 >
                   Change password
                 </Button>

@@ -87,9 +87,9 @@ export default function Users() {
 
   return (
     <div className="min-h-[90vh]">
-     <div className="bg-[#013564] rounded-lg">
+     <div className="bg-[#D3E6F9] rounded-lg">
         <div className="flex justify-between p-6">
-          <h1 className="text-3xl font-bold text-white">Users List</h1>
+          <h1 className="text-3xl font-bold text-black">Users List</h1>
           <div className="flex gap-4 items-center">
             <ConfigProvider
               theme={{
@@ -165,15 +165,22 @@ export default function Users() {
                 // )}
               />
               <Table.Column title="Email" dataIndex="email" key="email" />
-              <Table.Column
-                title="Uploaded Story"
-                dataIndex="uploadedStory"
-                key="uploadedStory"
-              />{" "}
+              <Table.Column title="Contact No" dataIndex="phone" key="phone" />
               <Table.Column
                 title="Joining Date"
                 dataIndex="joiningDate"
                 key="joiningDate"
+              />
+              <Table.Column
+                title="Subscribers"
+                dataIndex="isSubscribers"
+                key="isSubscribers"
+                render={(text)=> text ? 'yes':'no'}
+              />
+              <Table.Column
+                title="Role"
+                dataIndex="role"
+                key="role"
               />
               <Table.Column
                 title="Action"

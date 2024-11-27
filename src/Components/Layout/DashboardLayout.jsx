@@ -1,9 +1,15 @@
 import Topbar from "../Shared/Topbar";
-import logo from "/images/small-logo.png";
+import logo from "/images/4 1.png";
 import dashboardLogo from "../../../public/images/dashboard-logo/dashboard.svg";
 import users from "../../../public/images/dashboard-logo/users.svg";
+import user from "../../../public/images/dashboard-logo/user.svg";
 import setting from "../../../public/images/dashboard-logo/Setting.svg";
 import logout from "../../../public/images/dashboard-logo/logout.svg";
+import QRCodeGenerated from "../../../public/images/dashboard-logo/Group 75.svg";
+import shop from "../../../public/images/dashboard-logo/shop.svg";
+import orderReceved from "../../../public/images/dashboard-logo/orderReceved.svg";
+import premiumSubscription from "../../../public/images/dashboard-logo/premiumSubscription.svg";
+import scanStatistics from "../../../public/images/dashboard-logo/Group 76.svg";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { ConfigProvider, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -38,6 +44,7 @@ const DashboardLayout = () => {
           collapsed={collapsed}
           style={{
             background: "#d3e6f9",
+            // color:'black'
             // marginRight: "10px",
             // borderRadius: "5px",
           }}
@@ -74,6 +81,7 @@ const DashboardLayout = () => {
               style={{
                 backgroundColor: "transparent",
                 border: "none",
+                // color:"black"
               }}
               items={[
                 {
@@ -90,7 +98,9 @@ const DashboardLayout = () => {
                   label: (
                     <NavLink
                       to="dashboard"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : "font-semibold"
+                      }
                     >
                       Dashboard
                     </NavLink>
@@ -110,13 +120,125 @@ const DashboardLayout = () => {
                   label: (
                     <NavLink
                       to="users"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
                     >
                       Users
                     </NavLink>
                   ),
                 },
-             
+                {
+                  key: "qr-code-generated",
+                  icon: (
+                    <img
+                      src={QRCodeGenerated}
+                      alt="qr-code-generated"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("qr-code-generated") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="qr-code-generated"
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
+                    >
+                      QR Code Generated
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "shop",
+                  icon: (
+                    <img
+                      src={shop}
+                      alt="shop"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("shop") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="shop"
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
+                    >
+                      Shop
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "orders-received",
+                  icon: (
+                    <img
+                      src={orderReceved}
+                      alt="orders-received"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("orders-received") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="orders-received"
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
+                    >
+                      Orders Received
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "premium-subscription",
+                  icon: (
+                    <img
+                      src={premiumSubscription}
+                      alt="premium-subscription"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("premium-subscription") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="premium-subscription"
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
+                    >
+                      Premium Subscription
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "scan-statistics",
+                  icon: (
+                    <img
+                      src={scanStatistics}
+                      alt="scan-statistics"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("scan-statistics") ? "active-icon" : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="scan-statistics"
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
+                    >
+                      Scan Statistics
+                    </NavLink>
+                  ),
+                },
+
                 {
                   key: "settings",
                   icon: (
@@ -140,7 +262,7 @@ const DashboardLayout = () => {
                       //     ? "active-menu-item"
                       //     : ""
                       // }
-                      className="text-white active:bg-white active:text-white"
+                      className="text-black active:bg-black active:text-black font-semibold"
                     >
                       Setting
                     </span>
@@ -152,7 +274,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/change-password"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                          }
                         >
                           Change Password
                         </NavLink>
@@ -164,7 +288,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/about-us"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                          }
                         >
                           About Us
                         </NavLink>
@@ -176,7 +302,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/terms-of-service"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                          }
                         >
                           Terms Of Service
                         </NavLink>
@@ -188,7 +316,9 @@ const DashboardLayout = () => {
                       label: (
                         <NavLink
                           to="settings/privacy-policy"
-                          className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                          className={({ isActive }) =>
+                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                          }
                         >
                           Privacy And Policy
                         </NavLink>
@@ -196,23 +326,25 @@ const DashboardLayout = () => {
                     },
                   ],
                 },
-
-                
                 {
                   key: "dashboard/create-admin",
                   icon: (
                     <img
-                      src={users}
-                      alt="users"
+                      src={user}
+                      alt="dashboard/create-admin"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("users") ? "active-icon" : ""
+                        location.pathname.includes("dashboard/create-admin")
+                          ? "active-icon "
+                          : " "
                       }`}
                     />
                   ),
                   label: (
                     <NavLink
                       to="dashboard/create-admin"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
                     >
                       Create New Admin
                     </NavLink>
@@ -227,14 +359,18 @@ const DashboardLayout = () => {
                       width={15}
                       height={15}
                       className={`menu-icon ${
-                        location.pathname.includes("signin") ? "active-icon" : ""
+                        location.pathname.includes("signin")
+                          ? "active-icon font-semibold"
+                          : " font-semibold"
                       }`}
                     />
                   ),
                   label: (
                     <NavLink
                       to="signin"
-                      className={({ isActive }) => (isActive ? "active-menu-item" : "")}
+                      className={({ isActive }) =>
+                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                      }
                     >
                       Logout
                     </NavLink>

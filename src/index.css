@@ -10,8 +10,8 @@
 
 .menu-icon {
   transition: all 0.1s ease;
-  color: white;
-  filter: brightness(0) invert(1);
+  color: black;
+  filter: brightness(1) invert(0);
 }
 .active-icon {
   filter: brightness(0) invert(1);

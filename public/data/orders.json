@@ -1,0 +1,63 @@
+[
+    {
+      "serialId": 1,
+      "productName": "John Doe 1",
+      "price": "150",
+      "orderData":"10-08-24",
+      "status":"delivery order",
+      "category":"category-1",
+      "customerName":"Khali vai",
+      "deliveryAddress":"Badur hat",
+      "phoneNum":"0012156451",
+      "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+    },
+    {
+      "serialId": 2,
+      "productName": "Balahal vai",
+      "price": "157",
+      "category":"category-2",
+      "status":"process order",
+      "orderData":"10-11-24",
+      "customerName":"malamal vai",
+      "deliveryAddress":"balar shai gram",
+      "phoneNum":"0012156451",
+      "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+    },
+    {
+      "serialId": 3,
+      "productName": "katua Doe",
+      "price": "150",
+      "category":"category-3",
+      "orderData":"18-12-24",
+      "status":"new order",
+      "customerName":"malamal vai",
+      "deliveryAddress":"balar shai gram",
+      "phoneNum":"0012156451",
+      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
+    },
+    {
+      "serialId": 4,
+      "productName": "Sabillah hai",
+      "price": "120",
+      "category":"category-4",
+      "status":"process order",
+      "orderData":"15-12-24",
+      "customerName":"malamal vai",
+      "deliveryAddress":"balar shai gram",
+      "phoneNum":"0012156451",
+      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
+    },
+    {
+      "serialId": 5,
+      "productName": "Mir hossen",
+      "price": "15",
+      "category":"category-5",
+      "orderData":"10-12-24",
+      "customerName":"malamal vai",
+      "deliveryAddress":"balar shai gram",
+      "phoneNum":"0012156451",
+      "status":"delivery order",
+      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
+    }
+  ]
+  

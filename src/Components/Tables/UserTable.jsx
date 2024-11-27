@@ -12,7 +12,7 @@ const columns = [
   },
   {
     title: "Users Name",
-    dataIndex: "fullName",
+    dataIndex: "customerName",
     render: (text, record) => (
       <div style={{ display: "flex", alignItems: "center" }}>
         {/* <img
