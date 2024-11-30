@@ -1,4 +1,4 @@
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 import { baseApi } from "../baseApi";
 
 // const cookie = new Cookies();
@@ -7,12 +7,11 @@ import { baseApi } from "../baseApi";
 // const accessToken = localStorage.getItem('accessToken');
 // console.log('accessToken admin', accessToken);
 
-
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     signIn: builder.mutation({
       query: (data) => ({
-        url: "/users/login",
+        url: "/auth/login",
         method: "POST",
         body: data,
         headers: {
@@ -25,7 +24,7 @@ const authApi = baseApi.injectEndpoints({
     // Forget password
     ForgetPassword: builder.mutation({
       query: (data) => ({
-        url: `/users/forget-password`,
+        url: "/auth/forgot-password-otp",
         method: "POST",
         body: data,
         headers: {
@@ -44,7 +43,6 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
-    
 
     // Reset Password
     ResetPassword: builder.mutation({
@@ -78,28 +76,27 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["user"],
     }),
 
+    // Update Profile
+    updateProfile: builder.mutation({
+      query: ({ id, data }) => {
+        const accessToken = localStorage.getItem("accessToken"); // Retrieve token dynamically
+        return {
+          url: `/users/${id}`,
+          method: "PUT",
+          body: data,
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+      invalidatesTags: ["user"],
+    }),
 
-   // Update Profile
-   updateProfile: builder.mutation({
-    query: ({id, data}) => {
-      const accessToken = localStorage.getItem('accessToken'); // Retrieve token dynamically
-      return {
-        url: `/users/${id}`,
-        method: "PUT",
-        body: data,
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-    },
-    invalidatesTags: ["user"],
-  }),
-
-     // Change Password
-     ChangePassword: builder.mutation({
+    // Change Password
+    ChangePassword: builder.mutation({
       query: (data) => {
-        const accessToken = localStorage.getItem('accessToken'); 
+        const accessToken = localStorage.getItem("accessToken");
         return {
           url: `/users/change-password`,
           method: "PATCH",
@@ -177,7 +174,7 @@ const authApi = baseApi.injectEndpoints({
     // Create Admin
     createAdmin: builder.mutation({
       query: (data) => {
-        const accessToken = localStorage.getItem('accessToken'); // Retrieve token dynamically
+        const accessToken = localStorage.getItem("accessToken"); // Retrieve token dynamically
         return {
           url: "/users/create-admin",
           method: "POST",
@@ -197,8 +194,6 @@ const authApi = baseApi.injectEndpoints({
         return {
           url: `/users/block/${id}`,
           method: "PATCH",
-        
-          
         };
       },
       invalidatesTags: ["user"],
@@ -221,5 +216,5 @@ export const {
   useGetAllProviderQuery,
   useGetAllWorkerQuery,
   useCreateAdminMutation,
-  useBlockedUserMutation
+  useBlockedUserMutation,
 } = authApi;

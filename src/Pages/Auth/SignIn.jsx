@@ -1,11 +1,4 @@
-import {
-  Checkbox,
-  Button,
-  Input,
-  ConfigProvider,
-  Form,
-  Typography,
-} from "antd";
+import { Checkbox, Button, Input, ConfigProvider, Form } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 // import logo from "../../../public/images/logo.png";
 import { useSignInMutation } from "../../Redux/api/authApi";
@@ -16,20 +9,19 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [login] = useSignInMutation();
 
-  const onFinish = async(values) => {
+  const onFinish = async (values) => {
     const data = {
       email: values.email,
       password: values.password,
-      
     };
 
     try {
       // Await the mutation response
       const res = await login(data).unwrap();
-       // Storing tokens separately
-    localStorage.setItem("accessToken", res.data.accessToken);
-    localStorage.setItem("refreshToken", res.data.refreshToken);
-    
+      // Storing tokens separately
+      localStorage.setItem("accessToken", res?.data?.accessToken);
+      localStorage.setItem("refreshToken", res?.data?.refreshToken);
+
       if (res.success) {
         Swal.fire({
           title: "Login Successfully!",
@@ -46,16 +38,14 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Error user login:", error);
-      if(error.data){
+      if (error.data) {
         Swal.fire({
-            title: `${error.data.message}`,
-            text: "Something went wrong while login users.",
-            icon: "error",
-          });
+          title: `${error.data.message}`,
+          text: "Something went wrong while login users.",
+          icon: "error",
+        });
       }
-      
     }
-   
   };
   return (
     <div className="min-h-screen">
@@ -140,7 +130,7 @@ const SignIn = () => {
                 <Button
                   className="w-full py-6 border border-white text-lg sm:text-xl text-white font-semibold rounded-2xl mt-8"
                   htmlType="submit"
-                  style={{background:"#3399ff", border:"white"}}
+                  style={{ background: "#3399ff", border: "white" }}
                 >
                   Sign In
                 </Button>
