@@ -1,53 +1,48 @@
-import { Button, ConfigProvider, Form, Input, Typography } from "antd";
+import { Button, ConfigProvider, Form, Input } from "antd";
 // import logo from "../../../public/images/logo.png";
 import logo from "/images/4 1.png";
 import { useNavigate } from "react-router-dom";
 import { useResetPasswordMutation } from "../../Redux/api/authApi";
-import Swal from "sweetalert2";
+import { toast } from "sonner";
 
-const ChangePassword = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
-  const [updatePassword] = useResetPasswordMutation();
-  const onFinish = async(values) => {
-    // console.log("Success:", values);
-    const otpToken = localStorage.getItem('otpToken');
-    // console.log('otptoken', otpToken);
-    const data ={
-      password:values.newPassword,
-      verifyToken: otpToken
-  }
-  // console.log('data response ', data);
-    // try {
-    //   // Await the mutation response
-    //   const res = await updatePassword(data).unwrap();
-    //   // console.log('respon change password', res)
-    
-    //   if (res.success) {
-    //     Swal.fire({
-    //       title: "Password Updated Successfully!!",
-    //       text: "The user has been success!.",
-    //       icon: "success",
-    //     });
-    //     navigate("/signin");
-    //   } else {
-    //     Swal.fire({
-    //       title: "Error",
-    //       text: "There was an issue user password .",
-    //       icon: "error",
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.error("Error user forgate:", error);
-    //   if(error.data){
-    //     Swal.fire({
-    //         title: `${error.data.message}`,
-    //         text: "Something went wrong while password.",
-    //         icon: "error",
-    //       });
-    //   }
-      
-    // }
-  
+  const [resetPassword] = useResetPasswordMutation();
+
+  const onFinish = async (values) => {
+    try {
+      const data = {
+        newPassword: values.newPassword,
+        confirmPassword: values.reEnterPassword,
+      };
+      console.log("Request payload:", data);
+
+      const token = localStorage.getItem("verifiedOtpToken");
+      if (!token) {
+        toast.error("Session expired. Please start the reset process again.");
+        navigate("/forgot-password");
+        return;
+      }
+
+      const response = await resetPassword(data).unwrap();
+      console.log("Response:", response);
+
+      if (response.success) {
+        toast.success("Password updated successfully!");
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.log("Error updating password:", error);
+      // if (error.response) {
+      //   console.error("Validation error details:", error.response.data);
+      //   toast.error(
+      //     error.response.data.message ||
+      //       "Failed to update password. Please try again."
+      //   );
+      // } else {
+      //   toast.error("An unexpected error occurred. Please try again.");
+      // }
+    }
   };
 
   return (
@@ -95,7 +90,7 @@ const ChangePassword = () => {
               <Form.Item
                 name="newPassword"
                 className="text-white"
-                label={<p style={{ fontWeight: "500" }}>"New password"</p>}
+                label={<p style={{ fontWeight: "500" }}>New password</p>}
               >
                 <Input.Password
                   placeholder="Enter your password"
@@ -132,7 +127,7 @@ const ChangePassword = () => {
                 <Button
                   className="w-full py-6 border text-lg sm:text-xl text-white bg-[#013564] border-[#97C6EA] hover:border-[#97C6EA]  font-semibold rounded-2xl mt-5 lg:mt-8"
                   htmlType="submit"
-                  style={{background:"#3399ff", border:"white"}}
+                  style={{ background: "#3399ff", border: "white" }}
                 >
                   Change password
                 </Button>
@@ -144,4 +139,4 @@ const ChangePassword = () => {
     </div>
   );
 };
-export default ChangePassword;
+export default ResetPassword;
