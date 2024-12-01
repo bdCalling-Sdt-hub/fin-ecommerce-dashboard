@@ -1,8 +1,18 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import { ConfigProvider, Modal, Table, Input, Button, Upload, Switch, Select } from "antd";
+import {
+  ConfigProvider,
+  Modal,
+  Table,
+  Input,
+  Button,
+  Upload,
+  Switch,
+  Select,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
+import { useGetAllProductsQuery } from "../../../Redux/api/shopApi";
 
 const Shop = () => {
   const [data, setData] = useState([]);
@@ -19,25 +29,23 @@ const Shop = () => {
   const [fileList, setFileList] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/data/products.json");
-        setData(response?.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data: allProducts, isLoading, refetch } = useGetAllProductsQuery();
+  console.log("data", allProducts?.data);
 
-    fetchData();
-  }, []);
+  // Trigger refetch when the component is mounted
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
+
+  // Use the fetched data or set to an empty array if undefined
+  const productData = allProducts?.data || [];
 
   const filteredData = useMemo(() => {
-    if (!searchText) return data;
-    return data.filter((item) => item.productName.toLowerCase().includes(searchText.toLowerCase()));
-  }, [data, searchText]);
+    if (!searchText) return productData;
+    return productData.filter((item) =>
+      item.productName.toLowerCase().includes(searchText.toLowerCase())
+    );
+  }, [productData, searchText]);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -52,17 +60,14 @@ const Shop = () => {
     };
     console.log("New Product:", newProduct);
     setIsCreateModalVisible(false);
-    setProductName('');  
-  setProductPrice(''); 
-  setCategoryItem(''); 
-  setFileList([]);   
-  setProductImages([]); 
-  setImagePreviews([]);
-
+    setProductName("");
+    setProductPrice("");
+    setCategoryItem("");
+    setFileList([]);
+    setProductImages([]);
+    setImagePreviews([]);
   };
 
- 
-  
   const handleEditProduct = () => {
     const editedProduct = {
       productName: productName,
@@ -73,38 +78,38 @@ const Shop = () => {
     console.log("Edited Product:", editedProduct);
     setIsEditModalVisible(false);
   };
-  
+
   const showEditModal = (product) => {
-    console.log('product', product);
+    console.log("product", product);
     // Pre-fill the form with existing product details
     setProductName(product.productName);
     setProductPrice(product.price);
     setCategoryItem(product.category);
-  
+
     // Pre-fill image previews and fileList with existing images
     const existingFiles = product?.images?.map((img, index) => ({
       uid: index, // A unique id for each image
       name: `image-${index + 1}`, // Give each image a name
-      status: 'done',
+      status: "done",
       url: img, // The URL of the existing image
     }));
-    
+
     setFileList(existingFiles); // Set the fileList with existing images
     setImagePreviews(product.images); // Set the previews for display
-    
+
     setIsEditModalVisible(true); // Show the modal
   };
-  
+
   // File change handler for uploading new images or modifying existing ones
   const handleFileChange = (info) => {
     let files = [...info.fileList].slice(0, 5); // Limit to 5 files
-  
+
     setFileList(files); // Update fileList for display
-  
+
     // Handle both new file uploads and existing image URLs
-    const rawFiles = files.map((file) => file.originFileObj || file.url); 
+    const rawFiles = files.map((file) => file.originFileObj || file.url);
     setProductImages(rawFiles); // Store the raw files or URLs for later submission
-  
+
     // Generate base64 previews for new files and retain URLs for existing ones
     const previews = files.map((file) => {
       const reader = new FileReader();
@@ -117,13 +122,12 @@ const Shop = () => {
         }
       });
     });
-  
+
     // Update image previews state
     Promise.all(previews).then((images) => setImagePreviews(images));
   };
-  
-  
-  console.log('image previews', imagePreviews);
+
+  console.log("image previews", imagePreviews);
 
   const categorys = [
     {
@@ -146,17 +150,17 @@ const Shop = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-10">
-        <div>
+      <div className="flex justify-center items-center mb-10">
+        {/* <div>
           {categorys.map((item) => (
             <>
               <button className="mr-8 font-semibold text-md text-[#3399ff]">{item.name}</button>
             </>
           ))}
-        </div>
+        </div> */}
         <Button
           type="primary"
-          className="float-right text-base font-semibold py-5 px-8"
+          className="text-lg font-semibold py-6 w-full"
           onClick={() => setIsCreateModalVisible(true)}
         >
           + Add A Product
@@ -180,7 +184,9 @@ const Shop = () => {
               value={searchText}
               onChange={(e) => onSearch(e.target.value)}
               className="text-base font-semibold"
-              prefix={<SearchOutlined className="text-[#97C6EA] font-bold text-lg mr-2" />}
+              prefix={
+                <SearchOutlined className="text-[#97C6EA] font-bold text-lg mr-2" />
+              }
               style={{
                 width: 280,
                 padding: "8px 16px",
@@ -220,7 +226,7 @@ const Shop = () => {
                 render: (text, record) => (
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                      src={record.images[0]}
+                      src={record?.imageUlrs[0]}
                       alt={record.productName}
                       style={{
                         width: 50,
@@ -262,8 +268,8 @@ const Shop = () => {
               },
             ]}
             dataSource={filteredData}
-            loading={loading}
-            pagination={{ pageSize: 4 }}
+            loading={isLoading}
+            pagination={{ pageSize: 5 }}
             className="user-table"
             scroll={{ x: true }}
           />
@@ -272,143 +278,153 @@ const Shop = () => {
 
       {/* Create Category Modal */}
       <Modal
-      visible={isCreateModalVisible}
-      onCancel={() => setIsCreateModalVisible(false)}
-      footer={[
-        <Button
-          key="back"
-          onClick={() => setIsCreateModalVisible(false)}
-          style={{
-            backgroundColor: "#f5f5f5",
-            color: "#000",
-            border: "1px solid #d9d9d9",
-          }}
-        >
-          Cancel
-        </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          onClick={handleCreateProduct}
-          style={{ backgroundColor: "#1890ff", color: "#fff", border: "none" }}
-        >
-          Confirm
-        </Button>,
-      ]}
-      centered
-      bodyStyle={{
-        padding: "24px",
-        backgroundColor: "#f9fafc",
-      }}
-      style={{
-        borderRadius: "8px",
-      }}
-      width={500}
-    >
-      <h2
-        className="text-center"
-        style={{
-          fontSize: "24px",
-          fontWeight: "bold",
-          marginBottom: "20px",
-          color: "#333",
+        visible={isCreateModalVisible}
+        onCancel={() => setIsCreateModalVisible(false)}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => setIsCreateModalVisible(false)}
+            style={{
+              backgroundColor: "#f5f5f5",
+              color: "#000",
+              border: "1px solid #d9d9d9",
+            }}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleCreateProduct}
+            style={{
+              backgroundColor: "#1890ff",
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            Confirm
+          </Button>,
+        ]}
+        centered
+        bodyStyle={{
+          padding: "24px",
+          backgroundColor: "#f9fafc",
         }}
+        style={{
+          borderRadius: "8px",
+        }}
+        width={500}
       >
-        Add A Product
-      </h2>
-
-      <div>
-        {/* Product Name */}
-        <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
-          Product Name
-        </label>
-        <Input
-          placeholder="Enter product name"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
+        <h2
+          className="text-center"
           style={{
+            fontSize: "24px",
+            fontWeight: "bold",
             marginBottom: "20px",
-            borderRadius: "4px",
-            border: "1px solid #d9d9d9",
+            color: "#333",
           }}
-        />
+        >
+          Add A Product
+        </h2>
 
-        {/* Product Price */}
-        <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
-          Product Price
-        </label>
-        <Input
-          placeholder="Enter product price"
-          value={productPrice}
-          type="number"
-          onChange={(e) => setProductPrice(e.target.value)}
-          style={{
-            marginBottom: "20px",
-            borderRadius: "4px",
-            border: "1px solid #d9d9d9",
-          }}
-        />
+        <div>
+          {/* Product Name */}
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Product Name
+          </label>
+          <Input
+            placeholder="Enter product name"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+          />
 
-        {/* Product Category */}
-        <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
-          Category
-        </label>
-        <br />
-        <Select
-          value={categoryItem} // The selected value
-          onChange={(value) => setCategoryItem(value)} // Set the selected value
-          style={{
-            width: "100%",
-            marginBottom: "20px",
-            borderRadius: "4px",
-            border: "1px solid #d9d9d9",
-          }}
-          options={categorys.map((item) => ({
-            value: item.name, // Assuming `name` is the unique identifier
-            label: item.name, // Display name of the category
-          }))}
-        />
+          {/* Product Price */}
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Product Price
+          </label>
+          <Input
+            placeholder="Enter product price"
+            value={productPrice}
+            type="number"
+            onChange={(e) => setProductPrice(e.target.value)}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+          />
 
-        {/* Image Upload Section */}
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <div>
-            <label
-              style={{
-                fontSize: "14px",
-                fontWeight: "500",
-                marginBottom: "8px",
-                marginRight: "10px",
-              }}
-            >
-              Import photos (5 photo maximum)
-            </label>
-            <br />
-            <br />
-            <Upload
-              name="photos"
-              listType="picture"
-              multiple
-              fileList={fileList} // Manage selected files
-              showUploadList={true} // Show the uploaded files
-              beforeUpload={() => false} // Prevent auto upload
-              onChange={handleFileChange} // Handle file selection
-            >
-              <Button
-                icon={<UploadOutlined />}
+          {/* Product Category */}
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Category
+          </label>
+          <br />
+          <Select
+            value={categoryItem} // The selected value
+            onChange={(value) => setCategoryItem(value)} // Set the selected value
+            style={{
+              width: "100%",
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+            options={categorys.map((item) => ({
+              value: item.name, // Assuming `name` is the unique identifier
+              label: item.name, // Display name of the category
+            }))}
+          />
+
+          {/* Image Upload Section */}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div>
+              <label
                 style={{
-                  backgroundColor: "#e6f7ff",
-                  color: "#1890ff",
-                  borderRadius: "4px",
-                  padding: "5px 15px",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  marginBottom: "8px",
+                  marginRight: "10px",
                 }}
               >
-                Click to Upload
-              </Button>
-            </Upload>
-          </div>
+                Import photos (5 photo maximum)
+              </label>
+              <br />
+              <br />
+              <Upload
+                name="photos"
+                listType="picture"
+                multiple
+                fileList={fileList} // Manage selected files
+                showUploadList={true} // Show the uploaded files
+                beforeUpload={() => false} // Prevent auto upload
+                onChange={handleFileChange} // Handle file selection
+              >
+                <Button
+                  icon={<UploadOutlined />}
+                  style={{
+                    backgroundColor: "#e6f7ff",
+                    color: "#1890ff",
+                    borderRadius: "4px",
+                    padding: "5px 15px",
+                  }}
+                >
+                  Click to Upload
+                </Button>
+              </Upload>
+            </div>
 
-          {/* Image Previews */}
-          {/* <div style={{ display: "flex", marginLeft: "20px" }}>
+            {/* Image Previews */}
+            {/* <div style={{ display: "flex", marginLeft: "20px" }}>
             {imagePreviews?.map((image, index) => (
               <img
                 key={index}
@@ -423,143 +439,155 @@ const Shop = () => {
               />
             ))}
           </div> */}
+          </div>
         </div>
-      </div>
-    </Modal>
+      </Modal>
 
       {/* Edit Category Modal */}
-    
+
       <Modal
-  visible={isEditModalVisible}
-  onCancel={() => setIsEditModalVisible(false)}
-  footer={[
-    <Button
-      key="back"
-      onClick={() => setIsEditModalVisible(false)}
-      style={{
-        backgroundColor: "#f5f5f5",
-        color: "#000",
-        border: "1px solid #d9d9d9",
-      }}
-    >
-      Cancel
-    </Button>,
-    <Button
-      key="submit"
-      type="primary"
-      onClick={handleEditProduct}
-      style={{ backgroundColor: "#1890ff", color: "#fff", border: "none" }}
-    >
-      Confirm
-    </Button>,
-  ]}
-  centered
-  bodyStyle={{
-    padding: "24px",
-    backgroundColor: "#f9fafc",
-  }}
-  style={{
-    borderRadius: "8px",
-  }}
-  width={500}
->
-  <h2
-    className="text-center"
-    style={{
-      fontSize: "24px",
-      fontWeight: "bold",
-      marginBottom: "20px",
-      color: "#333",
-    }}
-  >
-    Edit Product
-  </h2>
-
-  <div>
-    {/* Product Name */}
-    <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
-      Product Name
-    </label>
-    <Input
-      placeholder="Enter product name"
-      value={productName}
-      onChange={(e) => setProductName(e.target.value)}
-      style={{
-        marginBottom: "20px",
-        borderRadius: "4px",
-        border: "1px solid #d9d9d9",
-      }}
-    />
-
-    {/* Product Price */}
-    <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>Product Price</label>
-    <Input
-      placeholder="Enter product price"
-      value={productPrice}
-      onChange={(e) => setProductPrice(e.target.value)}
-      style={{
-        marginBottom: "20px",
-        borderRadius: "4px",
-        border: "1px solid #d9d9d9",
-      }}
-    />
-
-    {/* Product Category */}
-    <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
-      Category
-    </label>
-    <Select
-      value={categoryItem}
-      onChange={(value) => setCategoryItem(value)}
-      style={{
-        width: "100%",
-        marginBottom: "20px",
-        borderRadius: "4px",
-        border: "1px solid #d9d9d9",
-      }}
-      options={categorys.map((item) => ({
-        value: item.name,
-        label: item.name,
-      }))}
-    />
-
-    {/* Image Upload Section */}
-    <label
-      style={{
-        fontSize: "14px",
-        fontWeight: "500",
-        marginBottom: "8px",
-        marginRight: "10px",
-      }}
-    >
-      Import a photo (5 photos maximum)
-    </label>
-    <br />
-    <br />
-    <Upload
-      name="photos"
-      listType="picture"
-      multiple
-      fileList={fileList}
-      showUploadList={true}
-      beforeUpload={() => false}
-      onChange={handleFileChange}
-    >
-      <Button
-        icon={<UploadOutlined />}
-        style={{
-          backgroundColor: "#e6f7ff",
-          color: "#1890ff",
-          borderRadius: "4px",
-          padding: "5px 15px",
+        visible={isEditModalVisible}
+        onCancel={() => setIsEditModalVisible(false)}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => setIsEditModalVisible(false)}
+            style={{
+              backgroundColor: "#f5f5f5",
+              color: "#000",
+              border: "1px solid #d9d9d9",
+            }}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleEditProduct}
+            style={{
+              backgroundColor: "#1890ff",
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            Confirm
+          </Button>,
+        ]}
+        centered
+        bodyStyle={{
+          padding: "24px",
+          backgroundColor: "#f9fafc",
         }}
+        style={{
+          borderRadius: "8px",
+        }}
+        width={500}
       >
-        Click to Upload
-      </Button>
-    </Upload>
+        <h2
+          className="text-center"
+          style={{
+            fontSize: "24px",
+            fontWeight: "bold",
+            marginBottom: "20px",
+            color: "#333",
+          }}
+        >
+          Edit Product
+        </h2>
 
-    {/* Image Previews */}
-    {/* <div style={{ display: "flex", marginTop: "10px", gap: "10px" }}>
+        <div>
+          {/* Product Name */}
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Product Name
+          </label>
+          <Input
+            placeholder="Enter product name"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+          />
+
+          {/* Product Price */}
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Product Price
+          </label>
+          <Input
+            placeholder="Enter product price"
+            value={productPrice}
+            onChange={(e) => setProductPrice(e.target.value)}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+          />
+
+          {/* Product Category */}
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Category
+          </label>
+          <Select
+            value={categoryItem}
+            onChange={(value) => setCategoryItem(value)}
+            style={{
+              width: "100%",
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+            options={categorys.map((item) => ({
+              value: item.name,
+              label: item.name,
+            }))}
+          />
+
+          {/* Image Upload Section */}
+          <label
+            style={{
+              fontSize: "14px",
+              fontWeight: "500",
+              marginBottom: "8px",
+              marginRight: "10px",
+            }}
+          >
+            Import a photo (5 photos maximum)
+          </label>
+          <br />
+          <br />
+          <Upload
+            name="photos"
+            listType="picture"
+            multiple
+            fileList={fileList}
+            showUploadList={true}
+            beforeUpload={() => false}
+            onChange={handleFileChange}
+          >
+            <Button
+              icon={<UploadOutlined />}
+              style={{
+                backgroundColor: "#e6f7ff",
+                color: "#1890ff",
+                borderRadius: "4px",
+                padding: "5px 15px",
+              }}
+            >
+              Click to Upload
+            </Button>
+          </Upload>
+
+          {/* Image Previews */}
+          {/* <div style={{ display: "flex", marginTop: "10px", gap: "10px" }}>
       {imagePreviews && imagePreviews.map((preview, index) => (
         <img
           key={index}
@@ -569,8 +597,8 @@ const Shop = () => {
         />
       ))}
     </div> */}
-  </div>
-</Modal>
+        </div>
+      </Modal>
     </div>
   );
 };

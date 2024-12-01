@@ -8,8 +8,6 @@ import {
   useResendOtpMutation,
   useVerifyOtpMutation,
 } from "../../Redux/api/authApi";
-import Swal from "sweetalert2";
-import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 
 const OtpPage = () => {
@@ -71,7 +69,7 @@ const OtpPage = () => {
         toast.success("An OTP has been sent to your email!");
       }
     } catch (error) {
-      console.error("Error sending reset code:", error);
+      // console.error("Error sending reset code:", error);
       if (error.data?.message === "User not found") {
         toast.error("Incorrect Email.");
       } else {
