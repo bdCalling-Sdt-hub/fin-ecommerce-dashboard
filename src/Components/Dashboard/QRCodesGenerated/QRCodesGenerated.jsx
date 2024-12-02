@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { ConfigProvider, Modal, Table, Input, Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
+import {
+  useCreateCategoryMutation,
+  useGetAllCategoryQuery,
+} from "../../../Redux/api/categoryApi";
 
 const QRCodesGenerated = () => {
   const [data, setData] = useState([]);
@@ -17,25 +20,50 @@ const QRCodesGenerated = () => {
   const [categoryImage, setCategoryImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null); // Store image preview
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/data/category.json");
-        setData(response?.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
+  const { data: allCategory, isLoading, refetch } = useGetAllCategoryQuery();
+  console.log("data", allCategory?.data);
+
+  const [createCategory] = useCreateCategoryMutation();
+
+  const handleCreateCategory = async () => {
+    console.log("id", categoryId);
+    console.log("name", categoryName);
+    console.log("image", categoryImage);
+
+    // Check if the image is required but not selected
+    if (!categoryImage) {
+      alert("Image is required");
+      return; // Prevent form submission if no image is selected
+    }
+
+    const formData = new FormData();
+    let data = {
+      categoryName,
+      addId: categoryId,
     };
 
-    fetchData();
-  }, []);
+    data = JSON.stringify(data);
+    formData.append("data", data);
 
-  const handleCreateCategory = () => {
-    const newCategory = { name: categoryName, id: categoryId, availableItems: availableItems, img: categoryImage };
-    console.log("New Category:", newCategory);
-    setIsCreateModalVisible(false);
+    // Append the image file if available
+    if (categoryImage) {
+      formData.append("file", categoryImage);
+    }
+
+    console.log("Form Data:", formData); // Log form data to check its contents
+
+    try {
+      const res = await createCategory(formData).unwrap();
+      console.log("Category created:", res);
+      setIsCreateModalVisible(false);
+      setCategoryName("");
+      setCategoryId("");
+      setAvailableItems("");
+      setCategoryImage(null);
+      setImagePreview(null);
+    } catch (error) {
+      console.error("Failed to create category:", error);
+    }
   };
 
   const handleEditCategory = () => {
@@ -52,10 +80,10 @@ const QRCodesGenerated = () => {
   // Show Edit Modal and prefill the form with the clicked record data
   const showEditModal = (record) => {
     // console.log('record', record);
-    setCurrentRecord(record); 
-    setCategoryName(record.name); 
-    setCategoryId(record.categoryID); 
-    setAvailableItems(record.available); 
+    setCurrentRecord(record);
+    setCategoryName(record.name);
+    setCategoryId(record.categoryID);
+    setAvailableItems(record.available);
     if (record.img) {
       // If the record has an image, set it as the preview
       setImagePreview(record.img);
@@ -63,11 +91,15 @@ const QRCodesGenerated = () => {
       setImagePreview(null); // If no image, clear the preview
     }
 
-    setIsEditModalVisible(true); 
+    setIsEditModalVisible(true);
   };
 
   const handleFileChange = (info) => {
-    const file = info.file; // Extract the file
+    console.log({ info });
+    const file = info.file;
+    const file1 = info.fileList[0];
+
+    console.log({ file }); // Extract the file
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -78,7 +110,6 @@ const QRCodesGenerated = () => {
       setCategoryImage(file); // Store the file
     }
   };
-  
 
   return (
     <div>
@@ -105,6 +136,7 @@ const QRCodesGenerated = () => {
       >
         <div className="w-full overflow-x-auto border-2 border-[#3399FF] rounded-xl">
           <Table
+            // dataSource={data}
             columns={[
               {
                 title: "S.ID",
@@ -113,12 +145,12 @@ const QRCodesGenerated = () => {
                 responsive: ["md"],
               },
               {
-                title: "Customer Name",
-                dataIndex: "name",
+                title: "Category Name",
+                dataIndex: "categoryName",
                 render: (text, record) => (
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                      src={record.img}
+                      src={record.imageUrl}
                       alt={record.name}
                       style={{
                         width: 28,
@@ -133,7 +165,6 @@ const QRCodesGenerated = () => {
                         color: "#3B82F6",
                         cursor: "pointer",
                       }}
-                     
                     >
                       {text}
                     </span>
@@ -141,29 +172,27 @@ const QRCodesGenerated = () => {
                 ),
                 responsive: ["sm"],
               },
+            
               {
-                title: "Available",
-                dataIndex: "available",
-                responsive: ["md"],
-              },
-              {
-                title: "CategoryID",
-                dataIndex: "categoryID",
+                title: "Category ID",
+                dataIndex: "addId",
                 responsive: ["sm"],
               },
               {
                 title: "Actions",
                 responsive: ["sm"],
                 render: (record) => (
-                  <NavLink to={`/qr-code-generated/${record.serialId}`} > <button className="btn bg-blue-500 text-white px-5 py-2 rounded">
-                  Manage
-                </button></NavLink>
-                 
+                  <NavLink to={`/qr-code-generated/${record.serialId}`}>
+                    {" "}
+                    <button className="btn bg-blue-500 text-white px-5 py-2 rounded">
+                      Manage
+                    </button>
+                  </NavLink>
                 ),
               },
             ]}
-            dataSource={data}
-            loading={loading}
+            dataSource={allCategory?.data}
+            loading={isLoading}
             pagination={{ pageSize: 5 }}
             className="user-table"
             scroll={{ x: true }}
@@ -173,7 +202,7 @@ const QRCodesGenerated = () => {
 
       {/* Create Category Modal */}
       <Modal
-        visible={isCreateModalVisible}
+        open={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
         footer={[
           <Button
@@ -191,18 +220,20 @@ const QRCodesGenerated = () => {
             key="submit"
             type="primary"
             onClick={handleCreateCategory}
-            style={{ backgroundColor: "#1890ff", color: "#fff", border: "none" }}
+            style={{
+              backgroundColor: "#1890ff",
+              color: "#fff",
+              border: "none",
+            }}
           >
             Confirm
           </Button>,
         ]}
         centered
-        bodyStyle={{
-          padding: "24px",
-          backgroundColor: "#f9fafc",
-        }}
         style={{
           borderRadius: "8px",
+          padding: "24px",
+          backgroundColor: "#f9fafc",
         }}
         width={500}
       >
@@ -219,7 +250,9 @@ const QRCodesGenerated = () => {
         </h2>
 
         <div>
-          <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
             Category Name
           </label>
           <Input
@@ -233,7 +266,9 @@ const QRCodesGenerated = () => {
             }}
           />
 
-          <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
             Add ID
           </label>
           <Input
@@ -300,7 +335,12 @@ const QRCodesGenerated = () => {
               <img
                 src={imagePreview}
                 alt="Preview"
-                style={{ width: "100px", height: "100px", marginLeft: "20px", borderRadius: "8px" }}
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  marginLeft: "20px",
+                  borderRadius: "8px",
+                }}
               />
             )}
           </div>
@@ -309,81 +349,87 @@ const QRCodesGenerated = () => {
 
       {/* Edit Category Modal */}
       <Modal
-    visible={isEditModalVisible}
-    onCancel={() => setIsEditModalVisible(false)}
-    footer={[
-      <Button
-        key="back"
-        onClick={() => setIsEditModalVisible(false)}
+        visible={isEditModalVisible}
+        onCancel={() => setIsEditModalVisible(false)}
+        footer={[
+          <Button
+            key="back"
+            onClick={() => setIsEditModalVisible(false)}
+            style={{
+              backgroundColor: "#f5f5f5",
+              color: "#000",
+              border: "1px solid #d9d9d9",
+            }}
+          >
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleEditCategory}
+            style={{
+              backgroundColor: "#1890ff",
+              color: "#fff",
+              border: "none",
+            }}
+          >
+            Confirm
+          </Button>,
+        ]}
+        centered
         style={{
-          backgroundColor: "#f5f5f5",
-          color: "#000",
-          border: "1px solid #d9d9d9",
+          borderRadius: "8px",
+          padding: "24px",
+          backgroundColor: "#f9fafc",
         }}
+        width={500}
       >
-        Cancel
-      </Button>,
-      <Button
-        key="submit"
-        type="primary"
-        onClick={handleEditCategory}
-        style={{ backgroundColor: "#1890ff", color: "#fff", border: "none" }}
-      >
-        Confirm
-      </Button>,
-    ]}
-    centered
-    bodyStyle={{
-      padding: "24px",
-      backgroundColor: "#f9fafc",
-    }}
-    style={{
-      borderRadius: "8px",
-    }}
-    width={500}
-  >
-    <h2
-      className="text-center"
-      style={{
-        fontSize: "24px",
-        fontWeight: "bold",
-        marginBottom: "20px",
-        color: "#333",
-      }}
-    >
-      Edit Category
-    </h2>
+        <h2
+          className="text-center"
+          style={{
+            fontSize: "24px",
+            fontWeight: "bold",
+            marginBottom: "20px",
+            color: "#333",
+          }}
+        >
+          Edit Category
+        </h2>
 
-    <div>
-      <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
-        Category Name
-      </label>
-      <Input
-        placeholder="Enter category name"
-        value={categoryName}
-        onChange={(e) => setCategoryName(e.target.value)}
-        style={{
-          marginBottom: "20px",
-          borderRadius: "4px",
-          border: "1px solid #d9d9d9",
-        }}
-      />
+        <div>
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Category Name
+          </label>
+          <Input
+            placeholder="Enter category name"
+            value={categoryName}
+            onChange={(e) => setCategoryName(e.target.value)}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+          />
 
-      <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
-        Add ID
-      </label>
-      <Input
-        placeholder="Enter category ID"
-        value={categoryId}
-        onChange={(e) => setCategoryId(e.target.value)}
-        style={{
-          marginBottom: "20px",
-          borderRadius: "4px",
-          border: "1px solid #d9d9d9",
-        }}
-      />
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Add ID
+          </label>
+          <Input
+            placeholder="Enter category ID"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+          />
 
-      {/* <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
+          {/* <label style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}>
         Available Items
       </label>
       <Input
@@ -398,46 +444,51 @@ const QRCodesGenerated = () => {
         }}
       /> */}
 
-      <label
-        style={{
-          fontSize: "14px",
-          fontWeight: "500",
-          marginBottom: "8px",
-          marginRight: "10px",
-        }}
-      >
-        Import a photo
-      </label>
-      <Upload
-        name="photo"
-        listType="picture"
-        showUploadList={false}
-        beforeUpload={() => false}
-        onChange={handleFileChange}
-      >
-        <Button
-          icon={<UploadOutlined />}
-          style={{
-            backgroundColor: "#e6f7ff",
-            color: "#1890ff",
-            borderRadius: "4px",
-            padding: "5px 15px",
-          }}
-        >
-          Click to Upload
-        </Button>
-      </Upload>
+          <label
+            style={{
+              fontSize: "14px",
+              fontWeight: "500",
+              marginBottom: "8px",
+              marginRight: "10px",
+            }}
+          >
+            Import a photo
+          </label>
+          <Upload
+            name="file"
+            listType="picture"
+            showUploadList={false}
+            beforeUpload={() => false}
+            onChange={handleFileChange}
+          >
+            <Button
+              icon={<UploadOutlined />}
+              style={{
+                backgroundColor: "#e6f7ff",
+                color: "#1890ff",
+                borderRadius: "4px",
+                padding: "5px 15px",
+              }}
+            >
+              Click to Upload
+            </Button>
+          </Upload>
 
-      {/* Image Preview */}
-      {imagePreview && (
-        <img
-          src={imagePreview}
-          alt="Preview"
-          style={{ width: "100px", height: "100px", marginTop: "10px", borderRadius: "8px" }}
-        />
-      )}
-    </div>
-  </Modal>
+          {/* Image Preview */}
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              style={{
+                width: "100px",
+                height: "100px",
+                marginTop: "10px",
+                borderRadius: "8px",
+              }}
+            />
+          )}
+        </div>
+      </Modal>
     </div>
   );
 };

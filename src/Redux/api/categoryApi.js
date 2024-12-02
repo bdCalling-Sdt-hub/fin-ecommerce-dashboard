@@ -7,32 +7,33 @@ import { baseApi } from "../baseApi";
 // const accessToken = localStorage.getItem('accessToken');
 // console.log('accessToken admin', accessToken);
 
-const shopApi = baseApi.injectEndpoints({
+const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllProducts: builder.query({
+    getAllCategory: builder.query({
       query: () => ({
-        url: "/products",
+        url: "/categories",
         method: "GET",
         // body: data,
         // headers: {
         //   "content-type": "application/json",
         // },
       }),
-      invalidatesTags: ["user"],
+      providesTags: ["user"],
     }),
-    createProduct: builder.mutation({
+    createCategory: builder.mutation({
       query: (formData) => ({
-        url: "/products/create-product",
+        url: "/categories/create-category",
         method: "POST",
         body: formData,
-        headers: {
-          // "Content-type": "application/json",
-          // Authorization: `Bearer ${accessToken}`,
-        },
-        providesTags: ["product"],
+        // headers: {
+        //   "Content-type": "application/json",
+        //   Authorization: `Bearer ${accessToken}`,
+        // },
+        invalidatesTags: ["product"],
       }),
     }),
   }),
 });
 
-export const { useGetAllProductsQuery, useCreateProductMutation } = shopApi;
+export const { useGetAllCategoryQuery, useCreateCategoryMutation } =
+  categoryApi;

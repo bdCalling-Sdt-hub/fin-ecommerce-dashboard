@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { BarsOutlined, BellOutlined } from "@ant-design/icons";
 import { Badge, Button, ConfigProvider, Dropdown, Grid } from "antd";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
@@ -99,7 +100,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
       ))}
       <Button
         onClick={loadNotifications}
-        style={{background:'#013564', color:"white"}}
+        style={{ background: "#013564", color: "white" }}
         className="w-2/3 mx-auto text-center bg-[#013564] text-white rounded-xl h-10 py-2 font-semibold"
       >
         Load More
@@ -121,7 +122,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
         }`}
       >
         <div className="flex items-center gap-2 text-white ml-4">
-          <p >
+          <p>
             <BarsOutlined
               onClick={() => setCollapsed(!collapsed)}
               className="text-3xl text-black font-semibold"
@@ -145,7 +146,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
                 trigger={["click"]}
                 placement="bottomRight"
                 onOpenChange={handleDropdownVisibleChange}
-                visible={isDropdownVisible} // Control visibility explicitly
+                open={isDropdownVisible} // Control visibility explicitly
               >
                 <Badge count={notificationCount} size="small">
                   <BellOutlined
@@ -165,7 +166,7 @@ const Topbar = ({ collapsed, setCollapsed }) => {
             <img
               src={profileImg}
               alt="profile_pic"
-              style={{ width: "20px", height: "20px",  color:'white' }}
+              style={{ width: "20px", height: "20px", color: "white" }}
               className="rounded text-black"
             />
           </Link>

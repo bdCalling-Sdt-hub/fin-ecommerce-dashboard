@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useMemo } from "react";
-import axios from "axios";
+/* eslint-disable no-unused-vars */
+import { useState, useMemo } from "react";
+
 import {
   ConfigProvider,
   Modal,
@@ -11,8 +12,11 @@ import {
   Select,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
-import { useGetAllProductsQuery } from "../../../Redux/api/shopApi";
+import { SearchOutlined } from "@ant-design/icons";
+import {
+  useCreateProductMutation,
+  useGetAllProductsQuery,
+} from "../../../Redux/api/shopApi";
 
 const Shop = () => {
   const [data, setData] = useState([]);
@@ -31,6 +35,7 @@ const Shop = () => {
 
   const { data: allProducts, isLoading, refetch } = useGetAllProductsQuery();
   console.log("data", allProducts?.data);
+  const [createProduct] = useCreateProductMutation();
 
   // Trigger refetch when the component is mounted
   // useEffect(() => {
@@ -51,21 +56,39 @@ const Shop = () => {
     setSearchText(value);
   };
 
-  const handleCreateProduct = () => {
-    const newProduct = {
-      productName: productName,
-      price: productPrice,
-      category: categoryItem,
-      images: productImages,
-    };
-    console.log("New Product:", newProduct);
-    setIsCreateModalVisible(false);
-    setProductName("");
-    setProductPrice("");
-    setCategoryItem("");
-    setFileList([]);
-    setProductImages([]);
-    setImagePreviews([]);
+  const handleCreateProduct = async () => {
+    // Prepare the FormData object
+    const formData = new FormData();
+
+    // Append the form fields (text data)
+    formData.append("productName", productName);
+    formData.append("price", productPrice);
+    formData.append("category", categoryItem);
+
+    // Append the files (images)
+    if (productImages) {
+      productImages.forEach((file) => {
+        formData.append("files", file); // "files" is the field name expected by the backend
+      });
+    }
+
+    console.log("FormData", formData); // Log the FormData to see its contents
+
+    // Call the createProduct mutation to create a new product
+    try {
+      await createProduct(formData).unwrap();
+      // After successful creation, close the modal and reset form
+      setIsCreateModalVisible(false);
+      setProductName("");
+      setProductPrice("");
+      setCategoryItem("");
+      setFileList([]);
+      setProductImages([]);
+      setImagePreviews([]);
+      refetch(); // Re-fetch the products to get the updated list
+    } catch (error) {
+      console.error("Failed to create product:", error);
+    }
   };
 
   const handleEditProduct = () => {
@@ -276,9 +299,9 @@ const Shop = () => {
         </div>
       </ConfigProvider>
 
-      {/* Create Category Modal */}
+      {/* Create Product Modal */}
       <Modal
-        visible={isCreateModalVisible}
+        open={isCreateModalVisible}
         onCancel={() => setIsCreateModalVisible(false)}
         footer={[
           <Button
@@ -306,12 +329,10 @@ const Shop = () => {
           </Button>,
         ]}
         centered
-        bodyStyle={{
-          padding: "24px",
-          backgroundColor: "#f9fafc",
-        }}
         style={{
           borderRadius: "8px",
+          padding: "24px",
+          backgroundColor: "#f9fafc",
         }}
         width={500}
       >
@@ -446,7 +467,7 @@ const Shop = () => {
       {/* Edit Category Modal */}
 
       <Modal
-        visible={isEditModalVisible}
+        open={isEditModalVisible}
         onCancel={() => setIsEditModalVisible(false)}
         footer={[
           <Button
@@ -474,12 +495,10 @@ const Shop = () => {
           </Button>,
         ]}
         centered
-        bodyStyle={{
-          padding: "24px",
-          backgroundColor: "#f9fafc",
-        }}
         style={{
           borderRadius: "8px",
+          padding: "24px",
+          backgroundColor: "#f9fafc",
         }}
         width={500}
       >
