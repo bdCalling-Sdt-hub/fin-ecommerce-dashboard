@@ -18,18 +18,17 @@ const categoryApi = baseApi.injectEndpoints({
         //   "content-type": "application/json",
         // },
       }),
-      providesTags: ["user"],
+      providesTags: ["category"],
     }),
     createCategory: builder.mutation({
       query: (formData) => ({
         url: "/categories/create-category",
         method: "POST",
         body: formData,
-        // headers: {
-        //   "Content-type": "application/json",
-        //   Authorization: `Bearer ${accessToken}`,
-        // },
-        invalidatesTags: ["product"],
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+        invalidatesTags: ["category"],
       }),
     }),
   }),

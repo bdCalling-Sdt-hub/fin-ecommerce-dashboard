@@ -26,31 +26,24 @@ const QRCodesGenerated = () => {
   const [createCategory] = useCreateCategoryMutation();
 
   const handleCreateCategory = async () => {
-    console.log("id", categoryId);
-    console.log("name", categoryName);
-    console.log("image", categoryImage);
-
-    // Check if the image is required but not selected
     if (!categoryImage) {
       alert("Image is required");
-      return; // Prevent form submission if no image is selected
+      return;
     }
 
+    console.log({ categoryImage });
+
     const formData = new FormData();
-    let data = {
+    const payload = {
       categoryName,
       addId: categoryId,
     };
 
-    data = JSON.stringify(data);
-    formData.append("data", data);
+    formData.append("data", JSON.stringify(payload)); // Correctly stringify the JSON object
+    formData.append("file", categoryImage); // Append the file
 
-    // Append the image file if available
-    if (categoryImage) {
-      formData.append("file", categoryImage);
-    }
-
-    console.log("Form Data:", formData); // Log form data to check its contents
+    console.log(payload); // Debug to verify the form data contents
+    console.log(formData); // Debug to verify the form data contents
 
     try {
       const res = await createCategory(formData).unwrap();
@@ -58,11 +51,29 @@ const QRCodesGenerated = () => {
       setIsCreateModalVisible(false);
       setCategoryName("");
       setCategoryId("");
-      setAvailableItems("");
       setCategoryImage(null);
       setImagePreview(null);
+      refetch(); // Refresh the category list
     } catch (error) {
       console.error("Failed to create category:", error);
+    }
+  };
+
+  const handleFileChange = (info) => {
+    console.log({ info });
+    const file = info.file;
+    // const file1 = info.fileList[0];
+
+    console.log({ file }); // Extract the file
+    if (file) {
+      const reader = new FileReader();
+      // reader.onloadend = () => {
+      reader.onload = () => {
+        // Only trigger when the reading is finished
+        setImagePreview(reader.result); // Set the base64 image
+      };
+      reader.readAsDataURL(file); // Convert to base64
+      setCategoryImage(file); // Store the file
     }
   };
 
@@ -92,23 +103,6 @@ const QRCodesGenerated = () => {
     }
 
     setIsEditModalVisible(true);
-  };
-
-  const handleFileChange = (info) => {
-    console.log({ info });
-    const file = info.file;
-    const file1 = info.fileList[0];
-
-    console.log({ file }); // Extract the file
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Only trigger when the reading is finished
-        setImagePreview(reader.result); // Set the base64 image
-      };
-      reader.readAsDataURL(file); // Convert to base64
-      setCategoryImage(file); // Store the file
-    }
   };
 
   return (
@@ -172,7 +166,7 @@ const QRCodesGenerated = () => {
                 ),
                 responsive: ["sm"],
               },
-            
+
               {
                 title: "Category ID",
                 dataIndex: "addId",
@@ -182,7 +176,7 @@ const QRCodesGenerated = () => {
                 title: "Actions",
                 responsive: ["sm"],
                 render: (record) => (
-                  <NavLink to={`/qr-code-generated/${record.serialId}`}>
+                  <NavLink to={`/qr-code-generated/${record._id}`}>
                     {" "}
                     <button className="btn bg-blue-500 text-white px-5 py-2 rounded">
                       Manage
@@ -310,7 +304,7 @@ const QRCodesGenerated = () => {
                 Import a photo
               </label>
               <Upload
-                name="photo"
+                name="file"
                 listType="picture"
                 showUploadList={false}
                 beforeUpload={() => false}
@@ -349,7 +343,7 @@ const QRCodesGenerated = () => {
 
       {/* Edit Category Modal */}
       <Modal
-        visible={isEditModalVisible}
+        open={isEditModalVisible}
         onCancel={() => setIsEditModalVisible(false)}
         footer={[
           <Button
