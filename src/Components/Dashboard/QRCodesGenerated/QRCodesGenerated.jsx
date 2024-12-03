@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { ConfigProvider, Modal, Table, Input, Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -8,11 +9,11 @@ import {
 } from "../../../Redux/api/categoryApi";
 
 const QRCodesGenerated = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [data, setData] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState(null); // To store the selected record
+  // const [currentRecord, setCurrentRecord] = useState(null);
 
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -89,21 +90,21 @@ const QRCodesGenerated = () => {
   };
 
   // Show Edit Modal and prefill the form with the clicked record data
-  const showEditModal = (record) => {
-    // console.log('record', record);
-    setCurrentRecord(record);
-    setCategoryName(record.name);
-    setCategoryId(record.categoryID);
-    setAvailableItems(record.available);
-    if (record.img) {
-      // If the record has an image, set it as the preview
-      setImagePreview(record.img);
-    } else {
-      setImagePreview(null); // If no image, clear the preview
-    }
+  // const showEditModal = (record) => {
+  //   // console.log('record', record);
+  //   setCurrentRecord(record);
+  //   setCategoryName(record.name);
+  //   setCategoryId(record.categoryID);
+  //   setAvailableItems(record.available);
+  //   if (record.img) {
+  //     // If the record has an image, set it as the preview
+  //     setImagePreview(record.img);
+  //   } else {
+  //     setImagePreview(null); // If no image, clear the preview
+  //   }
 
-    setIsEditModalVisible(true);
-  };
+  //   setIsEditModalVisible(true);
+  // };
 
   return (
     <div>

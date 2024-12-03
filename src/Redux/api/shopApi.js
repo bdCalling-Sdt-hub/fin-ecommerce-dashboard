@@ -18,7 +18,7 @@ const shopApi = baseApi.injectEndpoints({
         //   "content-type": "application/json",
         // },
       }),
-      invalidatesTags: ["user"],
+      providesTags: ["products"],
     }),
     createProduct: builder.mutation({
       query: (formData) => ({
@@ -26,10 +26,9 @@ const shopApi = baseApi.injectEndpoints({
         method: "POST",
         body: formData,
         headers: {
-          // "Content-type": "application/json",
-          // Authorization: `Bearer ${accessToken}`,
+          "Content-type": "multipart/form-data",
         },
-        providesTags: ["product"],
+        invalidatesTags: ["products"],
       }),
     }),
   }),

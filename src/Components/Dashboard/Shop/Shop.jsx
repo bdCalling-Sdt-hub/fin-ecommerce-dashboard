@@ -17,6 +17,7 @@ import {
   useCreateProductMutation,
   useGetAllProductsQuery,
 } from "../../../Redux/api/shopApi";
+import TextArea from "antd/es/input/TextArea";
 
 const Shop = () => {
   const [data, setData] = useState([]);
@@ -27,7 +28,9 @@ const Shop = () => {
   const [currentRecord, setCurrentRecord] = useState(null);
 
   const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState("");
+  const [productPrice, setProductPrice] = useState();
+  const [productDescription, setProductDescription] = useState("");
+  const [productQuantity, setProductQuantity] = useState();
   const [categoryItem, setCategoryItem] = useState("");
   const [productImages, setProductImages] = useState(null);
   const [fileList, setFileList] = useState([]);
@@ -57,34 +60,39 @@ const Shop = () => {
   };
 
   const handleCreateProduct = async () => {
+    if (!productImages) {
+      alert("Image is required");
+      return;
+    }
     // Prepare the FormData object
     const formData = new FormData();
 
-    // Append the form fields (text data)
-    formData.append("productName", productName);
-    formData.append("price", productPrice);
-    formData.append("category", categoryItem);
+    const payload = {
+      productName,
+      price: productPrice,
+      category: categoryItem,
+      noOfProducts: productQuantity,
+      description: productDescription,
+    };
 
-    // Append the files (images)
-    if (productImages) {
-      productImages.forEach((file) => {
-        formData.append("files", file); // "files" is the field name expected by the backend
-      });
-    }
+    formData.append("data", JSON.stringify(payload)); // Correctly stringify the JSON object
+    formData.append("files", productImages); // Append the file
 
-    console.log("FormData", formData); // Log the FormData to see its contents
-
+    console.log(payload); // Debug to verify the form data contents
+    console.log(formData);
+    console.log({ productImages });
     // Call the createProduct mutation to create a new product
     try {
-      await createProduct(formData).unwrap();
+      const res = await createProduct(formData).unwrap();
+      console.log("Product created:", res);
       // After successful creation, close the modal and reset form
       setIsCreateModalVisible(false);
       setProductName("");
       setProductPrice("");
       setCategoryItem("");
       setFileList([]);
-      setProductImages([]);
-      setImagePreviews([]);
+      setProductImages(null);
+      setImagePreviews(null);
       refetch(); // Re-fetch the products to get the updated list
     } catch (error) {
       console.error("Failed to create product:", error);
@@ -236,6 +244,11 @@ const Shop = () => {
       >
         <div className="w-full overflow-x-auto border-2 border-none ">
           <Table
+            dataSource={filteredData}
+            loading={isLoading}
+            pagination={{ pageSize: 5 }}
+            className="user-table"
+            scroll={{ x: true }}
             columns={[
               {
                 title: "S.ID",
@@ -290,11 +303,6 @@ const Shop = () => {
                 render: () => <Switch defaultChecked onChange={onChange} />,
               },
             ]}
-            dataSource={filteredData}
-            loading={isLoading}
-            pagination={{ pageSize: 5 }}
-            className="user-table"
-            scroll={{ x: true }}
           />
         </div>
       </ConfigProvider>
@@ -376,7 +384,42 @@ const Shop = () => {
             placeholder="Enter product price"
             value={productPrice}
             type="number"
-            onChange={(e) => setProductPrice(e.target.value)}
+            onChange={(e) => setProductPrice(Number(e.target.value))}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+            }}
+          />
+
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Description
+          </label>
+          <TextArea
+            placeholder="Enter product description"
+            value={productDescription}
+            type="text"
+            onChange={(e) => setProductDescription(e.target.value)}
+            style={{
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #d9d9d9",
+              height: "100px",
+            }}
+          />
+
+          <label
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
+          >
+            Product Quantity
+          </label>
+          <Input
+            placeholder="Enter no. of products"
+            value={productQuantity}
+            type="number"
+            onChange={(e) => setProductQuantity(Number(e.target.value))}
             style={{
               marginBottom: "20px",
               borderRadius: "4px",
