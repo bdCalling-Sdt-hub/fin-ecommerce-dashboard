@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 import {
   ConfigProvider,
@@ -18,9 +18,10 @@ import {
   useGetAllProductsQuery,
 } from "../../../Redux/api/shopApi";
 import TextArea from "antd/es/input/TextArea";
+import { useGetAllCategoryQuery } from "../../../Redux/api/categoryApi";
 
 const Shop = () => {
-  const [data, setData] = useState([]);
+  const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
@@ -37,7 +38,10 @@ const Shop = () => {
   const [imagePreviews, setImagePreviews] = useState(null);
 
   const { data: allProducts, isLoading, refetch } = useGetAllProductsQuery();
-  console.log("data", allProducts?.data);
+  console.log("allProducts", allProducts?.data);
+  const { data: allCategory } = useGetAllCategoryQuery();
+  console.log("allCategory", allCategory?.data);
+
   const [createProduct] = useCreateProductMutation();
 
   // Trigger refetch when the component is mounted
@@ -46,7 +50,50 @@ const Shop = () => {
   // }, [refetch]);
 
   // Use the fetched data or set to an empty array if undefined
-  const productData = allProducts?.data || [];
+
+  const allProductData = allProducts?.data || [];
+
+  // useEffect to map through allProducts.data and set product data
+  useEffect(() => {
+    if (allProducts?.data) {
+      const mappedData = allProducts?.data.map((product) => {
+        const firstProduct = product.firstProduct || {};
+        return {
+          productId: firstProduct.productId || product.productId,
+          productName: firstProduct.productName || product.productName,
+          price: firstProduct.price || product.price,
+          description: firstProduct.description || product.description,
+          imageUlrs: firstProduct.imageUlrs || product.imageUlrs,
+          category: firstProduct.category || product.category,
+          productCount: firstProduct.productCount || product.productCount,
+          createdAt: firstProduct.createdAt || product.createdAt,
+          updatedAt: firstProduct.updatedAt || product.updatedAt,
+          qrCodeUrl: firstProduct.qrCodeUrl || product.qrCodeUrl,
+          isDeleted:
+            firstProduct.isDeleted !== undefined
+              ? firstProduct.isDeleted
+              : product.isDeleted !== undefined
+              ? product.isDeleted
+              : false, // Default to false if undefined
+          isHidden:
+            firstProduct.isHidden !== undefined
+              ? firstProduct.isHidden
+              : product.isHidden !== undefined
+              ? product.isHidden
+              : false, // Default to false if undefined
+          isSold:
+            firstProduct.isSold !== undefined
+              ? firstProduct.isSold
+              : product.isSold !== undefined
+              ? product.isSold
+              : false, // Default to false if undefined
+          addId: firstProduct.addId || product.addId,
+        };
+      });
+      setProductData(mappedData); // Set the mapped data into state
+    }
+  }, [allProducts?.data]); // This will run whenever allProducts.data changes
+  console.log("first", productData);
 
   const filteredData = useMemo(() => {
     if (!searchText) return productData;
@@ -54,6 +101,8 @@ const Shop = () => {
       item.productName.toLowerCase().includes(searchText.toLowerCase())
     );
   }, [productData, searchText]);
+
+  console.log("Filtered Data:", filteredData);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -64,7 +113,7 @@ const Shop = () => {
       alert("Image is required");
       return;
     }
-    // Prepare the FormData object
+
     const formData = new FormData();
 
     const payload = {
@@ -75,28 +124,58 @@ const Shop = () => {
       description: productDescription,
     };
 
-    formData.append("data", JSON.stringify(payload)); // Correctly stringify the JSON object
-    formData.append("files", productImages); // Append the file
+    // Append the data and the product images to the FormData
+    formData.append("data", JSON.stringify(payload)); // Stringify the payload
+    productImages.forEach((file) => {
+      formData.append("files", file); // Append multiple files
+    });
 
-    console.log(payload); // Debug to verify the form data contents
-    console.log(formData);
-    console.log({ productImages });
-    // Call the createProduct mutation to create a new product
+    // Log form data for debugging
+    for (let pair of formData.entries()) {
+      console.log(pair);
+    }
+
     try {
       const res = await createProduct(formData).unwrap();
       console.log("Product created:", res);
-      // After successful creation, close the modal and reset form
-      setIsCreateModalVisible(false);
-      setProductName("");
-      setProductPrice("");
-      setCategoryItem("");
-      setFileList([]);
-      setProductImages(null);
-      setImagePreviews(null);
-      refetch(); // Re-fetch the products to get the updated list
+      setIsCreateModalVisible(false); // Close the modal after creation
+      setProductName(""); // Reset product name
+      setProductDescription(""); // Reset description
+      setProductPrice(""); // Reset price
+      setProductImages(null); // Reset product images
+      setImagePreviews([]); // Reset image previews
+      refetch(); // Refresh the product list
     } catch (error) {
       console.error("Failed to create product:", error);
     }
+  };
+
+  // File change handler for uploading new images or modifying existing ones
+  const handleFileChange = (info) => {
+    let files = [...info.fileList].slice(0, 5); // Limit to 5 files
+
+    setFileList(files); // Update fileList for display
+    console.log(files);
+
+    // Handle both new file uploads and existing image URLs
+    const rawFiles = files.map((file) => file.originFileObj || file.url);
+    setProductImages(rawFiles); // Store the raw files or URLs for later submission
+
+    // Generate base64 previews for new files and retain URLs for existing ones
+    const previews = files.map((file) => {
+      const reader = new FileReader();
+      return new Promise((resolve) => {
+        if (file.originFileObj) {
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(file.originFileObj);
+        } else {
+          resolve(file.url); // Use URL directly for existing images
+        }
+      });
+    });
+
+    // Update image previews state
+    Promise.all(previews).then((images) => setImagePreviews(images));
   };
 
   const handleEditProduct = () => {
@@ -131,49 +210,22 @@ const Shop = () => {
     setIsEditModalVisible(true); // Show the modal
   };
 
-  // File change handler for uploading new images or modifying existing ones
-  const handleFileChange = (info) => {
-    let files = [...info.fileList].slice(0, 5); // Limit to 5 files
-
-    setFileList(files); // Update fileList for display
-
-    // Handle both new file uploads and existing image URLs
-    const rawFiles = files.map((file) => file.originFileObj || file.url);
-    setProductImages(rawFiles); // Store the raw files or URLs for later submission
-
-    // Generate base64 previews for new files and retain URLs for existing ones
-    const previews = files.map((file) => {
-      const reader = new FileReader();
-      return new Promise((resolve) => {
-        if (file.originFileObj) {
-          reader.onloadend = () => resolve(reader.result);
-          reader.readAsDataURL(file.originFileObj);
-        } else {
-          resolve(file.url); // Use URL directly for existing images
-        }
-      });
-    });
-
-    // Update image previews state
-    Promise.all(previews).then((images) => setImagePreviews(images));
-  };
-
   console.log("image previews", imagePreviews);
 
-  const categorys = [
-    {
-      id: 1,
-      name: "category-1",
-    },
-    {
-      id: 2,
-      name: "category-2",
-    },
-    {
-      id: 3,
-      name: "category-3",
-    },
-  ];
+  // const categorys = [
+  //   {
+  //     id: 1,
+  //     name: "category-1",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "category-2",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "category-3",
+  //   },
+  // ];
 
   const onChange = (checked) => {
     console.log(`switch to ${checked}`);
@@ -252,38 +304,28 @@ const Shop = () => {
             columns={[
               {
                 title: "S.ID",
-                dataIndex: "index",
-                render: (text, record, index) => <span>{index + 1}</span>,
+                dataIndex: "productId",
+                render: (text, record, index) => (
+                  <div>
+                    <img
+                      src={record.imageUlrs[0]}
+                      alt={record.name}
+                      className="size-12 rounded-full"
+                    />
+                  </div>
+                ),
                 responsive: ["md"],
               },
               {
                 title: "Name",
                 dataIndex: "productName",
                 render: (text, record) => (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      src={record?.imageUlrs[0]}
-                      alt={record.productName}
-                      style={{
-                        width: 50,
-                        height: 50,
-                        borderRadius: "50%",
-                        marginRight: 8,
-                      }}
-                    />
-                    {/* Display the product name after the image */}
-                    <span
-                      style={{
-                        color: "#3399ff",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                        fontSize: "17px",
-                      }}
-                      onClick={() => showEditModal(record)}
-                    >
-                      {text}
-                    </span>
-                  </div>
+                  <span
+                    className="text-[#3B82F6] cursor-pointer text-lg font-semibold"
+                    onClick={() => showEditModal(record)}
+                  >
+                    {text}
+                  </span>
                 ),
                 responsive: ["sm"],
               },
@@ -294,7 +336,7 @@ const Shop = () => {
               },
               {
                 title: "Category",
-                dataIndex: "category",
+                dataIndex: "addId",
                 responsive: ["sm"],
               },
               {
@@ -442,10 +484,11 @@ const Shop = () => {
               marginBottom: "20px",
               borderRadius: "4px",
               border: "1px solid #d9d9d9",
+              color: "black",
             }}
-            options={categorys.map((item) => ({
-              value: item.name, // Assuming `name` is the unique identifier
-              label: item.name, // Display name of the category
+            options={allCategory?.data.map((item) => ({
+              value: item.id, // Assuming `name` is the unique identifier
+              label: item.categoryName, // Display name of the category
             }))}
           />
 
@@ -607,7 +650,7 @@ const Shop = () => {
               borderRadius: "4px",
               border: "1px solid #d9d9d9",
             }}
-            options={categorys.map((item) => ({
+            options={allCategory?.data.map((item) => ({
               value: item.name,
               label: item.name,
             }))}

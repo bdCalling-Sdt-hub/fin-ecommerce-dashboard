@@ -134,43 +134,38 @@ const QRCodesGenerated = () => {
             // dataSource={data}
             columns={[
               {
-                title: "S.ID",
+                title: "Image",
                 dataIndex: "index",
-                render: (text, record, index) => <span>{index + 1}</span>,
+                render: (text, record, index) => (
+                  <div>
+                    <img
+                      src={record.imageUrl}
+                      alt={record.name}
+                      className="size-12 rounded-full"
+                    />
+                  </div>
+                ),
                 responsive: ["md"],
               },
               {
                 title: "Category Name",
                 dataIndex: "categoryName",
                 render: (text, record) => (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <img
-                      src={record.imageUrl}
-                      alt={record.name}
-                      style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: "50%",
-                        marginRight: 8,
-                      }}
-                    />
-                    <span
-                      style={{
-                        textDecoration: "underline",
-                        color: "#3B82F6",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {text}
-                    </span>
-                  </div>
+                  <span className="text-[#3B82F6] cursor-pointer text-lg font-semibold">
+                    {record.categoryName} ({record.addId.toUpperCase()})
+                  </span>
                 ),
                 responsive: ["sm"],
               },
 
               {
-                title: "Category ID",
-                dataIndex: "addId",
+                title: "Available",
+                dataIndex: "available",
+                responsive: ["sm"],
+              },
+              {
+                title: "Attributed",
+                dataIndex: "attributed",
                 responsive: ["sm"],
               },
               {

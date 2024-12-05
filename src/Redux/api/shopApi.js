@@ -11,7 +11,8 @@ const shopApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllProducts: builder.query({
       query: () => ({
-        url: "/products",
+        // url: "/products",
+        url: "/products/unique/",
         method: "GET",
         // body: data,
         // headers: {
