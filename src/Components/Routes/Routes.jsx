@@ -29,9 +29,9 @@ import Shop from "../Dashboard/Shop/Shop";
 import OrdersReceived from "../Dashboard/OrdersReceived/OrdersReceived";
 import PremiumSubscription from "../Dashboard/PremiumSubscription/PremiumSubscription";
 import ScanStatistics from "../Dashboard/ScanStatistics/ScanStatistics";
-import OrdersDeliveryDetails from "../Dashboard/OrdersReceived/ordersDeliveryDetails";
 import QRCodeGeneratedDetails from "../Dashboard/QRCodesGenerated/QRCodeGeneratedDetails";
 import ProtectedRoute from "../ProtectedRoute";
+import OrderDetails from "../Dashboard/OrdersReceived/OrdersDetails";
 
 const router = createBrowserRouter([
   {
@@ -100,7 +100,7 @@ const router = createBrowserRouter([
           },
           {
             path: "orders-received-details/:id",
-            element: <OrdersDeliveryDetails />,
+            element: <OrderDetails />,
           },
           {
             path: "premium-subscription",

@@ -15,6 +15,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { SearchOutlined } from "@ant-design/icons";
 import {
   useCreateProductMutation,
+  useEditProductMutation,
   useGetAllProductsQuery,
 } from "../../../Redux/api/shopApi";
 import TextArea from "antd/es/input/TextArea";
@@ -43,6 +44,7 @@ const Shop = () => {
   console.log("allCategory", allCategory?.data);
 
   const [createProduct] = useCreateProductMutation();
+  const [editProduct] = useEditProductMutation();
 
   // Trigger refetch when the component is mounted
   // useEffect(() => {

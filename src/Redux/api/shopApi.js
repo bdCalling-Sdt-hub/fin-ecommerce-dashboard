@@ -32,7 +32,23 @@ const shopApi = baseApi.injectEndpoints({
         invalidatesTags: ["products"],
       }),
     }),
+    editProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/products/${id}`,
+        method: "PATCH",
+        body: data,
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `Bearer ${accessToken}`,
+        // },
+        invalidatesTags: ["editProduct"],
+      }),
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery, useCreateProductMutation } = shopApi;
+export const {
+  useGetAllProductsQuery,
+  useCreateProductMutation,
+  useEditProductMutation,
+} = shopApi;

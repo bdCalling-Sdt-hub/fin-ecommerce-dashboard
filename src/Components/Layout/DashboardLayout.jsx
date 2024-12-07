@@ -2,7 +2,7 @@ import Topbar from "../Shared/Topbar";
 import logo from "/images/4 1.png";
 import dashboardLogo from "../../../public/images/dashboard-logo/dashboard.svg";
 import users from "../../../public/images/dashboard-logo/users.svg";
-import user from "../../../public/images/dashboard-logo/user.svg";
+// import user from "../../../public/images/dashboard-logo/user.svg";
 import setting from "../../../public/images/dashboard-logo/Setting.svg";
 import logout from "../../../public/images/dashboard-logo/logout.svg";
 import QRCodeGenerated from "../../../public/images/dashboard-logo/Group 75.svg";
@@ -373,32 +373,32 @@ const DashboardLayout = () => {
                     },
                   ],
                 },
-                {
-                  key: "dashboard/create-admin",
-                  icon: (
-                    <img
-                      src={user}
-                      alt="dashboard/create-admin"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("dashboard/create-admin")
-                          ? "active-icon "
-                          : " "
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="dashboard/create-admin"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "active-menu-item font-semibold"
-                          : " font-semibold"
-                      }
-                    >
-                      Create New Admin
-                    </NavLink>
-                  ),
-                },
+                // {
+                //   key: "dashboard/create-admin",
+                //   icon: (
+                //     <img
+                //       src={user}
+                //       alt="dashboard/create-admin"
+                //       className={`h-5 menu-icon ${
+                //         location.pathname.includes("dashboard/create-admin")
+                //           ? "active-icon "
+                //           : " "
+                //       }`}
+                //     />
+                //   ),
+                //   label: (
+                //     <NavLink
+                //       to="dashboard/create-admin"
+                //       className={({ isActive }) =>
+                //         isActive
+                //           ? "active-menu-item font-semibold"
+                //           : " font-semibold"
+                //       }
+                //     >
+                //       Create New Admin
+                //     </NavLink>
+                //   ),
+                // },
                 {
                   key: "logout",
                   icon: (
