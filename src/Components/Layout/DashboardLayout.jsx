@@ -226,13 +226,13 @@ const DashboardLayout = () => {
                   ),
                 },
                 {
-                  key: "premium-subscription",
+                  key: "subscriptions",
                   icon: (
                     <img
                       src={premiumSubscription}
-                      alt="premium-subscription"
+                      alt="subscriptions"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("premium-subscription")
+                        location.pathname.includes("subscriptions")
                           ? "active-icon"
                           : ""
                       }`}
@@ -240,14 +240,14 @@ const DashboardLayout = () => {
                   ),
                   label: (
                     <NavLink
-                      to="premium-subscription"
+                      to="subscriptions"
                       className={({ isActive }) =>
                         isActive
                           ? "active-menu-item font-semibold"
                           : " font-semibold"
                       }
                     >
-                      Premium Subscription
+                      Subscriptions
                     </NavLink>
                   ),
                 },
@@ -277,7 +277,32 @@ const DashboardLayout = () => {
                     </NavLink>
                   ),
                 },
-
+                {
+                  key: "premium-subscription",
+                  icon: (
+                    <img
+                      src={premiumSubscription}
+                      alt="premium-subscription"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("premium-subscription")
+                          ? "active-icon"
+                          : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="premium-subscription"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
+                      }
+                    >
+                      Premium Subscription
+                    </NavLink>
+                  ),
+                },
                 {
                   key: "settings",
                   icon: (

@@ -32,6 +32,7 @@ import ScanStatistics from "../Dashboard/ScanStatistics/ScanStatistics";
 import QRCodeGeneratedDetails from "../Dashboard/QRCodesGenerated/QRCodeGeneratedDetails";
 import ProtectedRoute from "../ProtectedRoute";
 import OrderDetails from "../Dashboard/OrdersReceived/OrdersDetails";
+import Subscription from "../Dashboard/Subscription";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
           {
             path: "scan-statistics",
             element: <ScanStatistics />,
+          },
+          {
+            path: "subscriptions",
+            element: <Subscription />,
           },
           {
             path: "profile",

@@ -135,17 +135,17 @@ const QRCodesGenerated = () => {
             columns={[
               {
                 title: "Image",
-                dataIndex: "index",
+                dataIndex: "imageUrl",
                 render: (text, record, index) => (
                   <div>
                     <img
-                      src={record.imageUrl}
+                      src={`http://192.168.12.235:8008/${record.imageUrl}`}
                       alt={record.name}
                       className="size-12 rounded-full"
                     />
                   </div>
                 ),
-                responsive: ["md"],
+                responsive: ["md"], // Visible on medium screen sizes and above
               },
               {
                 title: "Category Name",
