@@ -52,7 +52,7 @@ const DashboardLayout = () => {
     <div className="h-screen">
       <Layout className="min-h-[100vh]">
         <Sider
-          width={200}
+          width={240}
           theme="light"
           trigger={null}
           collapsible
