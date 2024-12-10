@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useState, useEffect } from "react";
 // import profileImg from "../../../public/images/profile.svg";
 import profileImg from "../../../public/images/user.svg";
-import { useGetNotificationsQuery } from "../../Redux/api/dashboardApi";
+// import { useGetNotificationsQuery } from "../../Redux/api/dashboardApi";
 
 const { useBreakpoint } = Grid;
 
@@ -18,11 +18,11 @@ const Topbar = ({ collapsed, setCollapsed }) => {
   const screens = useBreakpoint();
 
   // Fetch notifications from the API
-  const { data: notificationApiData } = useGetNotificationsQuery();
-  const notifications = notificationApiData?.data || []; // Use API data or an empty array if not available
+  // const { data: notificationApiData } = useGetNotificationsQuery();
+  // const notifications = notificationApiData?.data || []; 
   // const notificationCount = notifications.length;
 
-  console.log(notifications);
+  // console.log(notifications);
 
   // Function to handle responsive collapse based on screen size
   useEffect(() => {

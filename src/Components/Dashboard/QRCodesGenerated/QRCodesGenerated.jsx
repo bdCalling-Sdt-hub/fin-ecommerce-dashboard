@@ -7,6 +7,7 @@ import {
   useCreateCategoryMutation,
   useGetAllCategoryQuery,
 } from "../../../Redux/api/categoryApi";
+import { toast } from "sonner";
 
 const QRCodesGenerated = () => {
   // const [data, setData] = useState([]);
@@ -54,6 +55,7 @@ const QRCodesGenerated = () => {
       setCategoryId("");
       setCategoryImage(null);
       setImagePreview(null);
+      toast.success("Category Added Succesfully");
       refetch(); // Refresh the category list
     } catch (error) {
       console.error("Failed to create category:", error);

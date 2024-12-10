@@ -2,13 +2,18 @@ import UserTable from "../Tables/UserTable";
 import { InfoCard } from "../Chart/DashboardChart";
 import { NavLink } from "react-router-dom";
 import { useAllUsersQuery } from "../../Redux/api/usersApi";
+import { useGetAllProductsQuery } from "../../Redux/api/shopApi";
 
 const Dashboard = () => {
   const { data: allUser } = useAllUsersQuery();
+  const { data: allProducts } = useGetAllProductsQuery();
 
   console.log(allUser?.data);
 
+  console.log("allProducts", allProducts?.data);
+
   const userCount = allUser?.data.length;
+  const productCount = allProducts?.data.length;
   console.log(userCount);
   // const onGoingTasks = Array.isArray(tasks?.data) ? tasks?.data?.filter(task => task.taskStatus === "onGoing") : [];
   // const {data:workers} = useGetAllWorkerQuery();
@@ -33,7 +38,11 @@ const Dashboard = () => {
         {/* Adjusting the layout for better responsiveness */}
         <div className="flex items-center gap-10">
           <InfoCard title="Users" value={userCount} color="bg-blue-400" />
-          <InfoCard title="Products" value="12" color="bg-purple-400" />
+          <InfoCard
+            title="Products"
+            value={productCount}
+            color="bg-purple-400"
+          />
           <InfoCard title="Orders Received" value="15" color="bg-green-400" />
           <InfoCard
             title="Premium Subscribers"

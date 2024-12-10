@@ -10,16 +10,18 @@ import {
   Upload,
   Switch,
   Select,
+  InputNumber,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { SearchOutlined } from "@ant-design/icons";
 import {
   useCreateProductMutation,
   useEditProductMutation,
-  useGetAllProductsQuery,
+  useGetUniqueProductsQuery,
 } from "../../../Redux/api/shopApi";
 import TextArea from "antd/es/input/TextArea";
 import { useGetAllCategoryQuery } from "../../../Redux/api/categoryApi";
+import { toast } from "sonner";
 
 const Shop = () => {
   const [productData, setProductData] = useState([]);
@@ -28,6 +30,7 @@ const Shop = () => {
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState();
@@ -38,7 +41,7 @@ const Shop = () => {
   const [fileList, setFileList] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(null);
 
-  const { data: allProducts, isLoading, refetch } = useGetAllProductsQuery();
+  const { data: allProducts, isLoading, refetch } = useGetUniqueProductsQuery();
   console.log("allProducts", allProducts?.data);
   const { data: allCategory } = useGetAllCategoryQuery();
   console.log("allCategory", allCategory?.data);
@@ -46,58 +49,32 @@ const Shop = () => {
   const [createProduct] = useCreateProductMutation();
   const [editProduct] = useEditProductMutation();
 
-  // Trigger refetch when the component is mounted
-  // useEffect(() => {
-  //   refetch();
-  // }, [refetch]);
-
-  // Use the fetched data or set to an empty array if undefined
-
-  const allProductData = allProducts?.data || [];
-
-  console.log("all", allProductData);
-
-  // useEffect to map through allProducts.data and set product data
   useEffect(() => {
     if (allProducts?.data) {
       const mappedData = allProducts?.data.map((product) => {
-        const firstProduct = product.firstProduct || {};
+        // const firstProduct = product.firstProduct || {};
         return {
-          productId: firstProduct.productId || product.productId || "",
-          productName: firstProduct.productName || product.productName || "",
-          price: firstProduct.price || product.price || "",
-          description: firstProduct.description || product.description || "",
-          imageUlrs: firstProduct.imageUlrs || product.imageUlrs || "",
-          category: firstProduct.category || product.category || "",
-          productCount: firstProduct.productCount || product.productCount || "",
-          createdAt: firstProduct.createdAt || product.createdAt || "",
-          updatedAt: firstProduct.updatedAt || product.updatedAt || "",
-          qrCodeUrl: firstProduct.qrCodeUrl || product.qrCodeUrl || "",
+          productId: product._id || "",
+          productName: product.name || "",
+          price: product.price || "",
+          description: product.description || "",
+          imageUlrs: product.images[0],
+          category: product.categoryId || "",
+          productCount: product.productCount || "",
+          createdAt: product.createdAt || "",
+          updatedAt: product.updatedAt || "",
+          qrCodeUrl: product.qrCodeUrl || "",
           isDeleted:
-            firstProduct.isDeleted !== undefined
-              ? firstProduct.isDeleted
-              : product.isDeleted !== undefined
-              ? product.isDeleted
-              : false, // Default to false if undefined
-          isHidden:
-            firstProduct.isHidden !== undefined
-              ? firstProduct.isHidden
-              : product.isHidden !== undefined
-              ? product.isHidden
-              : false, // Default to false if undefined
-          isSold:
-            firstProduct.isSold !== undefined
-              ? firstProduct.isSold
-              : product.isSold !== undefined
-              ? product.isSold
-              : false, // Default to false if undefined
-          addId: firstProduct.addId || product.addId || "",
+            product.isDeleted !== undefined ? product.isDeleted : false, // Default to false if undefined
+          isHidden: product.isHidden !== undefined ? product.isHidden : false, // Default to false if undefined
+          isSold: product.isSold !== undefined ? product.isSold : false, // Default to false if undefined
+          addId: product.addId || "",
         };
       });
-      setProductData(mappedData); // Set the mapped data into state
+      setProductData(mappedData);
     }
   }, [allProducts?.data]); // This will run whenever allProducts.data changes
-  console.log("first", productData);
+  console.log("productData", productData);
 
   const filteredData = useMemo(() => {
     if (!searchText) return productData;
@@ -121,20 +98,19 @@ const Shop = () => {
     const formData = new FormData();
 
     const payload = {
-      productName,
+      name: productName,
       price: productPrice,
-      category: categoryItem,
-      noOfProducts: productQuantity,
+      categoryId: categoryItem,
+      quantity: productQuantity,
       description: productDescription,
     };
 
     // Append the data and the product images to the FormData
-    formData.append("data", JSON.stringify(payload)); // Stringify the payload
+    formData.append("data", JSON.stringify(payload));
     productImages.forEach((file) => {
-      formData.append("files", file); // Append multiple files
+      formData.append("files", file);
     });
 
-    // Log form data for debugging
     for (let pair of formData.entries()) {
       console.log(pair);
     }
@@ -148,24 +124,22 @@ const Shop = () => {
       setProductPrice(""); // Reset price
       setProductImages(null); // Reset product images
       setImagePreviews([]); // Reset image previews
+      toast.success("Product Added Succesfully");
       refetch(); // Refresh the product list
     } catch (error) {
       console.error("Failed to create product:", error);
     }
   };
 
-  // File change handler for uploading new images or modifying existing ones
   const handleFileChange = (info) => {
     let files = [...info.fileList].slice(0, 5); // Limit to 5 files
 
     setFileList(files); // Update fileList for display
     console.log(files);
 
-    // Handle both new file uploads and existing image URLs
     const rawFiles = files.map((file) => file.originFileObj || file.url);
-    setProductImages(rawFiles); // Store the raw files or URLs for later submission
+    setProductImages(rawFiles);
 
-    // Generate base64 previews for new files and retain URLs for existing ones
     const previews = files.map((file) => {
       const reader = new FileReader();
       return new Promise((resolve) => {
@@ -178,29 +152,75 @@ const Shop = () => {
       });
     });
 
-    // Update image previews state
     Promise.all(previews).then((images) => setImagePreviews(images));
   };
 
-  const handleEditProduct = () => {
-    const editedProduct = {
-      productName: productName,
-      price: productPrice,
-      category: categoryItem,
-      images: productImages, // The array of image files
+  const handleEditProduct = async () => {
+    if (!selectedProduct) {
+      alert("No product selected to edit");
+      return;
+    }
+
+    if (!productImages && !imagePreviews.length) {
+      alert("Image is required");
+      return;
+    }
+
+    console.log("Editing Product:", selectedProduct);
+
+    const formData = new FormData();
+
+    // Construct the updated product details
+    const updatedProduct = {
+      name: productName || selectedProduct.name,
+      price: productPrice || selectedProduct.price,
+      categoryId: categoryItem || selectedProduct.categoryId,
+      quantity: productQuantity || selectedProduct.quantity,
+      description: productDescription || selectedProduct.description,
     };
-    console.log("Edited Product:", editedProduct);
-    setIsEditModalVisible(false);
+
+    // Append the updated product data as JSON to FormData
+    formData.append("data", JSON.stringify(updatedProduct));
+
+    // If there are new images, append them to FormData
+    if (productImages && productImages.length > 0) {
+      productImages.forEach((file) => {
+        formData.append("files", file);
+      });
+    } else {
+      if (imagePreviews.length > 0) {
+        imagePreviews.forEach((url) => {
+          formData.append("existingFiles", url); // Send existing image URLs if applicable
+        });
+      }
+    }
+
+    try {
+      const res = await editProduct({
+        id: selectedProduct.productId, // Ensure you send the correct product ID
+        data: formData,
+      }).unwrap();
+      console.log("Product updated:", res);
+
+      // Reset state and close the modal
+      setIsEditModalVisible(false); // Close the modal after update
+      setProductName(""); // Reset product name
+      setProductDescription(""); // Reset description
+      setProductPrice(""); // Reset price
+      setProductImages(null); // Reset product images
+      setImagePreviews([]); // Reset image previews
+
+      toast.success("Product Updated Successfully");
+      refetch(); // Refresh the product list
+    } catch (error) {
+      console.error("Failed to update product:", error);
+      toast.error("Failed to update product. Please try again.");
+    }
   };
 
   const showEditModal = (product) => {
     console.log("product", product);
-    // Pre-fill the form with existing product details
-    setProductName(product.productName);
-    setProductPrice(product.price);
-    setCategoryItem(product.category);
 
-    // Pre-fill image previews and fileList with existing images
     const existingFiles = product?.images?.map((img, index) => ({
       uid: index, // A unique id for each image
       name: `image-${index + 1}`, // Give each image a name
@@ -208,28 +228,13 @@ const Shop = () => {
       url: img, // The URL of the existing image
     }));
 
-    setFileList(existingFiles); // Set the fileList with existing images
-    setImagePreviews(product.images); // Set the previews for display
-
-    setIsEditModalVisible(true); // Show the modal
+    setFileList(existingFiles);
+    setImagePreviews(product.images);
+    setSelectedProduct(product);
+    setIsEditModalVisible(true);
   };
 
   console.log("image previews", imagePreviews);
-
-  // const categorys = [
-  //   {
-  //     id: 1,
-  //     name: "category-1",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "category-2",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "category-3",
-  //   },
-  // ];
 
   const onChange = (checked) => {
     console.log(`switch to ${checked}`);
@@ -312,7 +317,7 @@ const Shop = () => {
                 render: (text, record, index) => (
                   <div>
                     <img
-                      src={record.imageUlrs[0]}
+                      src={`http://192.168.12.235:8008/${record.imageUlrs}`}
                       alt={record.name}
                       className="size-12 rounded-full"
                     />
@@ -340,7 +345,10 @@ const Shop = () => {
               },
               {
                 title: "Category",
-                dataIndex: "addId",
+                dataIndex: "categoryId",
+                render: (text, record) => {
+                  return record.category ? record.category.categoryName : "N/A";
+                },
                 responsive: ["sm"],
               },
               {
@@ -412,6 +420,7 @@ const Shop = () => {
           <Input
             placeholder="Enter product name"
             value={productName}
+            type="text"
             onChange={(e) => setProductName(e.target.value)}
             style={{
               marginBottom: "20px",
@@ -491,8 +500,8 @@ const Shop = () => {
               color: "black",
             }}
             options={allCategory?.data.map((item) => ({
-              value: item.id, // Assuming `name` is the unique identifier
-              label: item.categoryName, // Display name of the category
+              value: item.id,
+              label: item.categoryName,
             }))}
           />
 
@@ -574,7 +583,17 @@ const Shop = () => {
           <Button
             key="submit"
             type="primary"
-            onClick={handleEditProduct}
+            onClick={() =>
+              handleEditProduct({
+                productName,
+                productDescription,
+                productPrice,
+                categoryItem,
+                productImages: fileList.map(
+                  (file) => file.url || file.response?.url
+                ), // Process image URLs if needed
+              })
+            }
             style={{
               backgroundColor: "#1890ff",
               color: "#fff",
@@ -604,8 +623,8 @@ const Shop = () => {
           Edit Product
         </h2>
 
-        <div>
-          {/* Product Name */}
+        {/* Product Name */}
+        <div style={{ marginBottom: "20px" }}>
           <label
             style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
           >
@@ -615,31 +634,27 @@ const Shop = () => {
             placeholder="Enter product name"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            style={{
-              marginBottom: "20px",
-              borderRadius: "4px",
-              border: "1px solid #d9d9d9",
-            }}
+            style={{ marginBottom: "20px" }}
           />
+        </div>
 
-          {/* Product Price */}
+        {/* Product Price */}
+        <div style={{ marginBottom: "20px" }}>
           <label
             style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
           >
-            Product Price
+            Price
           </label>
-          <Input
-            placeholder="Enter product price"
+          <InputNumber
             value={productPrice}
-            onChange={(e) => setProductPrice(e.target.value)}
-            style={{
-              marginBottom: "20px",
-              borderRadius: "4px",
-              border: "1px solid #d9d9d9",
-            }}
+            onChange={(value) => setProductPrice(value)}
+            style={{ width: "100%", marginBottom: "20px" }}
+            min={0}
           />
+        </div>
 
-          {/* Product Category */}
+        {/* Product Category */}
+        <div style={{ marginBottom: "20px" }}>
           <label
             style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
           >
@@ -655,32 +670,27 @@ const Shop = () => {
               border: "1px solid #d9d9d9",
             }}
             options={allCategory?.data.map((item) => ({
-              value: item.name,
-              label: item.name,
+              value: item._id,
+              label: item.categoryName,
             }))}
           />
+        </div>
 
-          {/* Image Upload Section */}
+        {/* Image Upload */}
+        <div style={{ marginBottom: "20px" }}>
           <label
-            style={{
-              fontSize: "14px",
-              fontWeight: "500",
-              marginBottom: "8px",
-              marginRight: "10px",
-            }}
+            style={{ fontSize: "14px", fontWeight: "500", marginBottom: "8px" }}
           >
-            Import a photo (5 photos maximum)
+            Product Images
           </label>
-          <br />
-          <br />
           <Upload
             name="photos"
             listType="picture"
             multiple
-            fileList={fileList}
-            showUploadList={true}
-            beforeUpload={() => false}
-            onChange={handleFileChange}
+            fileList={fileList} // Manage selected files
+            showUploadList={true} // Show the uploaded files
+            beforeUpload={() => false} // Prevent auto upload
+            onChange={handleFileChange} // Handle file selection
           >
             <Button
               icon={<UploadOutlined />}
@@ -694,18 +704,6 @@ const Shop = () => {
               Click to Upload
             </Button>
           </Upload>
-
-          {/* Image Previews */}
-          {/* <div style={{ display: "flex", marginTop: "10px", gap: "10px" }}>
-      {imagePreviews && imagePreviews.map((preview, index) => (
-        <img
-          key={index}
-          src={preview}
-          alt={`Preview ${index + 1}`}
-          style={{ width: "100px", height: "100px", borderRadius: "8px" }}
-        />
-      ))}
-    </div> */}
         </div>
       </Modal>
     </div>

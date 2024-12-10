@@ -6,14 +6,21 @@ const orderApi = baseApi.injectEndpoints({
       query: () => ({
         url: "/orders/",
         method: "GET",
-        // body: data,
-        // headers: {
-        //   "content-type": "application/json",
-        // },
       }),
       providesTags: ["orders"],
+    }),
+    updateOrderStatus: builder.mutation({
+      query: ({ id, data }) => {
+        console.log("Editing Status with ID:", id);
+        return {
+          url: `/orders/status/${id}`,
+          method: "PATCH",
+          body: data,
+          invalidatesTags: ["updateOrder"],
+        };
+      },
     }),
   }),
 });
 
-export const { useGetAllOrdersQuery } = orderApi;
+export const { useGetAllOrdersQuery, useUpdateOrderStatusMutation } = orderApi;

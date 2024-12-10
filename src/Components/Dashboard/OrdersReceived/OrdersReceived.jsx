@@ -3,20 +3,44 @@ import { useState, useMemo } from "react";
 import { ConfigProvider, Table, Input, Select } from "antd";
 import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
 import { Link, NavLink } from "react-router-dom";
-import { useGetAllOrdersQuery } from "../../../Redux/api/ordersApi";
+import {
+  useGetAllOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from "../../../Redux/api/ordersApi";
 import moment from "moment";
+import { toast } from "sonner";
 
 const OrdersReceived = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const [placement, setPlacement] = useState(""); // Consider defaulting this to a known value or leave it as an empty string
+  const [placement, setPlacement] = useState("");
 
   const { data: allOrders, isLoading, refetch } = useGetAllOrdersQuery();
   console.log("allOrders", allOrders?.data.result);
+  const [updateStatus] = useUpdateOrderStatusMutation();
+
+  const mappedOrders = allOrders?.data.result.map((order) => {
+    return {
+      orderId: order._id,
+      userId: order.userId,
+      totalQuantity: order.quantity,
+      orderPaymentStatus: order.orderPaymentStatus,
+      status: order.status,
+      totalAmount: order.totalAmount,
+      products: order.productIds.map((productId, index) => ({
+        productId: productId,
+        productName: order.productInfoId?.name,
+        price: order.productInfoId?.price,
+        quantity: order.quantity,
+      })),
+      createdAt: new Date(order.createdAt).toLocaleString(),
+    };
+  });
+
+  console.log("mapped", mappedOrders);
 
   const orderData = allOrders?.data.result;
-  // Filter data based on search text
   const filteredData = useMemo(() => {
     if (!searchText) return orderData;
 
@@ -29,37 +53,47 @@ const OrdersReceived = () => {
     });
   }, [orderData, searchText]);
 
-  console.log(filteredData);
+  console.log("filteredData", filteredData);
 
   const onSearch = (value) => {
     setSearchText(value);
   };
 
-  // Handle placement change for dropdown (if needed)
   const placementChange = (e) => {
-    setPlacement(e.target.value); // Assuming you're using this somewhere for the dropdowns
+    setPlacement(e.target.value);
   };
 
-  // Order status list (with a key prop for React)
-  const status = [
-    {
-      id: 1,
-      name: "New Order",
-    },
-    {
-      id: 2,
-      name: "Process Order",
-    },
-    {
-      id: 3,
-      name: "Delivery Order",
-    },
-  ];
+  // const status = [
+  //   {
+  //     id: 1,
+  //     name: "New Order",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Process Order",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Delivery Order",
+  //   },
+  // ];
+
+  // Handling the order status update
+  const handleStatusChange = async (orderId, newStatus) => {
+    console.log(orderId);
+    try {
+      await updateStatus({ id: orderId, data: newStatus }).unwrap();
+      toast.success(`Order status updated to ${newStatus}`);
+      refetch();
+    } catch (error) {
+      toast.error("Failed to update order status");
+    }
+  };
 
   return (
     <div>
       {/* Status buttons */}
-      <div className="flex justify-between items-center mb-10">
+      {/* <div className="flex justify-between items-center mb-10">
         <div>
           {status.map((item) => (
             <button
@@ -70,7 +104,7 @@ const OrdersReceived = () => {
             </button>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Search and header */}
       <div className="flex justify-between p-6 bg-[#D3E6F9] rounded">
@@ -138,27 +172,31 @@ const OrdersReceived = () => {
               },
               {
                 title: "Name",
-                dataIndex: "productName", // This may be used for quick column lookup or fallback
+                dataIndex: "name",
                 render: (text, record) => {
-                  console.log("record", record);
+                  // console.log("record", record);
 
-                  const product = record.productIds?.[0];
-                  // Access the productName from the productIds array
-                  const productName = product?.productName || "N/A";
-
+                  const product = record.productInfoId;
+                  const productName = product?.name;
                   return (
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      {product?.imageUlrs?.[0] && (
+                      {/* Check if the product has an image URL and render it */}
+                      {product?.images?.[0] && (
                         <img
-                          src={product?.imageUlrs?.[0]}
-                          alt={productName}
+                          src={`http://192.168.12.235:8008/${product.images[0]}`}
+                          alt={productName} // Alt text for the image
                           className="size-8 rounded-full mr-2"
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            objectFit: "cover",
+                          }} // Example styling for the image
                         />
                       )}
                       <Link
                         to={{
-                          pathname: `/orders-received-details/${product.id}`,
-                          state: { record },
+                          pathname: `/orders-received-details/${product._id}`, // Link to the details page of the product
+                          state: { record }, // Pass the record as state to the details page
                         }}
                       >
                         <span
@@ -175,12 +213,13 @@ const OrdersReceived = () => {
                   );
                 },
               },
+
               {
                 title: "Selling Price",
                 dataIndex: "price",
                 render: (text, record) => {
-                  // Access the productName from the productIds array
-                  const productPrice = record.productIds?.[0]?.price || "N/A";
+                  const product = record.productInfoId;
+                  const productPrice = product?.price || "N/A";
 
                   return <span>{productPrice} Fcfa</span>;
                 },
@@ -189,8 +228,8 @@ const OrdersReceived = () => {
               {
                 title: "Date",
                 dataIndex: "createdAt",
-                key: "createdAt", // Correct syntax for key
-                render: (date) => moment(date).format("MMM DD, YYYY, h:mm A"), // Format the date
+                key: "createdAt",
+                render: (date) => moment(date).format("MMM DD, YYYY, h:mm A"),
                 responsive: ["sm"],
               },
               {
@@ -201,28 +240,34 @@ const OrdersReceived = () => {
               {
                 title: "Actions",
                 responsive: ["sm"],
-                render: () => (
-                  <Select
-                    defaultValue="Mark as"
-                    style={{ width: 160 }}
-                    popupMatchSelectWidth={false}
-                    placement={placement}
-                    options={[
-                      {
-                        value: "new-order",
-                        label: "New Order",
-                      },
-                      {
-                        value: "process-order",
-                        label: "Process Order",
-                      },
-                      {
-                        value: "delivery-order",
-                        label: "Delivery Order",
-                      },
-                    ]}
-                  />
-                ),
+                render: (_, record) => {
+                  console.log("selected record", record); // Logs the record to the console
+                  return (
+                    <Select
+                      defaultValue="Mark as"
+                      style={{ width: 160 }}
+                      popupMatchSelectWidth={false}
+                      placement={placement}
+                      onChange={(value) =>
+                        handleStatusChange(record._id, value)
+                      }
+                      options={[
+                        {
+                          value: "new-order",
+                          label: "New Order",
+                        },
+                        {
+                          value: "process-order",
+                          label: "Process Order",
+                        },
+                        {
+                          value: "delivery-order",
+                          label: "Delivery Order",
+                        },
+                      ]}
+                    />
+                  );
+                },
               },
             ]}
           />

@@ -136,24 +136,24 @@ const dashboardApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["withdraw"],
     }),
-    getNotifications: builder.query({
-      query: () => {
-        const accessToken = localStorage.getItem("accessToken");
-        console.log(accessToken);
-        if (!accessToken) {
-          console.error("Access token not found.");
-        }
-        return {
-          url: "/notification/admin-all",
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        };
-      },
-      providesTags: ["notification"],
-    }),
+    // getNotifications: builder.query({
+    //   query: () => {
+    //     const accessToken = localStorage.getItem("accessToken");
+    //     console.log(accessToken);
+    //     if (!accessToken) {
+    //       console.error("Access token not found.");
+    //     }
+    //     return {
+    //       url: "/notification/admin-all",
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${accessToken}`,
+    //       },
+    //     };
+    //   },
+    //   providesTags: ["notification"],
+    // }),
   }),
 });
 
@@ -169,5 +169,5 @@ export const {
   useGetAllPendingWithdrawQuery,
   useGetAllConformWithdrawQuery,
   useAdminConformWithdrawMutation,
-  useGetNotificationsQuery,
+  // useGetNotificationsQuery,
 } = dashboardApi;

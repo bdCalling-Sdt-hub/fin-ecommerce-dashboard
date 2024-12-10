@@ -9,15 +9,17 @@ import { baseApi } from "../baseApi";
 
 const shopApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getUniqueProducts: builder.query({
+      query: () => ({
+        url: "/product-info/",
+        method: "GET",
+      }),
+      providesTags: ["products"],
+    }),
     getAllProducts: builder.query({
       query: () => ({
-        // url: "/products",
-        url: "/products/unique/",
+        url: "/products",
         method: "GET",
-        // body: data,
-        // headers: {
-        //   "content-type": "application/json",
-        // },
       }),
       providesTags: ["products"],
     }),
@@ -34,7 +36,7 @@ const shopApi = baseApi.injectEndpoints({
     }),
     editProduct: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/products/${id}`,
+        url: `/product-info/${id}`,
         method: "PATCH",
         body: data,
         // headers: {
@@ -48,6 +50,7 @@ const shopApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useGetUniqueProductsQuery,
   useGetAllProductsQuery,
   useCreateProductMutation,
   useEditProductMutation,
