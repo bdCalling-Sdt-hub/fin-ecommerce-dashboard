@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Button,
   ConfigProvider,
@@ -5,10 +6,10 @@ import {
   Modal,
   Form,
   Input,
-  Checkbox,
-  Select,
   Radio,
   InputNumber,
+  Checkbox,
+  Select,
 } from "antd";
 import { useState } from "react";
 import {
@@ -20,18 +21,22 @@ import {
 import {
   useAllSubscriptionPlansQuery,
   useCreateSubscriptionMutation,
+  useDeleteSubscriptionMutation,
+  useEditSubscriptionMutation,
 } from "../../Redux/api/subscriptionApi";
+import { toast } from "sonner";
 
 export default function Subscription() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState(null);
   const [form] = Form.useForm();
   const [formAddPlan] = Form.useForm();
   const [selectedOffers, setSelectedOffers] = useState({});
   const [offerSubscriptions, setOfferSubscription] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
+  const [createOrAddVideo, setCreateOrAddVideo] = useState(false);
   const [lockAccessToYourPage, setLockAccessToYourPage] = useState(false);
   const [scanStatistics, setScanStatistics] = useState(false);
   const [notificationReceivedAtEachScan, setNotificationReceivedAtEachScan] =
@@ -48,6 +53,8 @@ export default function Subscription() {
   console.log(allSubscriptionPlans?.data);
 
   const [createSubscription] = useCreateSubscriptionMutation();
+  const [editSubscription] = useEditSubscriptionMutation();
+  const [deleteSubscription] = useDeleteSubscriptionMutation();
   // useEffect(() => {
   //   if (allSubscriptionPlans?.data) {
   //     const initialSelections = {};
@@ -74,15 +81,22 @@ export default function Subscription() {
 
   const showEditModal = (subscription) => {
     setSelectedSubscription(subscription);
-    // setIsEditModalOpen(true);
+    setIsEditModalOpen(true);
     console.log(subscription);
   };
 
   const showDeleteModal = (subscription) => {
     setSelectedSubscription(subscription);
-    // setIsDeleteModalOpen(true);
+    setIsDeleteModalOpen(true);
     console.log(subscription);
   };
+
+  const closeModals = () => {
+    setIsEditModalOpen(false);
+    setIsDeleteModalOpen(false);
+    setSelectedSubscription(null);
+  };
+
   const handleSave = () => {
     form
       .validateFields()
@@ -90,24 +104,16 @@ export default function Subscription() {
         // Combine the radio button values and other necessary data from the form state
         const subscriptionData = {
           ...mainFormValues,
+          createOrAddVideo,
           lockAccessToYourPage, // Assuming lockAccessToYourPage is coming from the component state
           scanStatistics, // Same for scanStatistics
           notificationReceivedAtEachScan, // Same for notificationReceivedAtEachScan
           isStrickers, // Same for isStrickers
         };
 
-        // Combine facilities (which is part of the form) with other data
-        const facilities = {
-          storyCategory: mainFormValues.facilities,
-          pictureDistribution: mainFormValues.pictureDistribution,
-          timeline: mainFormValues.timeline,
-          wordCount: mainFormValues.words,
-        };
-
         // Final data to send, combining form data and offer subscriptions
         const allFormData = {
           ...subscriptionData,
-          facilities, // Include facilities data
           offerSubscriptions, // Include the offer subscriptions (added plans)
         };
 
@@ -137,17 +143,42 @@ export default function Subscription() {
       });
   };
 
-  // Handle selecting plan for purchase
-  // const handleBuyNow = (sub) => {
-  //   const selectedOfferId = selectedOffers[sub._id];
-  //   const selectedOffer = sub.offerSubscriptions.find(
-  //     (offer) => offer._id === selectedOfferId
-  //   );
-  //   console.log("Selected Plan:", sub.planName);
-  //   console.log("Selected Offer Price:", selectedOffer?.price);
-  //   console.log("Selected Duration:", selectedOffer?.subPlanName);
-  // };
+  const handleEditSave = async (values) => {
+    if (!selectedSubscription) return;
+    console.log("Edited selectedSubscription:", selectedSubscription);
+    console.log("Edited Values:", values);
+    try {
+      await editSubscription({
+        id: selectedSubscription?._id,
+        data: values,
+      }).unwrap();
 
+      console.log("Updated Subscription:", selectedSubscription?.name);
+      toast.success("Subscription Updated Succesfully");
+      refetch();
+      closeModals();
+      form.resetFields();
+    } catch (error) {
+      console.error("Error editing subscription:", error);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedSubscription) return;
+
+    try {
+      // Call deleteSubscription with the selected subscription's ID
+      await deleteSubscription(selectedSubscription._id).unwrap();
+      console.log("Deleted Subscription:", selectedSubscription.name);
+      toast.success("Subscription Deleted Succesfully");
+      // Refetch subscription data to update the list
+      refetch();
+
+      closeModals();
+    } catch (error) {
+      console.error("Error deleting subscription:", error);
+    }
+  };
   return (
     <div className="bg-white min-h-screen rounded-lg">
       <div className="bg-[#3399FF] py-3 px-4 rounded-lg ">
@@ -264,14 +295,23 @@ export default function Subscription() {
                 <InputNumber min={2} style={{ width: "100%" }} />
               </Form.Item>
 
-              {/* Lock Access to Your Page (Radio Button) */}
+              <Form.Item label="Create or Add Video">
+                <Radio.Group
+                  value={createOrAddVideo}
+                  onChange={(e) => setCreateOrAddVideo(e.target.value)}
+                >
+                  <Radio value={true}>Yes</Radio>
+                  <Radio value={false}>No</Radio>
+                </Radio.Group>
+              </Form.Item>
+
               <Form.Item label="Lock Access to Your Page">
                 <Radio.Group
                   value={lockAccessToYourPage}
                   onChange={(e) => setLockAccessToYourPage(e.target.value)}
                 >
-                  <Radio value={true}>True</Radio>
-                  <Radio value={false}>False</Radio>
+                  <Radio value={true}>Yes</Radio>
+                  <Radio value={false}>No</Radio>
                 </Radio.Group>
               </Form.Item>
 
@@ -281,8 +321,8 @@ export default function Subscription() {
                   value={scanStatistics}
                   onChange={(e) => setScanStatistics(e.target.value)}
                 >
-                  <Radio value={true}>True</Radio>
-                  <Radio value={false}>False</Radio>
+                  <Radio value={true}>Yes</Radio>
+                  <Radio value={false}>No</Radio>
                 </Radio.Group>
               </Form.Item>
 
@@ -294,8 +334,8 @@ export default function Subscription() {
                     setNotificationReceivedAtEachScan(e.target.value)
                   }
                 >
-                  <Radio value={true}>True</Radio>
-                  <Radio value={false}>False</Radio>
+                  <Radio value={true}>Yes</Radio>
+                  <Radio value={false}>No</Radio>
                 </Radio.Group>
               </Form.Item>
 
@@ -305,8 +345,8 @@ export default function Subscription() {
                   value={isStrickers}
                   onChange={(e) => setIsStrickers(e.target.value)}
                 >
-                  <Radio value={true}>True</Radio>
-                  <Radio value={false}>False</Radio>
+                  <Radio value={true}>Yes</Radio>
+                  <Radio value={false}>No</Radio>
                 </Radio.Group>
               </Form.Item>
 
@@ -394,16 +434,6 @@ export default function Subscription() {
                     </div>
                   )}
 
-                  {sub?.isStrickers !== undefined && (
-                    <div className="flex gap-2">
-                      {sub.isStrickers ? (
-                        <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
-                      ) : (
-                        <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
-                      )}
-                      <span>Strickers Available</span>
-                    </div>
-                  )}
                   {sub?.lockAccessToYourPage !== undefined && (
                     <div className="flex gap-2">
                       {sub.lockAccessToYourPage ? (
@@ -412,6 +442,17 @@ export default function Subscription() {
                         <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
                       )}
                       <span>Lock Access To Your Page</span>
+                    </div>
+                  )}
+
+                  {sub?.scanStatistics !== undefined && (
+                    <div className="flex gap-2">
+                      {sub.scanStatistics ? (
+                        <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
+                      ) : (
+                        <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
+                      )}
+                      <span>Scan Statistics</span>
                     </div>
                   )}
 
@@ -426,14 +467,14 @@ export default function Subscription() {
                     </div>
                   )}
 
-                  {sub?.scanStatistics !== undefined && (
+                  {sub?.isStrickers !== undefined && (
                     <div className="flex gap-2">
-                      {sub.scanStatistics ? (
+                      {sub.isStrickers ? (
                         <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
                       ) : (
                         <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
                       )}
-                      <span>Scan Statistics</span>
+                      <span>Strickers Available</span>
                     </div>
                   )}
                 </div>
@@ -470,7 +511,7 @@ export default function Subscription() {
         }}
       >
         {/* Edit Subscription Modal */}
-        {/* <Modal
+        <Modal
           open={isEditModalOpen}
           onCancel={closeModals}
           footer={null}
@@ -494,105 +535,29 @@ export default function Subscription() {
         >
           <Form
             form={form}
-            initialValues={{
-              planName: selectedSubscription?.planName,
-              pageDistribution: selectedSubscription?.pageDistribution,
-              storyCategory: selectedSubscription?.facilities?.storyCategory,
-              pictureDistribution:
-                selectedSubscription?.facilities?.pictureDistribution,
-              timeline: selectedSubscription?.facilities?.timeline,
-              wordCount: selectedSubscription?.facilities?.wordCount,
-            }}
+            // initialValues={{
+            //   name: selectedSubscription?.name,
+            //   price: selectedSubscription?.price,
+            // }}
             onFinish={handleEditSave}
           >
             <Form.Item
               label={
                 <span style={{ color: "black", fontWeight: "500" }}>
-                  Plan Name:
+                  Plan Name
                 </span>
               }
-              name="planName"
+              name="name"
             >
               <Input placeholder="Enter plan name" />
             </Form.Item>
-
             <Form.Item
               label={
-                <span style={{ color: "black", fontWeight: "500" }}>
-                  Page Distribution:
-                </span>
+                <span style={{ color: "black", fontWeight: "500" }}>Price</span>
               }
-              name="pageDistribution"
-              style={{ marginTop: "-20px" }}
+              name="price"
             >
-              <Select placeholder="Select Page Distribution">
-                <Select.Option value="Quarter Page">Quarter Page</Select.Option>
-                <Select.Option value="Half Page">Half Page</Select.Option>
-                <Select.Option value="Full Page">Full Page</Select.Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              label={
-                <span style={{ color: "black", fontWeight: "500" }}>
-                  Story Category:
-                </span>
-              }
-              name="storyCategory"
-            >
-              <Checkbox.Group>
-                <Checkbox value="All People Stories">
-                  All People Stories
-                </Checkbox>
-                <Checkbox value="Veteran Stories">Veteran Stories</Checkbox>
-                <Checkbox value="Pets Stories">Pets Stories</Checkbox>
-                <Checkbox value="All Stories">All Stories</Checkbox>
-              </Checkbox.Group>
-            </Form.Item>
-
-            <Form.Item
-              label={
-                <span style={{ color: "black", fontWeight: "500" }}>
-                  Picture Distribution:
-                </span>
-              }
-              name="pictureDistribution"
-            >
-              <Radio.Group>
-                <Radio value={2}>2 Pictures</Radio>
-                <Radio value={3}>3 Pictures</Radio>
-                <Radio value={5}>5 Pictures</Radio>
-              </Radio.Group>
-            </Form.Item>
-
-            <Form.Item
-              label={
-                <span style={{ color: "black", fontWeight: "500" }}>
-                  Timeline:
-                </span>
-              }
-              name="timeline"
-            >
-              <Radio.Group>
-                <Radio value={30}>30 Days</Radio>
-                <Radio value={180}>6 Months</Radio>
-                <Radio value={365}>1 Year</Radio>
-              </Radio.Group>
-            </Form.Item>
-
-            <Form.Item
-              label={
-                <span style={{ color: "black", fontWeight: "500" }}>
-                  Word Count:
-                </span>
-              }
-              name="wordCount"
-            >
-              <Radio.Group>
-                <Radio value={80}>80 Words</Radio>
-                <Radio value={220}>220 Words</Radio>
-                <Radio value={500}>500 Words</Radio>
-              </Radio.Group>
+              <InputNumber placeholder="Enter Price" />
             </Form.Item>
 
             <Form.Item>
@@ -610,10 +575,10 @@ export default function Subscription() {
               </Button>
             </Form.Item>
           </Form>
-        </Modal> */}
+        </Modal>
 
         {/* Delete Subscription Modal */}
-        {/* <Modal
+        <Modal
           // title="Confirm Deletion"
           open={isDeleteModalOpen}
           onCancel={closeModals}
@@ -648,9 +613,9 @@ export default function Subscription() {
           )}
         >
           <p>
-            {`Are you sure you want to delete the subscription "${selectedSubscription?.planName}"?`}
+            {`Are you sure you want to delete the subscription "${selectedSubscription?.name}"?`}
           </p>
-        </Modal> */}
+        </Modal>
       </ConfigProvider>
     </div>
   );

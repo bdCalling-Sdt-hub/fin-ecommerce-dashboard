@@ -24,29 +24,33 @@ const subscriptionApi = baseApi.injectEndpoints({
         invalidatesTags: ["subscription"],
       }),
     }),
-    // editSubscription: builder.mutation({
-    //   query: ({ id, data }) => ({
-    //     url: `/subscription/${id}`,
-    //     method: "PATCH",
-    //     body: data,
-    //     headers: {
-    //       "content-type": "application/json",
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //     invalidatesTags: ["subscription"],
-    //   }),
-    // }),
-    // deleteSubscription: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/subscription/${id}`,
-    //     method: "DELETE",
-    //     headers: {
-    //       "content-type": "application/json",
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //     invalidatesTags: ["subscription"],
-    //   }),
-    // }),
+    editSubscription: builder.mutation({
+      query: ({ id, data }) => {
+        console.log("Editing subscription with ID:", id); // Log the ID
+        return {
+          url: `/subscriptionsplans/${id}`,
+          method: "PATCH",
+          body: data,
+          headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          invalidatesTags: ["subscription"],
+        };
+      },
+    }),
+
+    deleteSubscription: builder.mutation({
+      query: (id) => ({
+        url: `/subscriptionsplans/db/${id}`,
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        invalidatesTags: ["subscription"],
+      }),
+    }),
   }),
 });
 

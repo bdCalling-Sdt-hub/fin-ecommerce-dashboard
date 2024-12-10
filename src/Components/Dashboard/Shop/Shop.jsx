@@ -55,22 +55,24 @@ const Shop = () => {
 
   const allProductData = allProducts?.data || [];
 
+  console.log("all", allProductData);
+
   // useEffect to map through allProducts.data and set product data
   useEffect(() => {
     if (allProducts?.data) {
       const mappedData = allProducts?.data.map((product) => {
         const firstProduct = product.firstProduct || {};
         return {
-          productId: firstProduct.productId || product.productId,
-          productName: firstProduct.productName || product.productName,
-          price: firstProduct.price || product.price,
-          description: firstProduct.description || product.description,
-          imageUlrs: firstProduct.imageUlrs || product.imageUlrs,
-          category: firstProduct.category || product.category,
-          productCount: firstProduct.productCount || product.productCount,
-          createdAt: firstProduct.createdAt || product.createdAt,
-          updatedAt: firstProduct.updatedAt || product.updatedAt,
-          qrCodeUrl: firstProduct.qrCodeUrl || product.qrCodeUrl,
+          productId: firstProduct.productId || product.productId || "",
+          productName: firstProduct.productName || product.productName || "",
+          price: firstProduct.price || product.price || "",
+          description: firstProduct.description || product.description || "",
+          imageUlrs: firstProduct.imageUlrs || product.imageUlrs || "",
+          category: firstProduct.category || product.category || "",
+          productCount: firstProduct.productCount || product.productCount || "",
+          createdAt: firstProduct.createdAt || product.createdAt || "",
+          updatedAt: firstProduct.updatedAt || product.updatedAt || "",
+          qrCodeUrl: firstProduct.qrCodeUrl || product.qrCodeUrl || "",
           isDeleted:
             firstProduct.isDeleted !== undefined
               ? firstProduct.isDeleted
@@ -89,7 +91,7 @@ const Shop = () => {
               : product.isSold !== undefined
               ? product.isSold
               : false, // Default to false if undefined
-          addId: firstProduct.addId || product.addId,
+          addId: firstProduct.addId || product.addId || "",
         };
       });
       setProductData(mappedData); // Set the mapped data into state
