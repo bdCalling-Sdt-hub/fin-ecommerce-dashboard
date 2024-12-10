@@ -11,13 +11,21 @@ import {
   InputNumber,
 } from "antd";
 import { useState } from "react";
-import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useAllSubscriptionPlansQuery } from "../../Redux/api/subscriptionApi";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
+import {
+  useAllSubscriptionPlansQuery,
+  useCreateSubscriptionMutation,
+} from "../../Redux/api/subscriptionApi";
 
 export default function Subscription() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState(null);
   const [form] = Form.useForm();
   const [formAddPlan] = Form.useForm();
@@ -38,6 +46,8 @@ export default function Subscription() {
   } = useAllSubscriptionPlansQuery();
 
   console.log(allSubscriptionPlans?.data);
+
+  const [createSubscription] = useCreateSubscriptionMutation();
   // useEffect(() => {
   //   if (allSubscriptionPlans?.data) {
   //     const initialSelections = {};
@@ -64,155 +74,67 @@ export default function Subscription() {
 
   const showEditModal = (subscription) => {
     setSelectedSubscription(subscription);
-    setIsEditModalOpen(true);
+    // setIsEditModalOpen(true);
+    console.log(subscription);
   };
 
   const showDeleteModal = (subscription) => {
     setSelectedSubscription(subscription);
-    setIsDeleteModalOpen(true);
+    // setIsDeleteModalOpen(true);
+    console.log(subscription);
   };
-
-  const closeModals = () => {
-    setIsEditModalOpen(false);
-    setIsDeleteModalOpen(false);
-    setSelectedSubscription(null);
-  };
-
-  //   const handleEditSave = async (values) => {
-  //     if (!selectedSubscription) return;
-  //     console.log("Edited selectedSubscription:", selectedSubscription);
-  //     console.log("Edited Values:", values);
-  //     try {
-  //       await editSubscription({
-  //         id: selectedSubscription?._id,
-  //         data: values,
-  //       }).unwrap();
-
-  //       console.log("Updated Subscription:", selectedSubscription?.planName);
-  //       refetch();
-  //       closeModals();
-  //     } catch (error) {
-  //       console.error("Error editing subscription:", error);
-  //     }
-  //   };
-
-  //   const handleDeleteConfirm = async () => {
-  //     if (!selectedSubscription) return;
-
-  //     try {
-  //       // Call deleteSubscription with the selected subscription's ID
-  //       await deleteSubscription(selectedSubscription._id).unwrap();
-  //       console.log("Deleted Subscription:", selectedSubscription.planName);
-
-  //       // Refetch subscription data to update the list
-  //       refetch();
-
-  //       closeModals();
-  //     } catch (error) {
-  //       console.error("Error deleting subscription:", error);
-  //     }
-  //   };
-
-  const handleRadioChange = (planId, offerId) => {
-    console.log("planId", planId);
-    console.log("offerId", offerId);
-    // console.log("planName", planName);
-    // console.log("offerName", offerName);
-    setSelectedOffers((prevSelectedOffers) => ({
-      ...prevSelectedOffers,
-      [planId]: offerId,
-    }));
-  };
-
-  const handleChange = (e) => {
-    setSelectedValue(e.target.value);
-  };
-
-  // const handleAddPlan = () => {
-  //   formAddPlan
-  //     .validateFields()
-  //     .then((values) => {
-  //       // Add the new plan to the list
-  //       setOfferSubscription([
-  //         ...offerSubscriptions,
-  //         { price: values.planPrice, storyCount: values.storyCount },
-  //       ]);
-  //       formAddPlan.resetFields(); // Reset form fields after submission
-  //     })
-  //     .catch((errorInfo) => {
-  //       console.error("Validation Failed:", errorInfo);
-  //     });
-  // };
-
-  // Form submission handler
-  const onFinish = (values) => {
-    // Combine the radio button values with the rest of the form data
-    const subscriptionData = {
-      ...values,
-      lockAccessToYourPage,
-      scanStatistics,
-      notificationReceivedAtEachScan,
-      isStrickers,
-    };
-
-    // Dispatch or API call to save the subscription data
-    console.log(subscriptionData);
-
-    // Reset the form after successful submission
-    form.resetFields();
-    setIsModalOpen(false);
-  };
-
-  // Adjust handleAddPlan to use a callback with setOfferSubscription
-  const handleAddPlan = () => {
-    formAddPlan
-      .validateFields()
-      .then((values) => {
-        console.log(values);
-        setOfferSubscription((prevOffers) => [
-          ...prevOffers,
-          {
-            price: values?.planPrice,
-            storyQuantity: values?.storyQuantity,
-            subPlanName: values?.subPlanName,
-          },
-        ]);
-        console.log(offerSubscriptions);
-        formAddPlan.resetFields(); // Reset form fields after submission
-      })
-      .catch((errorInfo) => {
-        console.error("Validation Failed:", errorInfo);
-      });
-  };
-
   const handleSave = () => {
-    form.validateFields().then((mainFormValues) => {
-      const facilities = {
-        storyCategory: mainFormValues.facilities,
-        pictureDistribution: mainFormValues.pictureDistribution,
-        timeline: mainFormValues.timeline,
-        wordCount: mainFormValues.words,
-      };
+    form
+      .validateFields()
+      .then((mainFormValues) => {
+        // Combine the radio button values and other necessary data from the form state
+        const subscriptionData = {
+          ...mainFormValues,
+          lockAccessToYourPage, // Assuming lockAccessToYourPage is coming from the component state
+          scanStatistics, // Same for scanStatistics
+          notificationReceivedAtEachScan, // Same for notificationReceivedAtEachScan
+          isStrickers, // Same for isStrickers
+        };
 
-      const allFormData = {
-        ...mainFormValues,
-        facilities,
-        offerSubscriptions, // Ensure this includes all added plans with price and quantity
-      };
+        // Combine facilities (which is part of the form) with other data
+        const facilities = {
+          storyCategory: mainFormValues.facilities,
+          pictureDistribution: mainFormValues.pictureDistribution,
+          timeline: mainFormValues.timeline,
+          wordCount: mainFormValues.words,
+        };
 
-      createSubscription(allFormData)
-        .unwrap()
-        .then(() => {
-          refetch(); // Refetch subscription data to update the list with the new subscription
-          form.resetFields();
-          formAddPlan.resetFields();
-          setOfferSubscription([]); // Clear offers after successful submission
-          setIsModalOpen(false);
-        })
-        .catch((error) => {
-          console.error("Error creating subscription:", error);
-        });
-    });
+        // Final data to send, combining form data and offer subscriptions
+        const allFormData = {
+          ...subscriptionData,
+          facilities, // Include facilities data
+          offerSubscriptions, // Include the offer subscriptions (added plans)
+        };
+
+        // Make the API call to create the subscription
+        createSubscription(allFormData)
+          .unwrap()
+          .then(() => {
+            // Refetch subscription data to update the list with the new subscription
+            refetch();
+
+            // Reset the form fields after successful submission
+            form.resetFields();
+            formAddPlan.resetFields();
+
+            // Clear offers after successful submission
+            setOfferSubscription([]);
+
+            // Close the modal
+            setIsModalOpen(false);
+          })
+          .catch((error) => {
+            console.error("Error creating subscription:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Form validation failed:", error);
+      });
   };
 
   // Handle selecting plan for purchase
@@ -228,16 +150,17 @@ export default function Subscription() {
 
   return (
     <div className="bg-white min-h-screen rounded-lg">
-      <div className="flex justify-between items-center bg-[#013564] py-3 px-4">
-        <h1 className="text-lg sm:text-3xl text-white font-semibold">
+      <div className="bg-[#3399FF] py-3 px-4 rounded-lg ">
+        <p className="text-lg sm:text-3xl text-white font-semibold">
           Subscription
-        </h1>
+        </p>
       </div>
       <div className="flex items-center justify-center my-8 sm:my-10">
         <ConfigProvider
           theme={{
             components: {
               Button: {
+                defaultBg: "#97C6EA",
                 defaultHoverBg: "rgb(112,189,249)",
                 defaultHoverBorderColor: "rgb(178,212,253)",
                 defaultHoverColor: "rgb(0,0,0)",
@@ -247,7 +170,7 @@ export default function Subscription() {
         >
           <Button
             onClick={showModal}
-            className="flex items-center gap-1 sm:gap-3 bg-[#97C6EA] w-full sm:w-2/3 h-12 font-semibold border-none"
+            className="flex items-center gap-1 sm:gap-3 bg-[] w-full sm:w-2/3 h-12 font-semibold border-none"
           >
             <EditOutlined />
             <p className="text-xs sm:text-lg">Create Subscription Plan</p>
@@ -257,119 +180,145 @@ export default function Subscription() {
 
       {/* Subscription Plan Creation Modal */}
       <>
-        <Button type="primary" onClick={() => setIsModalOpen(true)}>
-          Create Subscription
-        </Button>
-
-        <Modal
-          title="Create Subscription Plan"
-          open={isModalOpen}
-          onCancel={() => setIsModalOpen(false)}
-          footer={null}
+        <ConfigProvider
+          theme={{
+            components: {
+              Button: {
+                defaultHoverBg: "rgb(112,189,249)",
+                defaultHoverBorderColor: "rgb(178,212,253)",
+                defaultHoverColor: "rgb(0,0,0)",
+              },
+              Modal: {
+                contentBg: "rgb(177,215,250)",
+              },
+              Form: {
+                labelColor: "rgb(0,0,0)",
+                activeBg: "rgb(151,198,234)",
+              },
+              Checkbox: {
+                colorBgContainer: "rgb(151,198,234)",
+                colorBorder: "rgb(0,0,0)",
+              },
+              Select: {
+                colorBgContainer: "rgb(177,215,250)",
+                colorBgElevated: "rgb(126,187,244)",
+              },
+            },
+          }}
         >
-          <Form form={form} onFinish={onFinish} layout="vertical">
-            {/* Name */}
-            <Form.Item
-              label="Subscription Name"
-              name="name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input the subscription name!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-
-            {/* Price */}
-            <Form.Item
-              label="Price"
-              name="price"
-              rules={[{ required: true, message: "Please input the price!" }]}
-            >
-              <InputNumber min={0} step={0.01} style={{ width: "100%" }} />
-            </Form.Item>
-
-            {/* Duration Days */}
-            <Form.Item
-              label="Duration (Days)"
-              name="durationDays"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input the duration in days!",
-                },
-              ]}
-            >
-              <InputNumber min={1} style={{ width: "100%" }} />
-            </Form.Item>
-
-            {/* Video Duration */}
-            <Form.Item
-              label="Video Duration (Minutes)"
-              name="videoDuration"
-              rules={[
-                { required: true, message: "Please input the video duration!" },
-              ]}
-            >
-              <InputNumber min={1} style={{ width: "100%" }} />
-            </Form.Item>
-
-            {/* Lock Access to Your Page (Radio Button) */}
-            <Form.Item label="Lock Access to Your Page">
-              <Radio.Group
-                value={lockAccessToYourPage}
-                onChange={(e) => setLockAccessToYourPage(e.target.value)}
+          <Modal
+            // title="Create Subscription Plan"
+            open={isModalOpen}
+            onCancel={() => setIsModalOpen(false)}
+            footer={null}
+          >
+            <Form form={form} onFinish={handleSave} layout="vertical">
+              {/* Name */}
+              <Form.Item
+                label="Subscription Name"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the subscription name!",
+                  },
+                ]}
               >
-                <Radio value={true}>True</Radio>
-                <Radio value={false}>False</Radio>
-              </Radio.Group>
-            </Form.Item>
+                <Input />
+              </Form.Item>
 
-            {/* Scan Statistics (Radio Button) */}
-            <Form.Item label="Scan Statistics">
-              <Radio.Group
-                value={scanStatistics}
-                onChange={(e) => setScanStatistics(e.target.value)}
+              {/* Price */}
+              <Form.Item
+                label="Price"
+                name="price"
+                rules={[{ required: true, message: "Please input the price!" }]}
               >
-                <Radio value={true}>True</Radio>
-                <Radio value={false}>False</Radio>
-              </Radio.Group>
-            </Form.Item>
+                <InputNumber min={0} step={0.01} style={{ width: "100%" }} />
+              </Form.Item>
 
-            {/* Notification Received at Each Scan (Radio Button) */}
-            <Form.Item label="Notification Received at Each Scan">
-              <Radio.Group
-                value={notificationReceivedAtEachScan}
-                onChange={(e) =>
-                  setNotificationReceivedAtEachScan(e.target.value)
-                }
+              {/* Duration Days */}
+              <Form.Item
+                label="Duration (Days)"
+                name="durationDays"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the duration in days!",
+                  },
+                ]}
               >
-                <Radio value={true}>True</Radio>
-                <Radio value={false}>False</Radio>
-              </Radio.Group>
-            </Form.Item>
+                <InputNumber min={1} style={{ width: "100%" }} />
+              </Form.Item>
 
-            {/* Is Strickers (Radio Button) */}
-            <Form.Item label="Is Strickers">
-              <Radio.Group
-                value={isStrickers}
-                onChange={(e) => setIsStrickers(e.target.value)}
+              {/* Video Duration */}
+              <Form.Item
+                label="Video Duration (Minutes)"
+                name="videoDuration"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the video duration!",
+                  },
+                ]}
               >
-                <Radio value={true}>True</Radio>
-                <Radio value={false}>False</Radio>
-              </Radio.Group>
-            </Form.Item>
+                <InputNumber min={2} style={{ width: "100%" }} />
+              </Form.Item>
 
-            {/* Submit Button */}
-            <Form.Item>
-              <Button type="primary" htmlType="submit" block>
-                Create Subscription
-              </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
+              {/* Lock Access to Your Page (Radio Button) */}
+              <Form.Item label="Lock Access to Your Page">
+                <Radio.Group
+                  value={lockAccessToYourPage}
+                  onChange={(e) => setLockAccessToYourPage(e.target.value)}
+                >
+                  <Radio value={true}>True</Radio>
+                  <Radio value={false}>False</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              {/* Scan Statistics (Radio Button) */}
+              <Form.Item label="Scan Statistics">
+                <Radio.Group
+                  value={scanStatistics}
+                  onChange={(e) => setScanStatistics(e.target.value)}
+                >
+                  <Radio value={true}>True</Radio>
+                  <Radio value={false}>False</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              {/* Notification Received at Each Scan (Radio Button) */}
+              <Form.Item label="Notification Received at Each Scan">
+                <Radio.Group
+                  value={notificationReceivedAtEachScan}
+                  onChange={(e) =>
+                    setNotificationReceivedAtEachScan(e.target.value)
+                  }
+                >
+                  <Radio value={true}>True</Radio>
+                  <Radio value={false}>False</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              {/* Is Strickers (Radio Button) */}
+              <Form.Item label="Is Strickers">
+                <Radio.Group
+                  value={isStrickers}
+                  onChange={(e) => setIsStrickers(e.target.value)}
+                >
+                  <Radio value={true}>True</Radio>
+                  <Radio value={false}>False</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              {/* Submit Button */}
+              <Form.Item>
+                <Button htmlType="submit" block>
+                  Create Subscription
+                </Button>
+              </Form.Item>
+            </Form>
+          </Modal>
+        </ConfigProvider>
       </>
 
       {/* Subscription Card List */}
@@ -379,7 +328,7 @@ export default function Subscription() {
             key={index}
             style={{
               width: "100%",
-              maxWidth: 320,
+              maxWidth: 350,
               height: "auto",
             }}
             className="bg-white text-black p-0 sm:px-4 min-h-[350] shadow-xl"
@@ -401,16 +350,18 @@ export default function Subscription() {
               <div className="flex flex-col gap-2 sm:gap-6">
                 {/* Plan Name and Page Distribution */}
                 <div>
-                  <p className="text-xl sm:text-2xl font-bold">
-                    {sub?.planName}
+                  <p className="text-xl sm:text-2xl font-bold">{sub?.name}</p>
+                  <p className="text-lg sm:text-xl">
+                    Price: <span className="font-bold">{sub?.price}</span>
                   </p>
-                  <p className="text-lg sm:text-xl font-bold">
-                    {sub?.pageDistribution}
+                  <p className="text-lg sm:text-xl ">
+                    Validity:{" "}
+                    <span className="font-bold">{sub?.durationDays}</span>
                   </p>
                 </div>
 
                 {/* Offer Subscription Options */}
-                <div>
+                {/* <div>
                   <Radio.Group
                     value={selectedOffers[sub._id] || null} // No default selected
                     onChange={(e) => handleRadioChange(sub._id, e.target.value)} // Pass planId and selected offerId
@@ -429,50 +380,62 @@ export default function Subscription() {
                       </div>
                     ))}
                   </Radio.Group>
-                </div>
+                </div> */}
 
-                {/* Facilities Section */}
-                <div className="flex gap-1 items-center text-base sm:text-lg">
-                  <div className="flex flex-col gap-2">
-                    {/* Story Categories */}
-                    {sub?.facilities?.storyCategory?.map((storyCategory, i) => (
-                      <div key={i} className="flex gap-2">
+                <div className="flex flex-col gap-2">
+                  {sub?.createOrAddVideo !== undefined && (
+                    <div className="flex gap-2">
+                      {sub.createOrAddVideo ? (
                         <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
-                        <span>{storyCategory}</span>
-                      </div>
-                    ))}
-
-                    {/* Picture Distribution */}
-                    <div className="flex gap-2">
-                      <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
-                      <span>
-                        {sub?.facilities?.pictureDistribution} Pictures
-                      </span>
+                      ) : (
+                        <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
+                      )}
+                      <span>Create Or Add Video</span>
                     </div>
+                  )}
 
-                    {/* Timeline */}
+                  {sub?.isStrickers !== undefined && (
                     <div className="flex gap-2">
-                      <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
-                      <span>
-                        Active{" "}
-                        {sub?.facilities?.timeline > 364
-                          ? `${Math.round(
-                              sub?.facilities?.timeline / 365
-                            )} Year(s)`
-                          : sub?.facilities?.timeline > 30
-                          ? `${Math.round(
-                              sub?.facilities?.timeline / 30
-                            )} Month(s)`
-                          : `${sub?.facilities?.timeline} Day(s)`}
-                      </span>
+                      {sub.isStrickers ? (
+                        <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
+                      ) : (
+                        <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
+                      )}
+                      <span>Strickers Available</span>
                     </div>
+                  )}
+                  {sub?.lockAccessToYourPage !== undefined && (
+                    <div className="flex gap-2">
+                      {sub.lockAccessToYourPage ? (
+                        <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
+                      ) : (
+                        <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
+                      )}
+                      <span>Lock Access To Your Page</span>
+                    </div>
+                  )}
 
-                    {/* Word Count */}
+                  {sub?.notificationReceivedAtEachScan !== undefined && (
                     <div className="flex gap-2">
-                      <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
-                      <span>Consist of {sub?.facilities?.wordCount} Words</span>
+                      {sub.notificationReceivedAtEachScan ? (
+                        <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
+                      ) : (
+                        <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
+                      )}
+                      <span>Notification Received At Each Scan</span>
                     </div>
-                  </div>
+                  )}
+
+                  {sub?.scanStatistics !== undefined && (
+                    <div className="flex gap-2">
+                      {sub.scanStatistics ? (
+                        <CheckOutlined className="bg-blue-200 text-blue-700 rounded-full p-1" />
+                      ) : (
+                        <CloseOutlined className="bg-red-200 text-red-700 rounded-full p-1" />
+                      )}
+                      <span>Scan Statistics</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

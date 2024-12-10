@@ -17,10 +17,10 @@ const subscriptionApi = baseApi.injectEndpoints({
         url: "/subscriptionsplans/create-plan",
         method: "POST",
         body: data,
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
+        // headers: {
+        //   "content-type": "application/json",
+        //   Authorization: `Bearer ${accessToken}`,
+        // },
         invalidatesTags: ["subscription"],
       }),
     }),
