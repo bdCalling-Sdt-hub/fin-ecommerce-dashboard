@@ -11,13 +11,11 @@ import moment from "moment";
 import { toast } from "sonner";
 
 const OrdersReceived = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [placement, setPlacement] = useState("");
 
   const { data: allOrders, isLoading, refetch } = useGetAllOrdersQuery();
-  console.log("allOrders", allOrders?.data.result);
+  // console.log("allOrders", allOrders?.data.result);
   const [updateStatus] = useUpdateOrderStatusMutation();
 
   const mappedOrders = allOrders?.data.result.map((order) => {
@@ -38,7 +36,7 @@ const OrdersReceived = () => {
     };
   });
 
-  console.log("mapped", mappedOrders);
+  // console.log("mapped", mappedOrders);
 
   const orderData = allOrders?.data.result;
   const filteredData = useMemo(() => {
@@ -53,7 +51,7 @@ const OrdersReceived = () => {
     });
   }, [orderData, searchText]);
 
-  console.log("filteredData", filteredData);
+  // console.log("filteredData", filteredData);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -80,13 +78,14 @@ const OrdersReceived = () => {
 
   // Handling the order status update
   const handleStatusChange = async (orderId, newStatus) => {
-    console.log(orderId);
+    console.log({ newStatus });
     try {
-      await updateStatus({ id: orderId, data: newStatus }).unwrap();
+      await updateStatus({ id: orderId, data: { status: newStatus} }).unwrap();
       toast.success(`Order status updated to ${newStatus}`);
       refetch();
     } catch (error) {
       toast.error("Failed to update order status");
+      console.log(error);
     }
   };
 
@@ -108,7 +107,7 @@ const OrdersReceived = () => {
 
       {/* Search and header */}
       <div className="flex justify-between p-6 bg-[#D3E6F9] rounded">
-        <h1 className="text-3xl font-bold text-black">Orders Delivery Lists</h1>
+        <h1 className="text-3xl font-bold text-black">Orders Lists</h1>
         <div className="flex gap-4 items-center">
           <ConfigProvider
             theme={{
@@ -177,6 +176,7 @@ const OrdersReceived = () => {
                   // console.log("record", record);
 
                   const product = record.productInfoId;
+                  // console.log("aasdfsdfsdf", product);
                   const productName = product?.name;
                   return (
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -195,8 +195,8 @@ const OrdersReceived = () => {
                       )}
                       <Link
                         to={{
-                          pathname: `/orders-received-details/${product._id}`, // Link to the details page of the product
-                          state: { record }, // Pass the record as state to the details page
+                          pathname: `/orders-received-details/${product?._id}`,
+                          state: { order: product },
                         }}
                       >
                         <span
@@ -241,7 +241,7 @@ const OrdersReceived = () => {
                 title: "Actions",
                 responsive: ["sm"],
                 render: (_, record) => {
-                  console.log("selected record", record); // Logs the record to the console
+                  // console.log("selected record", record); // Logs the record to the console
                   return (
                     <Select
                       defaultValue="Mark as"
@@ -253,15 +253,15 @@ const OrdersReceived = () => {
                       }
                       options={[
                         {
-                          value: "new-order",
+                          value: "New order",
                           label: "New Order",
                         },
                         {
-                          value: "process-order",
+                          value: "In the procss",
                           label: "Process Order",
                         },
                         {
-                          value: "delivery-order",
+                          value: "Odrer delivered",
                           label: "Delivery Order",
                         },
                       ]}

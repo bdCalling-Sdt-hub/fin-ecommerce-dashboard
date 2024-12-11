@@ -1,20 +1,20 @@
-
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import { ConfigProvider,  Table, Input, Select } from "antd";
+import { ConfigProvider, Table, Input, Select } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import subcriptionIcon from "../../../../public/images/dashboard-logo/subscriberIcon.svg"
+import subcriptionIcon from "../../../../public/images/dashboard-logo/subscriberIcon.svg";
 
 const PremiumSubscription = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const [placement, setPlacement] = useState(''); // Consider defaulting this to a known value or leave it as an empty string
+  const [placement, setPlacement] = useState(""); // Consider defaulting this to a known value or leave it as an empty string
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/data/subscriptionUser.json");
+        console.log(response?.data);
         setData(response?.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -29,19 +29,21 @@ const PremiumSubscription = () => {
   // Filter data based on search text
   const filteredData = useMemo(() => {
     if (!searchText) return data;
-    return data.filter((item) => item.productName.toLowerCase().includes(searchText.toLowerCase()));
+    return data.filter((item) =>
+      item.name.toLowerCase().includes(searchText.toLowerCase())
+    );
   }, [data, searchText]);
 
   const onSearch = (value) => {
     setSearchText(value);
   };
 
-
- 
   return (
     <div>
       <div className="flex justify-between p-6 bg-[#D3E6F9] rounded">
-        <h1 className="text-3xl font-bold text-black">Premium Subscription Users Lists</h1>
+        <h1 className="text-3xl font-bold text-black">
+          Premium Subscription Users Lists
+        </h1>
         <div className="flex gap-4 items-center">
           <ConfigProvider
             theme={{
@@ -58,7 +60,9 @@ const PremiumSubscription = () => {
               value={searchText}
               onChange={(e) => onSearch(e.target.value)}
               className="text-base font-semibold"
-              prefix={<SearchOutlined className="text-[#97C6EA] font-bold text-lg mr-2" />}
+              prefix={
+                <SearchOutlined className="text-[#97C6EA] font-bold text-lg mr-2" />
+              }
               style={{
                 width: 280,
                 padding: "8px 16px",
@@ -111,7 +115,7 @@ const PremiumSubscription = () => {
               },
               {
                 title: "Status",
-                dataIndex: "status",  // Accessing the correct key
+                dataIndex: "status", // Accessing the correct key
                 render: (text) => (
                   <>
                     {text === "true" && ( // Check if the status is true
@@ -126,8 +130,7 @@ const PremiumSubscription = () => {
                   </>
                 ),
                 responsive: ["sm"],
-              }
-              
+              },
             ]}
             dataSource={filteredData}
             loading={loading}

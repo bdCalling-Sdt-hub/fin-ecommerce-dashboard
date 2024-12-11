@@ -2,11 +2,11 @@ import { useLocation } from "react-router-dom";
 
 const OrderDetails = () => {
   const location = useLocation();
-  const record = location.state;
+  const { order } = location.state;
 
-  console.log(record);
+  console.log(order);
 
-  if (!record) {
+  if (!order) {
     return <p>No data available</p>;
   }
   return (

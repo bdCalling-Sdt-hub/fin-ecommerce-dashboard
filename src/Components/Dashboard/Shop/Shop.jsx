@@ -25,7 +25,6 @@ import { toast } from "sonner";
 
 const Shop = () => {
   const [productData, setProductData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -42,12 +41,17 @@ const Shop = () => {
   const [imagePreviews, setImagePreviews] = useState(null);
 
   const { data: allProducts, isLoading, refetch } = useGetUniqueProductsQuery();
-  console.log("allProducts", allProducts?.data);
+  // console.log("allProducts", allProducts?.data);
   const { data: allCategory } = useGetAllCategoryQuery();
-  console.log("allCategory", allCategory?.data);
+  // console.log("allCategory", allCategory?.data);
 
   const [createProduct] = useCreateProductMutation();
   const [editProduct] = useEditProductMutation();
+
+
+  // http://192.168.12.235:8008/api/v1/orders/status/6758224e8b6b2d7e3985e84f
+  
+// http://192.168.12.235:8008/api/v1/product-info/6758163e5fc5bef49d9bb75f
 
   useEffect(() => {
     if (allProducts?.data) {
@@ -65,16 +69,16 @@ const Shop = () => {
           updatedAt: product.updatedAt || "",
           qrCodeUrl: product.qrCodeUrl || "",
           isDeleted:
-            product.isDeleted !== undefined ? product.isDeleted : false, // Default to false if undefined
-          isHidden: product.isHidden !== undefined ? product.isHidden : false, // Default to false if undefined
-          isSold: product.isSold !== undefined ? product.isSold : false, // Default to false if undefined
+            product.isDeleted !== undefined ? product.isDeleted : false,
+          isHidden: product.isHidden !== undefined ? product.isHidden : false,
+          isSold: product.isSold !== undefined ? product.isSold : false,
           addId: product.addId || "",
         };
       });
       setProductData(mappedData);
     }
-  }, [allProducts?.data]); // This will run whenever allProducts.data changes
-  console.log("productData", productData);
+  }, [allProducts?.data]);
+  // console.log("productData", productData);
 
   const filteredData = useMemo(() => {
     if (!searchText) return productData;
@@ -83,7 +87,7 @@ const Shop = () => {
     );
   }, [productData, searchText]);
 
-  console.log("Filtered Data:", filteredData);
+  // console.log("Filtered Data:", filteredData);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -166,17 +170,17 @@ const Shop = () => {
       return;
     }
 
-    console.log("Editing Product:", selectedProduct);
+    // console.log("Editing Product:", selectedProduct);
 
     const formData = new FormData();
 
     // Construct the updated product details
     const updatedProduct = {
-      name: productName || selectedProduct.name,
-      price: productPrice || selectedProduct.price,
-      categoryId: categoryItem || selectedProduct.categoryId,
-      quantity: productQuantity || selectedProduct.quantity,
-      description: productDescription || selectedProduct.description,
+      name: productName,
+      price: productPrice,
+      categoryId: categoryItem,
+      quantity: productQuantity,
+      description: productDescription,
     };
 
     // Append the updated product data as JSON to FormData
@@ -184,36 +188,38 @@ const Shop = () => {
 
     // If there are new images, append them to FormData
     if (productImages && productImages.length > 0) {
+      console.log("Nadim 1");
+      console.log(productImages);
       productImages.forEach((file) => {
         formData.append("files", file);
       });
     } else {
       if (imagePreviews.length > 0) {
+        console.log("Nadim 2 ");
+        console.log(imagePreviews);
         imagePreviews.forEach((url) => {
-          formData.append("existingFiles", url); // Send existing image URLs if applicable
+          formData.append("existingFiles", url);
         });
       }
     }
 
     try {
       const res = await editProduct({
-        id: selectedProduct.productId, // Ensure you send the correct product ID
+        id: selectedProduct.productId,
         data: formData,
       }).unwrap();
-      console.log("Product updated:", res);
-
-      // Reset state and close the modal
-      setIsEditModalVisible(false); // Close the modal after update
-      setProductName(""); // Reset product name
-      setProductDescription(""); // Reset description
-      setProductPrice(""); // Reset price
-      setProductImages(null); // Reset product images
-      setImagePreviews([]); // Reset image previews
+      // console.log("Product updated:", res);
+      setIsEditModalVisible(false);
+      setProductName("");
+      setProductDescription("");
+      setProductPrice("");
+      setProductImages(null);
+      setImagePreviews([]);
 
       toast.success("Product Updated Successfully");
-      refetch(); // Refresh the product list
+      refetch();
     } catch (error) {
-      console.error("Failed to update product:", error);
+      console.log("Failed to update product:", error);
       toast.error("Failed to update product. Please try again.");
     }
   };
@@ -222,10 +228,10 @@ const Shop = () => {
     console.log("product", product);
 
     const existingFiles = product?.images?.map((img, index) => ({
-      uid: index, // A unique id for each image
-      name: `image-${index + 1}`, // Give each image a name
+      uid: index,
+      name: `image-${index + 1}`,
       status: "done",
-      url: img, // The URL of the existing image
+      url: img,
     }));
 
     setFileList(existingFiles);
@@ -234,10 +240,10 @@ const Shop = () => {
     setIsEditModalVisible(true);
   };
 
-  console.log("image previews", imagePreviews);
+  // console.log("image previews", imagePreviews);
 
   const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
+    // console.log(`switch to ${checked}`);
   };
 
   return (

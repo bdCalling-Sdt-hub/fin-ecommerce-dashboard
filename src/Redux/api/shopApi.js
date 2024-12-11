@@ -39,15 +39,18 @@ const shopApi = baseApi.injectEndpoints({
         url: `/product-info/${id}`,
         method: "PATCH",
         body: data,
-        // headers: {
-        //   "content-type": "application/json",
-        //   Authorization: `Bearer ${accessToken}`,
-        // },
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
         invalidatesTags: ["editProduct"],
       }),
     }),
   }),
 });
+
+
+
+
 
 export const {
   useGetUniqueProductsQuery,

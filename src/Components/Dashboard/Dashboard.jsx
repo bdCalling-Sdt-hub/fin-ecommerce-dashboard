@@ -3,18 +3,23 @@ import { InfoCard } from "../Chart/DashboardChart";
 import { NavLink } from "react-router-dom";
 import { useAllUsersQuery } from "../../Redux/api/usersApi";
 import { useGetAllProductsQuery } from "../../Redux/api/shopApi";
+import { useGetAllOrdersQuery } from "../../Redux/api/ordersApi";
 
 const Dashboard = () => {
   const { data: allUser } = useAllUsersQuery();
   const { data: allProducts } = useGetAllProductsQuery();
+  const { data: allOrders } = useGetAllOrdersQuery();
 
-  console.log(allUser?.data);
-
-  console.log("allProducts", allProducts?.data);
+  // console.log(allUser?.data);
+  // console.log("allProducts", allProducts?.data);
+  // console.log("allOrders", allOrders?.data.result);
 
   const userCount = allUser?.data.length;
   const productCount = allProducts?.data.length;
+  const ordersCount = allOrders?.data.result.length;
   console.log(userCount);
+  console.log(productCount);
+  console.log(ordersCount);
   // const onGoingTasks = Array.isArray(tasks?.data) ? tasks?.data?.filter(task => task.taskStatus === "onGoing") : [];
   // const {data:workers} = useGetAllWorkerQuery();
   // const {data:providers} = useGetAllProviderQuery();
@@ -43,7 +48,11 @@ const Dashboard = () => {
             value={productCount}
             color="bg-purple-400"
           />
-          <InfoCard title="Orders Received" value="15" color="bg-green-400" />
+          <InfoCard
+            title="Orders Received"
+            value={ordersCount}
+            color="bg-green-400"
+          />
           <InfoCard
             title="Premium Subscribers"
             value="25"

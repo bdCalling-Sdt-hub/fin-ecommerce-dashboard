@@ -9,16 +9,17 @@ const orderApi = baseApi.injectEndpoints({
       }),
       providesTags: ["orders"],
     }),
+
     updateOrderStatus: builder.mutation({
-      query: ({ id, data }) => {
-        console.log("Editing Status with ID:", id);
-        return {
-          url: `/orders/status/${id}`,
-          method: "PATCH",
-          body: data,
-          invalidatesTags: ["updateOrder"],
-        };
-      },
+      query: ({ id, data }) => ({
+        url: `/orders/status/${id}`,
+        method: "PATCH",
+        body: data,
+        headers: {
+          "Content-type": "application/json",
+        },
+        invalidatesTags: ["updateOrder"],
+      }),
     }),
   }),
 });
