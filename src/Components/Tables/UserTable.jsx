@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+/* eslint-disable no-unused-vars */
 import { ConfigProvider, Table } from "antd";
-// import { useGetAllUserQuery } from "../../Redux/api/authApi";
+import { useAllUsersQuery } from "../../Redux/api/usersApi";
 
 const columns = [
   {
@@ -12,7 +11,7 @@ const columns = [
   },
   {
     title: "Users Name",
-    dataIndex: "customerName",
+    dataIndex: "fullName",
     render: (text, record) => (
       <div style={{ display: "flex", alignItems: "center" }}>
         {/* <img
@@ -37,40 +36,25 @@ const columns = [
   },
   {
     title: "Contact Number",
-    dataIndex: "contactNumber",
-    responsive: ["md"], // Hide on smaller screens
-  },
-  {
-    title: "Delete Users",
-    dataIndex: "isDelete",
+    dataIndex: "phone",
     responsive: ["md"], // Hide on smaller screens
   },
   {
     title: "Role",
     dataIndex: "role",
+    render: (text, record) => (
+      <span>{record.role.charAt(0).toUpperCase() + record.role.slice(1)}</span>
+    ),
     responsive: ["xs", "sm", "md"], // Visible on all screen sizes
   },
 ];
 
 const UserTable = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: allUser, isLoading } = useAllUsersQuery();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/data/userData.json");
-        console.log("response", response?.data);
-        setData(response?.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const userData = allUser?.data;
 
-    fetchData();
-  }, []);
+  console.log(userData);
 
   const onChange = (filters, extra) => {
     console.log("params", filters, extra);
@@ -93,8 +77,8 @@ const UserTable = () => {
       <div className="w-full overflow-x-auto rounded-xl p-4">
         <Table
           columns={columns}
-          dataSource={data}
-          loading={loading}
+          dataSource={userData}
+          loading={isLoading}
           pagination={{ pageSize: 5, responsive: true }}
           // pagination={{ pageSize: 5, showSizeChanger: true, responsive: true }}
           onChange={onChange}

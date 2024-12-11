@@ -12,7 +12,7 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("authToken");
+  // const token = localStorage.getItem("authToken");
 
   const [forgetPassword] = useForgetPasswordMutation();
 
@@ -28,7 +28,7 @@ const ForgotPassword = () => {
       const response = await forgetPassword(data).unwrap();
       console.log("response token", response);
       if (response.success === true) {
-        localStorage.setItem("forget_otp_token", response?.data?.forgetToken);
+        localStorage.setItem("otpToken", response?.data?.forgetToken);
         localStorage.setItem("userEmail", email);
         toast.success("An OTP has been sent to your email!");
         navigate("/verify-otp");

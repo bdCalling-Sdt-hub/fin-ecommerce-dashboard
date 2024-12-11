@@ -1,58 +1,77 @@
 import { LeftOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
 import JoditEditor from "jodit-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import {
+  useAddSettingsMutation,
+  useGetSettingsQuery,
+  useUpdateSettingsMutation,
+} from "../../../Redux/api/settingsApi";
 
 const PrivacyPolicy = () => {
-  const privacyPolicyText = `
-<p>This Privacy Policy describes how Memorial Moments ("we", "us", or "our") collects, uses, and shares your information when you use our mobile application ("App").</p>
-<br/>
-<p>Information We Collect</p>
-<br/>
-<p>When you use the Memorial Moments App, we may collect the following types of information:</p>
-<br/>
-<p>Profile Information:<br>
-We collect information you provide when you edit your profile, including any changes to your name or email address.</p>
-<br/>
-<p>Story Information:<br>
-When you add a story, we may collect the story title, date of birth, date of death (picked from the calendar), uploaded music, uploaded images, and story description.</p>
-<br/>
-<p>Subscription Information:<br>
-If you choose to subscribe to our premium services, we collect payment information through our third-party payment processor, Stripe.</p>
-<br/>
-<p>Usage Information:<br>
-We may collect information about how you interact with the App, including your use of features and preferences.</p>
-<br/>
-<p>How We Use Your Information<br>
-We may use the information we collect for the following purposes:</p>
-<br/>
-<ul>
-  <li>To provide and improve the App's functionality and user experience.</li>
-  <li>To communicate with you about your account and App-related updates.</li>
-  <li>To process payments for subscription services.</li>
-  <li>To personalize your experience and provide targeted content and advertisements.</li>
-  <li>To enforce our Terms of Service and other legal agreements.</li>
-  <li>To comply with legal obligations.</li>
-</ul>
-<br/>
-<p>Data Security<br>
-We take reasonable measures to protect your information from unauthorized access, use, or disclosure. However, no method of transmission over the internet or electronic storage is 100% secure.</p>
-<br/>
-<p>Data Retention<br>
-We retain your information for as long as necessary to fulfill the purposes outlined in this Privacy Policy unless a longer retention period is required or permitted by law.</p>
-<br/>
-<p>Children's Privacy<br>
-The Memorial Moments App is not intended for children under the age of 13. We do not knowingly collect or solicit personal information from children.</p>
-`;
-
   const editor = useRef(null);
-  const [content, setContent] = useState(privacyPolicyText);
   const navigate = useNavigate();
 
-  const handleOnSave = () => {
-    console.log(content);
+  const [content, setContent] = useState("");
+
+  // Fetch privacy policy data
+  const {
+    data: getSettingsData,
+    isLoading: isFetching,
+    error: fetchError,
+    refetch,
+  } = useGetSettingsQuery();
+  console.log(getSettingsData?.data.privacyPolicy);
+
+  // Mutations for adding and updating privacy policy
+  const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
+  const [updateSettings, { isLoading: isUpdating }] =
+    useUpdateSettingsMutation();
+
+  // Load privacy policy data on component mount
+  useEffect(() => {
+    if (getSettingsData?.data.privacyPolicy) {
+      setContent(getSettingsData.data.privacyPolicy); // Load the latest policy
+    }
+  }, [getSettingsData]);
+
+  const handleOnSave = async () => {
+    try {
+      if (getSettingsData?.data.privacyPolicy) {
+        // Update existing privacy policy
+        await updateSettings({ privacyPolicy: content }).unwrap();
+        toast.success("Privacy Policy updated successfully!");
+      } else {
+        // Add a new privacy policy if not existing
+        await addSettings({ privacyPolicy: content }).unwrap();
+        toast.success("Privacy Policy added successfully!");
+      }
+      refetch(); // Refresh the data after save
+    } catch (error) {
+      toast.error("Failed to save Privacy Policy. Please try again.");
+      console.error("Save error:", error);
+    }
   };
+
+  // Show loading state while fetching data
+  if (isFetching) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin size="large" tip="Loading Privacy Policy..." />
+      </div>
+    );
+  }
+
+  // Show error message if fetch fails
+  if (fetchError) {
+    return (
+      <div className="text-white">
+        Error loading Privacy Policy. Please try again later.
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-2 px-2 rounded-lg">
@@ -73,6 +92,7 @@ The Memorial Moments App is not intended for children under the age of 13. We do
       <Button
         block
         onClick={handleOnSave}
+        loading={isAdding || isUpdating} // Show loading while saving
         style={{
           marginTop: "16px",
           padding: "1px",
@@ -83,7 +103,7 @@ The Memorial Moments App is not intended for children under the age of 13. We do
           border: "none",
         }}
       >
-        Save
+        Save Changes
       </Button>
     </div>
   );

@@ -11,9 +11,9 @@ import Logout from "../Dashboard/Logout";
 import Notifications from "../Dashboard/Notifications";
 import EditProfile from "../../Pages/Profile/EditProfile";
 import AboutUs from "../Dashboard/settings/AboutUs";
-import UpdatePassword from "../../Pages/Auth/UpdatePassword";
 import OtpPage from "../../Pages/Auth/OtpPage";
 import SignIn from "../../Pages/Auth/SignIn";
+import ResetPassword from "../../Pages/Auth/ResetPassword";
 import UserDetails from "../Dashboard/UserDetails";
 // import SignUp from "../../Pages/Auth/SignUp";
 // import SettingsForgotPassword from "../Dashboard/settings/SettingsForgotPassword";
@@ -21,8 +21,6 @@ import SettingsChangePassword from "../Dashboard/settings/SettingsChangePassword
 // import SettingsUpdatePassword from "../Dashboard/settings/SettingsUpdatePassword";
 // import SettingsOtpPage from "../Dashboard/settings/SettingsOtpPage";
 
-// import AppTransactions from "../Dashboard/AppTransactions";
-// import FAQ from "../Dashboard/settings/FAQ";
 import Users from "../Dashboard/Users";
 import TermsAndCondition from "../Dashboard/settings/TermsAndCondition";
 import CreateAdmin from "../Dashboard/CreateAdmin";
@@ -31,8 +29,10 @@ import Shop from "../Dashboard/Shop/Shop";
 import OrdersReceived from "../Dashboard/OrdersReceived/OrdersReceived";
 import PremiumSubscription from "../Dashboard/PremiumSubscription/PremiumSubscription";
 import ScanStatistics from "../Dashboard/ScanStatistics/ScanStatistics";
-import OrdersDeliveryDetails from "../Dashboard/OrdersReceived/ordersDeliveryDetails";
 import QRCodeGeneratedDetails from "../Dashboard/QRCodesGenerated/QRCodeGeneratedDetails";
+import ProtectedRoute from "../ProtectedRoute";
+import OrderDetails from "../Dashboard/OrdersReceived/OrdersDetails";
+import Subscription from "../Dashboard/Subscription";
 
 const router = createBrowserRouter([
   {
@@ -56,12 +56,16 @@ const router = createBrowserRouter([
         element: <OtpPage />,
       },
       {
-        path: "/update-password",
-        element: <UpdatePassword />,
+        path: "/reset-password",
+        element: <ResetPassword />,
       },
       {
         path: "",
-        element: <DashboardLayout />,
+        element: (
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: "/",
@@ -78,35 +82,39 @@ const router = createBrowserRouter([
           {
             path: "users",
             element: <Users />,
-          },    
+          },
           {
             path: "qr-code-generated",
             element: <QRCodesGenerated />,
-          },    
+          },
           {
             path: "qr-code-generated/:id",
             element: <QRCodeGeneratedDetails />,
-          },    
+          },
           {
             path: "shop",
             element: <Shop />,
-          },    
+          },
           {
             path: "orders-received",
             element: <OrdersReceived />,
-          },    
+          },
           {
             path: "orders-received-details/:id",
-            element: <OrdersDeliveryDetails />,
-          },    
+            element: <OrderDetails />,
+          },
           {
             path: "premium-subscription",
             element: <PremiumSubscription />,
-          },    
+          },
           {
             path: "scan-statistics",
             element: <ScanStatistics />,
-          },    
+          },
+          {
+            path: "subscriptions",
+            element: <Subscription />,
+          },
           {
             path: "profile",
             element: <Profile />,

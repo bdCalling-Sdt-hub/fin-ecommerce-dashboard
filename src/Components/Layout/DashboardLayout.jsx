@@ -2,7 +2,7 @@ import Topbar from "../Shared/Topbar";
 import logo from "/images/4 1.png";
 import dashboardLogo from "../../../public/images/dashboard-logo/dashboard.svg";
 import users from "../../../public/images/dashboard-logo/users.svg";
-import user from "../../../public/images/dashboard-logo/user.svg";
+// import user from "../../../public/images/dashboard-logo/user.svg";
 import setting from "../../../public/images/dashboard-logo/Setting.svg";
 import logout from "../../../public/images/dashboard-logo/logout.svg";
 import QRCodeGenerated from "../../../public/images/dashboard-logo/Group 75.svg";
@@ -10,7 +10,13 @@ import shop from "../../../public/images/dashboard-logo/shop.svg";
 import orderReceved from "../../../public/images/dashboard-logo/orderReceved.svg";
 import premiumSubscription from "../../../public/images/dashboard-logo/premiumSubscription.svg";
 import scanStatistics from "../../../public/images/dashboard-logo/Group 76.svg";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { ConfigProvider, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
@@ -19,6 +25,7 @@ import { useState, useEffect } from "react";
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const [openKeys, setOpenKeys] = useState([]);
 
   // Function to check if any submenu under "Stories" is active
@@ -33,11 +40,19 @@ const DashboardLayout = () => {
     }
   }, [location]);
 
+  // handleLogout function
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    // cookie.remove("authToken", { path: "/" });
+
+    navigate("/signin", { replace: true });
+  };
+
   return (
     <div className="h-screen">
       <Layout className="min-h-[100vh]">
         <Sider
-          width={200}
+          width={240}
           theme="light"
           trigger={null}
           collapsible
@@ -91,7 +106,9 @@ const DashboardLayout = () => {
                       src={dashboardLogo}
                       alt="dashboard"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("dashboard") ? "active-icon" : ""
+                        location.pathname.includes("dashboard")
+                          ? "active-icon"
+                          : ""
                       }`}
                     />
                   ),
@@ -99,7 +116,9 @@ const DashboardLayout = () => {
                     <NavLink
                       to="dashboard"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : "font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : "font-semibold"
                       }
                     >
                       Dashboard
@@ -121,7 +140,9 @@ const DashboardLayout = () => {
                     <NavLink
                       to="users"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
                       }
                     >
                       Users
@@ -135,7 +156,9 @@ const DashboardLayout = () => {
                       src={QRCodeGenerated}
                       alt="qr-code-generated"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("qr-code-generated") ? "active-icon" : ""
+                        location.pathname.includes("qr-code-generated")
+                          ? "active-icon"
+                          : ""
                       }`}
                     />
                   ),
@@ -143,7 +166,9 @@ const DashboardLayout = () => {
                     <NavLink
                       to="qr-code-generated"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
                       }
                     >
                       QR Code Generated
@@ -165,7 +190,9 @@ const DashboardLayout = () => {
                     <NavLink
                       to="shop"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
                       }
                     >
                       Shop
@@ -179,7 +206,9 @@ const DashboardLayout = () => {
                       src={orderReceved}
                       alt="orders-received"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("orders-received") ? "active-icon" : ""
+                        location.pathname.includes("orders-received")
+                          ? "active-icon"
+                          : ""
                       }`}
                     />
                   ),
@@ -187,7 +216,9 @@ const DashboardLayout = () => {
                     <NavLink
                       to="orders-received"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
                       }
                     >
                       Orders Received
@@ -195,24 +226,28 @@ const DashboardLayout = () => {
                   ),
                 },
                 {
-                  key: "premium-subscription",
+                  key: "subscriptions",
                   icon: (
                     <img
                       src={premiumSubscription}
-                      alt="premium-subscription"
+                      alt="subscriptions"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("premium-subscription") ? "active-icon" : ""
+                        location.pathname.includes("subscriptions")
+                          ? "active-icon"
+                          : ""
                       }`}
                     />
                   ),
                   label: (
                     <NavLink
-                      to="premium-subscription"
+                      to="subscriptions"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
                       }
                     >
-                      Premium Subscription
+                      Subscriptions
                     </NavLink>
                   ),
                 },
@@ -223,7 +258,9 @@ const DashboardLayout = () => {
                       src={scanStatistics}
                       alt="scan-statistics"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("scan-statistics") ? "active-icon" : ""
+                        location.pathname.includes("scan-statistics")
+                          ? "active-icon"
+                          : ""
                       }`}
                     />
                   ),
@@ -231,14 +268,41 @@ const DashboardLayout = () => {
                     <NavLink
                       to="scan-statistics"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
                       }
                     >
                       Scan Statistics
                     </NavLink>
                   ),
                 },
-
+                {
+                  key: "premium-subscription",
+                  icon: (
+                    <img
+                      src={premiumSubscription}
+                      alt="premium-subscription"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("premium-subscription")
+                          ? "active-icon"
+                          : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="premium-subscription"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
+                      }
+                    >
+                      Premium Subscription
+                    </NavLink>
+                  ),
+                },
                 {
                   key: "settings",
                   icon: (
@@ -275,7 +339,9 @@ const DashboardLayout = () => {
                         <NavLink
                           to="settings/change-password"
                           className={({ isActive }) =>
-                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
                           }
                         >
                           Change Password
@@ -289,7 +355,9 @@ const DashboardLayout = () => {
                         <NavLink
                           to="settings/about-us"
                           className={({ isActive }) =>
-                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
                           }
                         >
                           About Us
@@ -303,7 +371,9 @@ const DashboardLayout = () => {
                         <NavLink
                           to="settings/terms-of-service"
                           className={({ isActive }) =>
-                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
                           }
                         >
                           Terms Of Service
@@ -317,7 +387,9 @@ const DashboardLayout = () => {
                         <NavLink
                           to="settings/privacy-policy"
                           className={({ isActive }) =>
-                            isActive ? "active-menu-item font-semibold" : " font-semibold"
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
                           }
                         >
                           Privacy And Policy
@@ -326,30 +398,32 @@ const DashboardLayout = () => {
                     },
                   ],
                 },
-                {
-                  key: "dashboard/create-admin",
-                  icon: (
-                    <img
-                      src={user}
-                      alt="dashboard/create-admin"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("dashboard/create-admin")
-                          ? "active-icon "
-                          : " "
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="dashboard/create-admin"
-                      className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
-                      }
-                    >
-                      Create New Admin
-                    </NavLink>
-                  ),
-                },
+                // {
+                //   key: "dashboard/create-admin",
+                //   icon: (
+                //     <img
+                //       src={user}
+                //       alt="dashboard/create-admin"
+                //       className={`h-5 menu-icon ${
+                //         location.pathname.includes("dashboard/create-admin")
+                //           ? "active-icon "
+                //           : " "
+                //       }`}
+                //     />
+                //   ),
+                //   label: (
+                //     <NavLink
+                //       to="dashboard/create-admin"
+                //       className={({ isActive }) =>
+                //         isActive
+                //           ? "active-menu-item font-semibold"
+                //           : " font-semibold"
+                //       }
+                //     >
+                //       Create New Admin
+                //     </NavLink>
+                //   ),
+                // },
                 {
                   key: "logout",
                   icon: (
@@ -367,9 +441,12 @@ const DashboardLayout = () => {
                   ),
                   label: (
                     <NavLink
-                      to="signin"
+                      onClick={handleLogout}
+                      // to="signin"
                       className={({ isActive }) =>
-                        isActive ? "active-menu-item font-semibold" : " font-semibold"
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
                       }
                     >
                       Logout

@@ -1,12 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  SearchOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Button, ConfigProvider, Input, Modal, Table, Tooltip } from "antd";
-import axios from "axios";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { GoEye } from "react-icons/go";
-import { useBlockedUserMutation, useGetAllUserQuery } from "../../Redux/api/authApi";
-import Swal from "sweetalert2";
+import { useAllUsersQuery } from "../../Redux/api/usersApi";
+import moment from "moment";
+import subscribedImg from "../../../public/images/subscribed.png";
 
 export default function Users() {
   const [searchText, setSearchText] = useState("");
@@ -17,39 +20,18 @@ export default function Users() {
   const [isBlockModalVisible, setIsBlockModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
+  const { data: allUser, isLoading, refetch } = useAllUsersQuery();
 
-  // const { data: usersData, isLoading } = useGetAllUserQuery(null);
-  // const [blockedUser] = useBlockedUserMutation();
+  const userData = allUser?.data;
 
-  // useEffect(() => {
-  //   if (usersData && usersData.data) {
-  //     setUserData(usersData.data); // Ensure only valid data is set
-  //   }
-  // }, [usersData]);
-
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/data/userData.json");
-        console.log("Fetched data:", response.data);
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  console.log("allUser", userData);
 
   const filteredData = useMemo(() => {
-    if (!searchText) return data;
+    if (!searchText) return userData;
     return data.filter((item) =>
-      item.customerName.toLowerCase().includes(searchText.toLowerCase())
+      item.fullName.toLowerCase().includes(searchText.toLowerCase())
     );
-  }, [data, searchText]);
+  }, [userData, searchText]);
 
   const onSearch = (value) => {
     setSearchText(value);
@@ -87,7 +69,7 @@ export default function Users() {
 
   return (
     <div className="min-h-[90vh]">
-     <div className="bg-[#D3E6F9] rounded-lg">
+      <div className="bg-[#D3E6F9] rounded-lg">
         <div className="flex justify-between p-6">
           <h1 className="text-3xl font-bold text-black">Users List</h1>
           <div className="flex gap-4 items-center">
@@ -128,7 +110,8 @@ export default function Users() {
                   headerBg: "rgb(255,255,255)",
                   colorBgContainer: "rgb(255,255,255)",
                   colorText: "rgb(0,0,0)",
-                  borderColor: "rgb(73,72,72)",
+                  borderColor: "rgb(255,255,255)",
+                  headerSplitColor: "rgb(255,255,255)",
                   headerColor: "#013564",
                   footerBg: "rgb(255,255,255)",
                   // borderRadius: 20,
@@ -138,72 +121,54 @@ export default function Users() {
           >
             <Table
               dataSource={filteredData}
-              loading={loading}
+              loading={isLoading}
               pagination={{ pageSize: 8 }}
               rowKey={(record) => record.serialId}
               scroll={{ x: true }}
             >
-              <Table.Column title="S.ID" dataIndex="serialId" key="serialId" />
+              {/* <Table.Column
+                title="S.ID"
+                dataIndex="serialId"
+                key="serialId"
+                render={(_, __, index) => index + 1}
+              /> */}
               <Table.Column
                 title="Full Name"
-                dataIndex="customerName"
-                key="customerName"
-                // render={(text, record) => (
-                //   <div style={{ display: "flex", alignItems: "center" }}>
-                //     <img
-                //       src={record.avatar}
-                //       alt={record.customerName}
-                //       style={{
-                //         width: 28,
-                //         height: 28,
-                //         borderRadius: "50%",
-                //         marginRight: 8,
-                //       }}
-                //     />
-                //     {text}
-                //   </div>
-                // )}
+                dataIndex="fullName"
+                key="fullName"
+                render={(text, record) => (
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <UserOutlined style={{ fontSize: 20, marginRight: 8 }} />
+                    {text}
+                  </div>
+                )}
               />
               <Table.Column title="Email" dataIndex="email" key="email" />
               <Table.Column title="Contact No" dataIndex="phone" key="phone" />
               <Table.Column
-                title="Joining Date"
-                dataIndex="joiningDate"
-                key="joiningDate"
+                title="Registration Date"
+                dataIndex="createdAt"
+                key="createdAt"
+                render={(date) => moment(date).format("MMM DD, YYYY, h:mm A")}
+              />{" "}
+              <Table.Column
+                title="Orders"
+                dataIndex="orderdProducts"
+                key="orderdProducts"
               />
               <Table.Column
                 title="Subscribers"
                 dataIndex="isSubscribers"
                 key="isSubscribers"
-                render={(text)=> text ? 'yes':'no'}
-              />
-              <Table.Column
-                title="Role"
-                dataIndex="role"
-                key="role"
-              />
-              <Table.Column
-                title="Action"
-                key="action"
-                render={(_, record) => (
-                  <>
-                    <div>
-                      <Tooltip placement="right" title="View Details">
-                        <Button
-                          style={{
-                            background: "white",
-                            padding: 0,
-                            border: "1px solid #013564",
-                            color: "#013564",
-                          }}
-                          onClick={() => showViewModal(record)}
-                        >
-                          <p className="px-5 font-semibold">Details</p>
-                        </Button>
-                      </Tooltip>
-                    </div>
-                  </>
-                )}
+                render={(text) =>
+                  text ? (
+                    <img
+                      src="../../../public/images/subscribed.png"
+                      alt="Subscribed"
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : null
+                }
               />
             </Table>
           </ConfigProvider>
