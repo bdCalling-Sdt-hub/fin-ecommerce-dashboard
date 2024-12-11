@@ -80,7 +80,7 @@ const OrdersReceived = () => {
   const handleStatusChange = async (orderId, newStatus) => {
     console.log({ newStatus });
     try {
-      await updateStatus({ id: orderId, data: { status: newStatus} }).unwrap();
+      await updateStatus({ id: orderId, data: { status: newStatus } }).unwrap();
       toast.success(`Order status updated to ${newStatus}`);
       refetch();
     } catch (error) {
@@ -173,10 +173,10 @@ const OrdersReceived = () => {
                 title: "Name",
                 dataIndex: "name",
                 render: (text, record) => {
-                  // console.log("record", record);
+                  console.log("record", record);
 
                   const product = record.productInfoId;
-                  // console.log("aasdfsdfsdf", product);
+                  console.log("aasdfsdfsdf", product);
                   const productName = product?.name;
                   return (
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -194,10 +194,8 @@ const OrdersReceived = () => {
                         />
                       )}
                       <Link
-                        to={{
-                          pathname: `/orders-received-details/${product?._id}`,
-                          state: { order: product },
-                        }}
+                        to={`/orders-received-details/${product?._id}`}
+                        state={record}
                       >
                         <span
                           style={{
