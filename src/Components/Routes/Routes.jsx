@@ -31,6 +31,7 @@ import { Earnings } from "../Dashboard/Earnings/Earnings";
 import { AddOffer } from "../Dashboard/AddOffer/AddOffer";
 import { AddProduct } from "../Dashboard/AddProduct/AddProduct";
 import ProductEdit from "../Dashboard/ProductEdit/ProductEdit";
+import Category from "../Dashboard/Category/Category";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
           {
             path: "users",
             element: <Users />,
+          },
+          {
+            path: "category",
+            element: <Category />,
           },
           {
             path: "orders",

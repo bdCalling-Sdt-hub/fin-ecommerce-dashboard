@@ -74,12 +74,16 @@ const Dashboard = () => {
                   theme={{
                     components: {
                       Select: {
-                        selectorBg: "rgba(249, 248, 248, 0.01)",
-                        colorText: "",
-                        colorTextQuaternary: "rgb(225, 225, 225)",
-                        colorBgElevated: "rgb(29, 29, 29)",
-                        optionSelectedBg: "rgba(83, 81, 81, 0.95)",
-                        colorTextPlaceholder: "rgb(156, 156, 156)",
+                        // selectorBg: "rgba(249, 248, 248, 0.01)",
+                        // colorText: "",
+                        // colorTextQuaternary: "rgb(225, 225, 225)",
+                        // colorBgElevated: "rgb(29, 29, 29)",
+                        // optionSelectedBg: "rgba(83, 81, 81, 0.95)",
+                        // colorTextPlaceholder: "rgb(156, 156, 156)",
+                        fontSize: 18,
+                        colorBorder: "#222222",
+                        optionSelectedBg: "rgb(254,188,96)",
+                        optionActiveBg: "rgb(255,217,165)",
                       },
                     },
                   }}

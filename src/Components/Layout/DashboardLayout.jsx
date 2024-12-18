@@ -128,6 +128,32 @@ const DashboardLayout = () => {
                 },
                 
                 {
+                  key: "category",
+                  icon: (
+                    <img
+                      src={orders}
+                      alt="category"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("category")
+                          ? "active-icon"
+                          : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="category"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
+                      }
+                    >
+                    Add Category
+                    </NavLink>
+                  ),
+                },
+                {
                   key: "orders",
                   icon: (
                     <img

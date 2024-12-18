@@ -71,7 +71,7 @@ const SettingsChangePassword = () => {
             <Form.Item name="currentPassword" className="text-black">
               <Input.Password
                 placeholder="Enter your password"
-                className="py-2 px-3 text-xl bg-transparent border-black text-black hover:bg-transparent hover:border-blue-600 focus:bg-transparent focus:border-blue-700"
+                className="py-2 px-3 text-xl bg-transparent border-black text-black hover:bg-transparent hover:border-[#E6C379] focus:bg-transparent focus:border-[#E6C379]"
                 rules={[
                   {
                     required: true,
@@ -86,7 +86,7 @@ const SettingsChangePassword = () => {
             <Form.Item name="newPassword" className="text-black">
               <Input.Password
                 placeholder="Enter your password"
-                className="py-2 px-3 text-xl bg-transparent border-black text-black hover:bg-transparent hover:border-blue-600 focus:bg-transparent focus:border-blue-700"
+                className="py-2 px-3 text-xl bg-transparent border-black text-black hover:bg-transparent hover:border-[#E6C379] focus:bg-transparent focus:border-[#E6C379]"
                 rules={[
                   {
                     required: true,
@@ -123,7 +123,7 @@ const SettingsChangePassword = () => {
             >
               <Input.Password
                 placeholder="Enter your password"
-                className="py-2 px-3 text-xl bg-transparent border-black text-black hover:bg-transparent hover:border-blue-600 focus:bg-transparent focus:border-blue-700"
+                className="py-2 px-3 text-xl bg-transparent border-black text-black hover:bg-transparent hover:border-[#E6C379] focus:bg-transparent focus:border-[#E6C379]"
               />
             </Form.Item>
             {/* <div className="flex justify-end">
@@ -146,9 +146,9 @@ const SettingsChangePassword = () => {
                 }}
               >
                 <Button
-                  className="w-full py-6 border border-[#10578d] hover:border-[#10578d] text-xl text-white font-semibold rounded-2xl mt-10"
+                  className="w-full py-6 border border-[#E6C379] hover:border-[#E6C379] text-xl text-white font-semibold rounded-2xl mt-10"
                   htmlType="submit"
-                  style={{ background: "#013564" }}
+                  style={{ background: "#E6C379" }}
                 >
                   Change password
                 </Button>
