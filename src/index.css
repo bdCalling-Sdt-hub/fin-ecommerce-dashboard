@@ -14,10 +14,10 @@
   filter: brightness(1) invert(0);
 }
 .active-icon {
-  filter: brightness(0) invert(1);
+  filter: brightness(1) invert(0);
 }
 .active-menu-item {
-  color: white !important;
+  color: black !important;
 }
 
 /*  custom gradient backgrounds */

@@ -1,15 +1,14 @@
 import Topbar from "../Shared/Topbar";
-import logo from "/images/4 1.png";
+// import logo from "/images/4 1.png";
 import dashboardLogo from "../../../public/images/dashboard-logo/dashboard.svg";
 import users from "../../../public/images/dashboard-logo/users.svg";
 // import user from "../../../public/images/dashboard-logo/user.svg";
 import setting from "../../../public/images/dashboard-logo/Setting.svg";
 import logout from "../../../public/images/dashboard-logo/logout.svg";
-import QRCodeGenerated from "../../../public/images/dashboard-logo/Group 75.svg";
-import shop from "../../../public/images/dashboard-logo/shop.svg";
-import orderReceved from "../../../public/images/dashboard-logo/orderReceved.svg";
-import premiumSubscription from "../../../public/images/dashboard-logo/premiumSubscription.svg";
-import scanStatistics from "../../../public/images/dashboard-logo/Group 76.svg";
+import orders from "../../../public/images/icon/orders.svg";
+import offers from "../../../public/images/icon/offer.svg";
+import products from "../../../public/images/icon/create_product.svg";
+import earnings from "../../../public/images/icon/earning.svg";
 import {
   Link,
   NavLink,
@@ -21,6 +20,7 @@ import { ConfigProvider, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { useState, useEffect } from "react";
+import logo from "../../../public/images/logo.png";
 
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -58,7 +58,7 @@ const DashboardLayout = () => {
           collapsible
           collapsed={collapsed}
           style={{
-            background: "#d3e6f9",
+            background: "#EBEBEB",
             // color:'black'
             // marginRight: "10px",
             // borderRadius: "5px",
@@ -70,7 +70,7 @@ const DashboardLayout = () => {
               alt="logo"
               width={140}
               height={140}
-              className="my-7 mx-auto rounded-lg"
+              className="my-7 mx-auto "
             />
           </Link>
           <ConfigProvider
@@ -83,6 +83,7 @@ const DashboardLayout = () => {
               // },
               token: {
                 colorBgBase: "rgb(211,230,249)",
+                // colorBgBase: "#000",
                 colorInfo: "#023E8A",
               },
             }}
@@ -125,8 +126,190 @@ const DashboardLayout = () => {
                     </NavLink>
                   ),
                 },
+                
                 {
-                  key: "users",
+                  key: "orders",
+                  icon: (
+                    <img
+                      src={orders}
+                      alt="orders"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("orders")
+                          ? "active-icon"
+                          : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="orders"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
+                      }
+                    >
+                     orders
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "offers",
+                  icon: (
+                    <img
+                      src={offers}
+                      alt="offers"
+                      width={15}
+                      height={15}
+                      className="menu-icon"
+                      // className={`menu-icon ${
+                      //   isSubMenuActive(["all-stories", "story-request"])
+                      //     ? "active-icon"
+                      //     : ""
+                      // }`}
+                    />
+                  ),
+                  label: (
+                    <span
+                      // className={
+                      //   isSubMenuActive(["all-stories", "story-request"])
+                      //     ? "active-menu-item"
+                      //     : ""
+                      // }
+                      className="text-black active:bg-black active:text-black font-semibold"
+                    >
+                     Create Offer
+                    </span>
+                  ),
+                  children: [
+                    {
+                      key: "offers",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="offers"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
+                          }
+                        >
+                          Offers
+                        </NavLink>
+                      ),
+                    },
+                    {
+                      key: "add-offer",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="add-offer"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
+                          }
+                        >
+                          Add Offer
+                        </NavLink>
+                      ),
+                    },
+                    
+                  ],
+                },
+                {
+                  key: "products",
+                  icon: (
+                    <img
+                      src={products}
+                      alt="products"
+                      width={15}
+                      height={15}
+                      className="menu-icon"
+                      // className={`menu-icon ${
+                      //   isSubMenuActive(["all-stories", "story-request"])
+                      //     ? "active-icon"
+                      //     : ""
+                      // }`}
+                    />
+                  ),
+                  label: (
+                    <span
+                      // className={
+                      //   isSubMenuActive(["all-stories", "story-request"])
+                      //     ? "active-menu-item"
+                      //     : ""
+                      // }
+                      className="text-black active:bg-black active:text-black font-semibold"
+                    >
+                     Create Product
+                    </span>
+                  ),
+                  children: [
+                    {
+                      key: "products",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="products"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
+                          }
+                        >
+                          Products
+                        </NavLink>
+                      ),
+                    },
+                    {
+                      key: "add-product",
+                      icon: <span>&#8226;</span>,
+                      label: (
+                        <NavLink
+                          to="add-product"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "active-menu-item font-semibold"
+                              : " font-semibold"
+                          }
+                        >
+                          Add Product
+                        </NavLink>
+                      ),
+                    },
+                    
+                  ],
+                },
+                
+                {
+                  key: "earnings",
+                  icon: (
+                    <img
+                      src={earnings}
+                      alt="earnings"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("scan-statistics")
+                          ? "active-icon"
+                          : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="earnings"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
+                      }
+                    >
+                     Earning
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "Users Management",
                   icon: (
                     <img
                       src={users}
@@ -145,161 +328,7 @@ const DashboardLayout = () => {
                           : " font-semibold"
                       }
                     >
-                      Users
-                    </NavLink>
-                  ),
-                },
-                {
-                  key: "qr-code-generated",
-                  icon: (
-                    <img
-                      src={QRCodeGenerated}
-                      alt="qr-code-generated"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("qr-code-generated")
-                          ? "active-icon"
-                          : ""
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="qr-code-generated"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "active-menu-item font-semibold"
-                          : " font-semibold"
-                      }
-                    >
-                      QR Code Generated
-                    </NavLink>
-                  ),
-                },
-                {
-                  key: "shop",
-                  icon: (
-                    <img
-                      src={shop}
-                      alt="shop"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("shop") ? "active-icon" : ""
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="shop"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "active-menu-item font-semibold"
-                          : " font-semibold"
-                      }
-                    >
-                      Shop
-                    </NavLink>
-                  ),
-                },
-                {
-                  key: "orders-received",
-                  icon: (
-                    <img
-                      src={orderReceved}
-                      alt="orders-received"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("orders-received")
-                          ? "active-icon"
-                          : ""
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="orders-received"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "active-menu-item font-semibold"
-                          : " font-semibold"
-                      }
-                    >
-                      Orders Received
-                    </NavLink>
-                  ),
-                },
-                {
-                  key: "subscriptions",
-                  icon: (
-                    <img
-                      src={premiumSubscription}
-                      alt="subscriptions"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("subscriptions")
-                          ? "active-icon"
-                          : ""
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="subscriptions"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "active-menu-item font-semibold"
-                          : " font-semibold"
-                      }
-                    >
-                      Subscriptions
-                    </NavLink>
-                  ),
-                },
-                {
-                  key: "scan-statistics",
-                  icon: (
-                    <img
-                      src={scanStatistics}
-                      alt="scan-statistics"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("scan-statistics")
-                          ? "active-icon"
-                          : ""
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="scan-statistics"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "active-menu-item font-semibold"
-                          : " font-semibold"
-                      }
-                    >
-                      Scan Statistics
-                    </NavLink>
-                  ),
-                },
-                {
-                  key: "premium-subscription",
-                  icon: (
-                    <img
-                      src={premiumSubscription}
-                      alt="premium-subscription"
-                      className={`h-5 menu-icon ${
-                        location.pathname.includes("premium-subscription")
-                          ? "active-icon"
-                          : ""
-                      }`}
-                    />
-                  ),
-                  label: (
-                    <NavLink
-                      to="premium-subscription"
-                      className={({ isActive }) =>
-                        isActive
-                          ? "active-menu-item font-semibold"
-                          : " font-semibold"
-                      }
-                    >
-                      Premium Subscription
+                      Users Management
                     </NavLink>
                   ),
                 },

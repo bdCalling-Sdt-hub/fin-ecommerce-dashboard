@@ -1,38 +1,74 @@
+
+
 [
-    {
-      "serialId": 1,
-      "productName": "John Doe 1",
-      "price": "150",
-      "category":"category-1",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
-    },
-    {
-      "serialId": 2,
-      "productName": "Balahal vai",
-      "price": "157",
-      "category":"category-2",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
-    },
-    {
-      "serialId": 3,
-      "productName": "katua Doe",
-      "price": "150",
-      "category":"category-3",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
-    },
-    {
-      "serialId": 4,
-      "productName": "Sabillah hai",
-      "price": "120",
-      "category":"category-4",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
-    },
-    {
-      "serialId": 5,
-      "productName": "Mir hossen",
-      "price": "15",
-      "category":"category-5",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
-    }
-  ]
-  
+  {
+    "serialId": 1,
+    "productName": "Gold Necklace with Diamond Pendant",
+    "price": "1500",
+    "productDetails": "Luxury gold necklace with embedded diamond.",
+    "productSizeMaterial": "18 inches, 24k gold",
+    "productInstraction": "Keep away from chemicals and water.",
+    "shippingReturn": "Free shipping within 7 days. Return within 14 days.",
+    "categoryId": "1",
+    "productMaterial": "Gold, Diamond",
+    "coverImage": "https://randomuser.me/api/portraits/women/1.jpg",
+    "colorCode": ["#FFD700", "#FFFFFF", "#FF69B4"],
+    "images": ["https://example.com/image1.jpg", "https://example.com/image2.jpg"]
+  },
+  {
+    "serialId": 2,
+    "productName": "Silver Bracelet with Pearl Charm",
+    "price": "700",
+    "productDetails": "Elegant silver bracelet with premium pearl charm.",
+    "productSizeMaterial": "7 inches, Sterling Silver",
+    "productInstraction": "Polish regularly to maintain shine.",
+    "shippingReturn": "Free shipping. No returns allowed.",
+    "categoryId": "2",
+    "productMaterial": "Silver, Pearl",
+    "coverImage": "https://randomuser.me/api/portraits/men/2.jpg",
+    "colorCode": ["#C0C0C0", "#EAEAEA", "#F5F5DC"],
+    "images": ["https://example.com/bracelet1.jpg", "https://example.com/bracelet2.jpg"]
+  },
+  {
+    "serialId": 3,
+    "productName": "Leather Handbag with Gold Chain",
+    "price": "250",
+    "productDetails": "Classic leather handbag with adjustable gold chain strap.",
+    "productSizeMaterial": "10x8 inches, Genuine Leather",
+    "productInstraction": "Avoid exposure to moisture.",
+    "shippingReturn": "Shipping within 5 days. Returns within 10 days.",
+    "categoryId": "3",
+    "productMaterial": "Leather, Gold-plated metal",
+    "coverImage": "https://randomuser.me/api/portraits/women/3.jpg",
+    "colorCode": ["#8B4513", "#D2691E", "#FFDAB9"],
+    "images": ["https://example.com/handbag1.jpg", "https://example.com/handbag2.jpg"]
+  },
+  {
+    "serialId": 4,
+    "productName": "Luxury Watch with Sapphire Glass",
+    "price": "5000",
+    "productDetails": "Premium watch with sapphire glass and stainless steel strap.",
+    "productSizeMaterial": "42mm dial, Stainless Steel",
+    "productInstraction": "Service regularly for durability.",
+    "shippingReturn": "Free shipping. Return within 7 days.",
+    "categoryId": "4",
+    "productMaterial": "Sapphire, Stainless Steel",
+    "coverImage": "https://randomuser.me/api/portraits/men/4.jpg",
+    "colorCode": ["#000000", "#708090", "#D3D3D3"],
+    "images": ["https://example.com/watch1.jpg", "https://example.com/watch2.jpg"]
+  },
+  {
+    "serialId": 5,
+    "productName": "Stylish Sunglasses with UV Protection",
+    "price": "120",
+    "productDetails": "Trendy sunglasses offering 100% UV protection.",
+    "productSizeMaterial": "One size, Polycarbonate Lens",
+    "productInstraction": "Clean lenses with a microfiber cloth.",
+    "shippingReturn": "Free shipping on orders above $100.",
+    "categoryId": "5",
+    "productMaterial": "Plastic, Polycarbonate",
+    "coverImage": "https://randomuser.me/api/portraits/women/5.jpg",
+    "colorCode": ["#000000", "#808080", "#A9A9A9"],
+    "images": ["https://example.com/sunglasses1.jpg", "https://example.com/sunglasses2.jpg"]
+  }
+]

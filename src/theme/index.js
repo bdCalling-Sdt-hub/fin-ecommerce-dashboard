@@ -31,7 +31,7 @@ export const mainTheme = {
       itemActiveBg: "#1F2852",
       itemHoverColor: "#ffffff",
       itemColor: "#000",
-      itemSelectedBg: "rgb(51,153,255)",
+      itemSelectedBg: "#fff",
       itemSelectedColor: "#ffffff",
     },
     Form: {

@@ -24,15 +24,13 @@ import SettingsChangePassword from "../Dashboard/settings/SettingsChangePassword
 import Users from "../Dashboard/Users";
 import TermsAndCondition from "../Dashboard/settings/TermsAndCondition";
 import CreateAdmin from "../Dashboard/CreateAdmin";
-import QRCodesGenerated from "../Dashboard/QRCodesGenerated/QRCodesGenerated";
-import Shop from "../Dashboard/Shop/Shop";
-import OrdersReceived from "../Dashboard/OrdersReceived/OrdersReceived";
-import PremiumSubscription from "../Dashboard/PremiumSubscription/PremiumSubscription";
-import ScanStatistics from "../Dashboard/ScanStatistics/ScanStatistics";
-import QRCodeGeneratedDetails from "../Dashboard/QRCodesGenerated/QRCodeGeneratedDetails";
-import ProtectedRoute from "../ProtectedRoute";
-import OrderDetails from "../Dashboard/OrdersReceived/OrdersDetails";
-import Subscription from "../Dashboard/Subscription";
+import Orders from "../Dashboard/Orders/Orders";
+import Offers from "../Dashboard/offers/offers";
+import Products from "../Dashboard/Products/Products";
+import { Earnings } from "../Dashboard/Earnings/Earnings";
+import { AddOffer } from "../Dashboard/AddOffer/AddOffer";
+import { AddProduct } from "../Dashboard/AddProduct/AddProduct";
+import ProductEdit from "../Dashboard/ProductEdit/ProductEdit";
 
 const router = createBrowserRouter([
   {
@@ -62,9 +60,9 @@ const router = createBrowserRouter([
       {
         path: "",
         element: (
-          <ProtectedRoute>
+          // <ProtectedRoute>
             <DashboardLayout />
-          </ProtectedRoute>
+          // </ProtectedRoute>
         ),
         children: [
           {
@@ -84,36 +82,32 @@ const router = createBrowserRouter([
             element: <Users />,
           },
           {
-            path: "qr-code-generated",
-            element: <QRCodesGenerated />,
+            path: "orders",
+            element: <Orders />,
           },
           {
-            path: "qr-code-generated/:id",
-            element: <QRCodeGeneratedDetails />,
+            path: "offers",
+            element: <Offers />,
           },
           {
-            path: "shop",
-            element: <Shop />,
+            path: "products",
+            element: <Products />,
           },
           {
-            path: "orders-received",
-            element: <OrdersReceived />,
+            path: "products/:id",
+            element: <ProductEdit />,
           },
           {
-            path: "orders-received-details/:id",
-            element: <OrderDetails />,
+            path: "add-product",
+            element: <AddProduct />,
           },
           {
-            path: "premium-subscription",
-            element: <PremiumSubscription />,
+            path: "add-offer",
+            element: <AddOffer />,
           },
           {
-            path: "scan-statistics",
-            element: <ScanStatistics />,
-          },
-          {
-            path: "subscriptions",
-            element: <Subscription />,
+            path: "earnings",
+            element: <Earnings />,
           },
           {
             path: "profile",

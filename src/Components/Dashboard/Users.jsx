@@ -10,6 +10,9 @@ import { Button, ConfigProvider, Input, Modal, Table, Tooltip } from "antd";
 import { useAllUsersQuery } from "../../Redux/api/usersApi";
 import moment from "moment";
 import subscribedImg from "../../../public/images/subscribed.png";
+import axios from "axios";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 export default function Users() {
   const [searchText, setSearchText] = useState("");
@@ -20,57 +23,101 @@ export default function Users() {
   const [isBlockModalVisible, setIsBlockModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
-  const { data: allUser, isLoading, refetch } = useAllUsersQuery();
+  // const { data: allUser, isLoading, refetch } = useAllUsersQuery();
 
-  const userData = allUser?.data;
+  // const userData = allUser?.data;
 
-  console.log("allUser", userData);
+  // console.log("allUser", userData);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("data/userData.json");
+        const recentData = response.data?.slice(0, 5);
+
+        setData(recentData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log({data})
+
+  // Move useMemo before any returns
   const filteredData = useMemo(() => {
-    if (!searchText) return userData;
+    if (!searchText) return data;
     return data.filter((item) =>
-      item.fullName.toLowerCase().includes(searchText.toLowerCase())
+      item.email.toLowerCase().includes(searchText.toLowerCase())
     );
-  }, [userData, searchText]);
+  }, [data, searchText]);
+
+  // The early return happens after all hooks are called
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const onSearch = (value) => {
     setSearchText(value);
   };
 
-  const showViewModal = (record) => {
-    setCurrentRecord(record);
-    setIsViewModalVisible(true);
+  // const showViewModal = (record) => {
+  //   setCurrentRecord(record);
+  //   setIsViewModalVisible(true);
+  // };
+
+  // const showDeleteModal = (record) => {
+  //   setCurrentRecord(record);
+  //   // showViewModal(record);
+  //   // setIsDeleteModalVisible(true);
+  // };
+
+  // const showBlockModal = () => {
+  //   setIsBlockModalVisible(true);
+  // };
+
+  // const handleDelete = () => {
+  //   // Handle delete action here
+  //   setIsDeleteModalVisible(false);
+  // };
+
+  const handleCancel = () => {
+    // setIsViewModalVisible(false);
+    // setIsDeleteModalVisible(false);
+    setIsBlockModalVisible(false);
   };
 
   const showDeleteModal = (record) => {
+    console.log('recode ', record);
+    
+    console.log("Block");
     setCurrentRecord(record);
-    setIsDeleteModalVisible(true);
-  };
-
-  const showBlockModal = () => {
     setIsBlockModalVisible(true);
   };
-
-  const handleDelete = () => {
-    // Handle delete action here
-    setIsDeleteModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsViewModalVisible(false);
-    setIsDeleteModalVisible(false);
-    setIsBlockModalVisible(false);
-  };
-
-  const handleBlock = () => {
+  const handleDeleted = () => {
     console.log("Block");
     setIsBlockModalVisible(false);
+    if(currentRecord.serialId){
+      Swal.fire({
+        title: "User deleted Successfull!!",
+        text: "The user has been deleted!.",
+        icon: "success",
+      });
   };
+}
+
+  console.log({currentRecord});
+  
+
 
   return (
     <div className="min-h-[90vh]">
-      <div className="bg-[#D3E6F9] rounded-lg">
-        <div className="flex justify-between p-6">
+      <div className=" rounded-lg">
+        {/* <div className="flex justify-between p-6">
           <h1 className="text-3xl font-bold text-black">Users List</h1>
           <div className="flex gap-4 items-center">
             <ConfigProvider
@@ -101,18 +148,18 @@ export default function Users() {
               />
             </ConfigProvider>
           </div>
-        </div>
+        </div> */}
         <div>
           <ConfigProvider
             theme={{
               components: {
                 Table: {
-                  headerBg: "rgb(255,255,255)",
+                  headerBg: "#18191B",
                   colorBgContainer: "rgb(255,255,255)",
                   colorText: "rgb(0,0,0)",
                   borderColor: "rgb(255,255,255)",
                   headerSplitColor: "rgb(255,255,255)",
-                  headerColor: "#013564",
+                  headerColor: "#E6C379",
                   footerBg: "rgb(255,255,255)",
                   // borderRadius: 20,
                 },
@@ -121,61 +168,56 @@ export default function Users() {
           >
             <Table
               dataSource={filteredData}
-              loading={isLoading}
-              pagination={{ pageSize: 8 }}
+              loading={loading}
+              pagination={{ pageSize: 10}}
               rowKey={(record) => record.serialId}
               scroll={{ x: true }}
             >
-              {/* <Table.Column
+              <Table.Column
                 title="S.ID"
                 dataIndex="serialId"
                 key="serialId"
                 render={(_, __, index) => index + 1}
-              /> */}
-              <Table.Column
-                title="Full Name"
-                dataIndex="fullName"
-                key="fullName"
-                render={(text, record) => (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <UserOutlined style={{ fontSize: 20, marginRight: 8 }} />
-                    {text}
-                  </div>
-                )}
               />
               <Table.Column title="Email" dataIndex="email" key="email" />
-              <Table.Column title="Contact No" dataIndex="phone" key="phone" />
+              <Table.Column title="Country Name" dataIndex="countryName" key="countryName" />
+              <Table.Column title="Joining Date" dataIndex="createdAt" key="createdAt" />
+              <Table.Column title="Role" dataIndex="role" key="role" />
               <Table.Column
-                title="Registration Date"
-                dataIndex="createdAt"
-                key="createdAt"
-                render={(date) => moment(date).format("MMM DD, YYYY, h:mm A")}
-              />{" "}
-              <Table.Column
-                title="Orders"
-                dataIndex="orderdProducts"
-                key="orderdProducts"
-              />
-              <Table.Column
-                title="Subscribers"
-                dataIndex="isSubscribers"
-                key="isSubscribers"
-                render={(text) =>
-                  text ? (
-                    <img
-                      src="../../../public/images/subscribed.png"
-                      alt="Subscribed"
-                      style={{ width: 20, height: 20 }}
-                    />
-                  ) : null
-                }
-              />
+  title="Action"
+  key="action"
+  render={(_, record) => (
+    <div style={{ display: "flex", gap: "8px" }}>
+      {/* View Button */}
+      {/* <Button
+        type="link"
+        onClick={() => showViewModal(record)}
+        style={{ color: "#1890ff" }}
+      >
+        View
+      </Button> */}
+
+      {/* Delete Button */}
+      <Button
+        type="link"
+        danger
+        onClick={() => showDeleteModal(record)}
+        style={{ color: "#ff4d4f" }}
+      >
+          <RiDeleteBin6Line />
+      </Button>
+    </div>
+  )}
+/>
+          
             </Table>
           </ConfigProvider>
         </div>
 
         {/* View Modal */}
-        <Modal
+
+
+        {/* <Modal
           title={
             <div className="pt-7">
               <h2 className="text-[#010515] text-3xl font-bold">
@@ -188,7 +230,7 @@ export default function Users() {
                   marginTop: "10px",
                 }}
               >
-                See all details about {currentRecord?.customerName}
+                See all details about {currentRecord?.email}
               </p>
             </div>
           }
@@ -236,12 +278,15 @@ export default function Users() {
               </button>
             </div>
           )}
-        </Modal>
+        </Modal> */}
+
+
+
 
         {/* Block Confirmation Modal */}
         <Modal
           open={isBlockModalVisible}
-          onOk={handleBlock}
+          // onOk={handleBlock}
           onCancel={handleCancel}
           okText="Block"
           cancelText="Cancel"
@@ -266,16 +311,16 @@ export default function Users() {
               </Button>
               <Button
                 type="primary"
-                style={{ background: "#013564" }}
-                onClick={handleBlock}
+                style={{ background: "#E6C379" }}
+                onClick={handleDeleted}
               >
-                Block
+                Deleted
               </Button>
             </div>
           }
         >
           <p className="text-lg font-semibold pt-10 pb-4">
-            Are you sure you want to block this user?
+            Are you sure you want to Deleted this user?
           </p>
         </Modal>
 

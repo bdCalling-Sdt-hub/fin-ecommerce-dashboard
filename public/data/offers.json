@@ -1,0 +1,63 @@
+[
+  {
+      "serialId": 1,
+      "productId": "PROD001",
+      "offerTitle": "Winter Sale 2024",
+      "offerType": "Seasonal",
+      "discountType": "Percentage",
+      "startDate": "2024-12-20",
+      "endDate": "2024-12-31",
+      "discountAmount": "25",
+      "offerDetails": "Get 25% off on all winter apparel.",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-cP3L3fq8XHyNq4O_AJqUZJashSn9z-Wb6eE6LGom4jp9573t24s8JtUz7o1V5xvDkrw&usqp=CAU"
+  },
+  {
+      "serialId": 2,
+      "productId": "PROD002",
+      "offerTitle": "Buy 1 Get 1 Free",
+      "offerType": "Limited Time",
+      "discountType": "BOGO",
+      "startDate": "2024-12-15",
+      "endDate": "2024-12-25",
+      "discountAmount": "100",
+      "offerDetails": "Buy one T-shirt and get another one absolutely free.",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-cP3L3fq8XHyNq4O_AJqUZJashSn9z-Wb6eE6LGom4jp9573t24s8JtUz7o1V5xvDkrw&usqp=CAU"
+  },
+  {
+      "serialId": 3,
+      "productId": "PROD003",
+      "offerTitle": "Flash Sale - Electronics",
+      "offerType": "Flash",
+      "discountType": "Flat",
+      "startDate": "2024-12-18",
+      "endDate": "2024-12-19",
+      "discountAmount": "50",
+      "offerDetails": "Flat $50 off on smartphones above $500.",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-cP3L3fq8XHyNq4O_AJqUZJashSn9z-Wb6eE6LGom4jp9573t24s8JtUz7o1V5xvDkrw&usqp=CAU"
+  },
+  {
+      "serialId": 4,
+      "productId": "PROD004",
+      "offerTitle": "New Year Special",
+      "offerType": "Holiday",
+      "discountType": "Percentage",
+      "startDate": "2024-12-29",
+      "endDate": "2025-01-01",
+      "discountAmount": "30",
+      "offerDetails": "Celebrate New Year with 30% off on selected items.",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-cP3L3fq8XHyNq4O_AJqUZJashSn9z-Wb6eE6LGom4jp9573t24s8JtUz7o1V5xvDkrw&usqp=CAU"
+  },
+  {
+      "serialId": 5,
+      "productId": "PROD005",
+      "offerTitle": "Free Shipping Week",
+      "offerType": "Promotion",
+      "discountType": "Free Shipping",
+      "startDate": "2024-12-22",
+      "endDate": "2024-12-28",
+      "discountAmount": "15",
+      "offerDetails": "Enjoy free shipping on all orders above $50.",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-cP3L3fq8XHyNq4O_AJqUZJashSn9z-Wb6eE6LGom4jp9573t24s8JtUz7o1V5xvDkrw&usqp=CAU"
+  }
+]
+ 

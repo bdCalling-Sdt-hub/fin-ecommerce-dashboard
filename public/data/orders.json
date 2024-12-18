@@ -1,63 +1,147 @@
 [
     {
       "serialId": 1,
-      "productName": "John Doe 1",
+      "userId":{
+        "serialId": 6,
+        "customerName": "Sophia Martinez",
+        "email": "sophiamartinez@example.com",
+        "role":"user",
+        "phone":"0147896587",
+        "countryName": "Bangladesh",
+        "createdAt": "2022-05-25",
+        "avatar": "https://randomuser.me/api/portraits/women/6.jpg"
+      },
+      "orderId":{
+        "serialId": 1,
+        "productName": "juwelary 1",
+        "price": "150",
+        "quantity":2,
+        "productDetails":"product details 1",
+        "material":"18k gold",
+        "fingerPrintKit":"yes",
+        "orderDiscount":"20%",
+        "productSizeMaterial":"product size material 1",     
+        "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+      }, 
       "price": "150",
-      "orderData":"10-08-24",
-      "status":"delivery order",
-      "category":"category-1",
-      "customerName":"Khali vai",
+      "totalAmount":"120",
+      "orderDate":"10-08-24",
+      "status":"pending",
       "deliveryAddress":"Badur hat",
-      "phoneNum":"0012156451",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+      "postalCode":"1234",
+      "city":"Dhaka",
+      "shippingMethod":"express",
+      "paymentMethod":"cash on delivery",
+      "phoneNum":"0012156451"
+     
     },
     {
       "serialId": 2,
-      "productName": "Balahal vai",
-      "price": "157",
-      "category":"category-2",
-      "status":"process order",
-      "orderData":"10-11-24",
-      "customerName":"malamal vai",
-      "deliveryAddress":"balar shai gram",
-      "phoneNum":"0012156451",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+      "userId":{
+        "serialId": 6,
+        "customerName": "Shahin bro",
+        "email": "shahin@example.com",
+        "role":"user",
+        "phone":"0147896587",
+        "countryName": "Bangladesh",
+        "createdAt": "2022-05-25",
+        "avatar": "https://randomuser.me/api/portraits/women/6.jpg"
+      },
+      "orderId":{
+        "serialId": 1,
+        "productName": "juwelary 2",
+        "price": "240",
+        "quantity":2,
+        "productDetails":"product details 2",
+        "material":"18k gold",
+        "fingerPrintKit":"yes",
+        "orderDiscount":"15%",
+        "productSizeMaterial":"product size material 1",     
+        "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+      }, 
+      "price": "240",
+      "totalAmount":"220",
+      "orderDate":"10-08-24",
+      "status":"processing",
+      "deliveryAddress":"Badur hat",
+      "postalCode":"1234",
+      "city":"Dhaka",
+      "shippingMethod":"express",
+      "paymentMethod":"cash on delivery",
+      "phoneNum":"00122565156451"
+     
     },
     {
       "serialId": 3,
-      "productName": "katua Doe",
-      "price": "150",
-      "category":"category-3",
-      "orderData":"18-12-24",
-      "status":"new order",
-      "customerName":"malamal vai",
-      "deliveryAddress":"balar shai gram",
-      "phoneNum":"0012156451",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
+      "userId":{
+        "serialId": 6,
+        "customerName": "Kala Manik",
+        "email": "kalamakink@example.com",
+        "role":"user",
+        "phone":"0147896587",
+        "countryName": "Bangladesh",
+        "createdAt": "2022-05-25",
+        "avatar": "https://randomuser.me/api/portraits/women/6.jpg"
+      },
+      "orderId":{
+        "serialId": 1,
+        "productName": "John Doe 1",
+        "quantity":3,
+        "price": "500",
+        "productDetails":"product details 3",
+        "material":"18k gold",
+        "fingerPrintKit":"yes",
+        "orderDiscount":"25%",
+        "productSizeMaterial":"product size material 1",     
+        "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+      }, 
+      "price": "500",
+      "totalAmount":"450",
+      "orderDate":"10-08-24",
+      "status":"delivered",
+      "deliveryAddress":"Badur hat",
+      "postalCode":"1234",
+      "city":"Dhaka",
+      "shippingMethod":"express",
+      "paymentMethod":"cash on delivery",
+      "phoneNum":"0012156451"
+     
     },
     {
       "serialId": 4,
-      "productName": "Sabillah hai",
-      "price": "120",
-      "category":"category-4",
-      "status":"process order",
-      "orderData":"15-12-24",
-      "customerName":"malamal vai",
-      "deliveryAddress":"balar shai gram",
-      "phoneNum":"0012156451",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
-    },
-    {
-      "serialId": 5,
-      "productName": "Mir hossen",
-      "price": "15",
-      "category":"category-5",
-      "orderData":"10-12-24",
-      "customerName":"malamal vai",
-      "deliveryAddress":"balar shai gram",
-      "phoneNum":"0012156451",
-      "status":"delivery order",
-      "images": ["https://randomuser.me/api/portraits/men/1.jpg"]
+      "userId":{
+        "serialId": 6,
+        "customerName": "Imran Talukder",
+        "email": "imrantalukder@example.com",
+        "role":"user",
+        "phone":"0147896587",
+        "countryName": "Bangladesh",
+        "createdAt": "2022-05-25",
+        "avatar": "https://randomuser.me/api/portraits/women/6.jpg"
+      },
+      "orderId":{
+        "serialId": 1,
+        "productName": "juwelary 4",
+        "price": "700",
+        "quantity":1,
+        "productDetails":"product details 1",
+        "material":"18k gold",
+        "fingerPrintKit":"yes",
+        "orderDiscount":"30%",
+        "productSizeMaterial":"product size material 1",     
+        "images": ["https://randomuser.me/api/portraits/men/1.jpg","https://randomuser.me/api/portraits/men/1.jpg"]
+      }, 
+      "price": "700",
+      "totalAmount":"600",
+      "orderDate":"10-08-24",
+      "status":"cenceled",
+      "deliveryAddress":"Badur hat",
+      "postalCode":"1234",
+      "city":"Dhaka",
+      "shippingMethod":"express",
+      "paymentMethod":"cash on delivery",
+      "phoneNum":"0012156451"
+     
     }
   ]
   
