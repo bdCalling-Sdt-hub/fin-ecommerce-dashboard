@@ -57,8 +57,10 @@ const DashboardLayout = () => {
           trigger={null}
           collapsible
           collapsed={collapsed}
+          className=""
           style={{
             background: "#EBEBEB",
+           
             // color:'black'
             // marginRight: "10px",
             // borderRadius: "5px",
@@ -91,13 +93,19 @@ const DashboardLayout = () => {
             <Menu
               theme="light"
               mode="inline"
+              
               openKeys={openKeys}
               onOpenChange={(keys) => setOpenKeys(keys)}
-              defaultSelectedKeys={["dashboard"]}
+              defaultSelectedKeys={location.pathname.split("/").pop()}
+              selectedKeys={location.pathname.split("/").pop()}
               style={{
+                li:{
+                  margin:0
+                },
                 backgroundColor: "transparent",
                 border: "none",
                 // color:"black"
+             
               }}
               items={[
                 {
@@ -118,8 +126,8 @@ const DashboardLayout = () => {
                       to="dashboard"
                       className={({ isActive }) =>
                         isActive
-                          ? "active-menu-item font-semibold"
-                          : "font-semibold"
+                          ? "active-menu-item font-semibold "
+                          : "font-semibold "
                       }
                     >
                       Dashboard
@@ -204,7 +212,7 @@ const DashboardLayout = () => {
                       // }
                       className="text-black active:bg-black active:text-black font-semibold"
                     >
-                     Create Offer
+                      Offer
                     </span>
                   ),
                   children: [
@@ -268,7 +276,7 @@ const DashboardLayout = () => {
                       // }
                       className="text-black active:bg-black active:text-black font-semibold"
                     >
-                     Create Product
+                      Product
                     </span>
                   ),
                   children: [
@@ -335,7 +343,7 @@ const DashboardLayout = () => {
                   ),
                 },
                 {
-                  key: "Users Management",
+                  key: "users",
                   icon: (
                     <img
                       src={users}
@@ -388,7 +396,7 @@ const DashboardLayout = () => {
                   ),
                   children: [
                     {
-                      key: "settings/change-password",
+                      key: "change-password",
                       icon: <span>&#8226;</span>,
                       label: (
                         <NavLink
@@ -404,7 +412,7 @@ const DashboardLayout = () => {
                       ),
                     },
                     {
-                      key: "settings/about-us",
+                      key: "about-us",
                       icon: <span>&#8226;</span>,
                       label: (
                         <NavLink
@@ -420,7 +428,7 @@ const DashboardLayout = () => {
                       ),
                     },
                     {
-                      key: "settings/terms-and-condition",
+                      key: "terms-of-service",
                       icon: <span>&#8226;</span>,
                       label: (
                         <NavLink
@@ -436,7 +444,7 @@ const DashboardLayout = () => {
                       ),
                     },
                     {
-                      key: "settings/privacy-policy",
+                      key: "privacy-policy",
                       icon: <span>&#8226;</span>,
                       label: (
                         <NavLink

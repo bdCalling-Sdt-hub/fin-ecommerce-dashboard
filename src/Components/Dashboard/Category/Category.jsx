@@ -85,21 +85,49 @@ export default function Category() {
   const deletedHandler = (id) => {
     console.log("Block id ",id);
     if(id){
-        
+
           Swal.fire({
             title: "Do you want to Delete it?",
             showDenyButton: false,
             showCancelButton: true,
             confirmButtonText: "Delete",
-            denyButtonText: false
+            cancelButtonText: "Cancel",
+            buttonsStyling: false, 
+            customClass: {
+              confirmButton: 'swal2-confirm',
+              cancelButton: 'swal2-cancel'
+            },
+            didOpen: () => {
+              // Style the Confirm button
+              const confirmBtn = document.querySelector('.swal2-confirm');
+              if (confirmBtn) {
+                confirmBtn.style.backgroundColor = "#E6C379";
+                confirmBtn.style.color = "#fff";
+                confirmBtn.style.border = "none";
+                confirmBtn.style.padding = "8px 20px";
+                confirmBtn.style.borderRadius = "5px";
+                confirmBtn.style.marginRight = "5px"; 
+              }
+          
+              // Style the Cancel button
+              const cancelBtn = document.querySelector('.swal2-cancel');
+              if (cancelBtn) {
+                cancelBtn.style.backgroundColor = "#d33";
+                cancelBtn.style.color = "#fff";
+                cancelBtn.style.border = "none";
+                cancelBtn.style.padding = "8px 20px";
+                cancelBtn.style.borderRadius = "5px";
+              }
+            },
           }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              Swal.fire("Saved!", "", "success");
-            } else if (result.isDenied) {
-              Swal.fire("Changes are not saved", "", "info");
+              Swal.fire("Deleted!", "", "success");
+            } else if (result.isDismissed) {
+              Swal.fire("Action Cancelled", "", "info");
             }
           });
+          
+          
     }
    
   };
@@ -124,7 +152,7 @@ export default function Category() {
     <div className="min-h-[90vh]">
       <div className=" rounded-lg">
         <div className="float-right mr-2 mb-3">
-            <button className="bg-[#E6C379] text-white py-3 px-5 rounded" onClick={() => showViewModal(true)} >+ Add Category</button>
+            <button className="bg-[#E6C379] text-white py-3 px-5 rounded-none" onClick={() => showViewModal(true)} >+ Add Category</button>
         </div>
         <div>
           <ConfigProvider

@@ -18,6 +18,7 @@
 }
 .active-menu-item {
   color: black !important;
+  /* border-radius: 0; */
 }
 
 /*  custom gradient backgrounds */
@@ -36,3 +37,14 @@
 .gradient-light-purple {
   background: linear-gradient(to right, #d8b4fe, #c084fc);
 }
+
+/* :where(.css-dev-only-do-not-override-1lreu4t).ant-menu-inline .ant-menu-item, :where(.css-dev-only-do-not-override-1lreu4t).ant-menu-vertical .ant-menu-item, :where(.css-dev-only-do-not-override-1lreu4t).ant-menu-inline .ant-menu-submenu-title, :where(.css-dev-only-do-not-override-1lreu4t).ant-menu-vertical .ant-menu-submenu-title {
+  height: 40px;
+  line-height: 40px;
+  padding-inline: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-inline: 0px;
+  margin-block: 4px;
+  width: calc(100%);
+} */

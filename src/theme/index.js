@@ -14,6 +14,7 @@ export const mainTheme = {
       marginXXS: 4,
       colorLinkActive: "rgb(107, 114, 128)",
       headerSplitColor: "rgb(107, 114, 128)",
+      headerBorderRadius	: 0
     },
     // Menu: {
     //   iconSize: 20,
@@ -29,10 +30,16 @@ export const mainTheme = {
     Menu: {
       iconSize: 24,
       itemActiveBg: "#1F2852",
-      itemHoverColor: "#ffffff",
+      itemHoverColor: "#000",
       itemColor: "#000",
       itemSelectedBg: "#fff",
       itemSelectedColor: "#ffffff",
+ 
+        borderRadius: 0,       
+        borderRadiusLG: 0,
+               
+
+      
     },
     Form: {
       labelColor: "rgb(255, 255, 255)",
@@ -47,5 +54,6 @@ export const mainTheme = {
       colorIcon: "rgb(255, 255, 255)",
       colorTextPlaceholder: "rgba(250, 244, 244, 0.25)",
     },
+   
   },
 };

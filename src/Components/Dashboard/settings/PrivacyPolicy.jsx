@@ -74,8 +74,8 @@ const PrivacyPolicy = () => {
   // }
 
   return (
-    <div className="min-h-screen py-2 px-2 rounded-lg">
-      <div className="flex items-center gap-2 text-2xl font-bold px-2 py-4 bg-[#E6C379] text-[#000] rounded-lg">
+    <div className="min-h-screen py-2 px-2 ">
+      <div className="flex items-center gap-2 text-2xl font-bold px-2 py-4 bg-[#E6C379] text-[#000] ">
         <p className="cursor-pointer" onClick={() => navigate(-1)}>
           <LeftOutlined />
         </p>
@@ -101,6 +101,7 @@ const PrivacyPolicy = () => {
           background: "#E6C379",
           height: "55px",
           border: "none",
+          borderRadius: 0,
         }}
       >
         Save Changes

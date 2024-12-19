@@ -115,11 +115,12 @@ const UserTable = () => {
             colorBgContainer: "rgb(255,255,255)",
             colorText: "rgb(0,0,0)",
             headerSplitColor: "rgba(151, 198, 234, 1)",
+            // borderRadius: 0,
           },
         },
       }}
     >
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto ">
         <Table
           columns={columns}
           dataSource={data}
@@ -127,8 +128,9 @@ const UserTable = () => {
           pagination={{ pageSize: 5, responsive: true }}
           // pagination={{ pageSize: 5, showSizeChanger: true, responsive: true }}
           onChange={onChange}
-          className="user-table"
+          className="user-table "
           scroll={{ x: "100%" }}
+          style={{borderRadius:0}}
 
         />
       </div>

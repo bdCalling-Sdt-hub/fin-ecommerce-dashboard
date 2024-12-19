@@ -115,7 +115,7 @@ const Dashboard = () => {
             <NavLink to="/users">
               <p className="text-sm lg:text-base text-[#E6C379] underline font-bold">
                 View All
-              </p>
+              </p> 
             </NavLink>
           </div>
           {/* <DashboardTable data={data} loading={loading} /> */}

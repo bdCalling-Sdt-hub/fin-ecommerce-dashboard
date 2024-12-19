@@ -134,10 +134,10 @@ export const AddOffer = () => {
 
         {/* Buttons */}
         <Form.Item className="col-span-1 md:col-span-3 flex justify-end gap-4">
-            <Space><Button htmlType="reset" style={{ backgroundColor: "#FE3838", borderColor: "#FE3838", color: "white" }} >
+            <Space><Button htmlType="reset" style={{ backgroundColor: "#FE3838", borderColor: "#FE3838", color: "white",borderRadius:0 }} >
             Cancel
           </Button>
-          <Button type="primary" style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }} htmlType="submit">
+          <Button type="primary" style={{ backgroundColor: "#E6C379", borderColor: "#E6C379", borderRadius:0 }} htmlType="submit">
             Publish Offer
           </Button></Space>
           

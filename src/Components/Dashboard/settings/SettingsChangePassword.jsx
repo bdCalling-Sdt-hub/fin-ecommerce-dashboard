@@ -146,7 +146,7 @@ const SettingsChangePassword = () => {
                 }}
               >
                 <Button
-                  className="w-full py-6 border border-[#E6C379] hover:border-[#E6C379] text-xl text-white font-semibold rounded-2xl mt-10"
+                  className="w-full py-6 border border-[#E6C379] hover:border-[#E6C379] text-xl text-white font-semibold rounded-none mt-10"
                   htmlType="submit"
                   style={{ background: "#E6C379" }}
                 >

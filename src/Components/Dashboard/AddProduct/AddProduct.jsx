@@ -135,7 +135,7 @@ export const AddProduct = () => {
             <ColorPicker width={1000} height={100}  color={color} onChange={setColor} />
             
           </div>
-          <Button type="primary" onClick={handleAddColor} className="bg-blue-500 hover:bg-blue-600 float-right mt-2">
+          <Button  onClick={handleAddColor} style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }} className="float-right mt-2">
               Add Color
             </Button>
           <div className="mt-4">
@@ -182,10 +182,10 @@ export const AddProduct = () => {
         {/* Buttons */}
         <Form.Item className="col-span-1 md:col-span-3 flex justify-end gap-4">
           <Space>
-            <Button htmlType="reset" className="bg-gray-300 text-black hover:bg-gray-400">
+            <Button htmlType="reset" style={{borderRadius:0}} className="bg-gray-300 text-black hover:bg-gray-400">
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit" className="bg-blue-500 hover:bg-blue-600">
+            <Button type="primary" htmlType="submit" style={{ backgroundColor: "#E6C379", borderColor: "#E6C379",borderRadius:0 }} className="bg-blue-500 hover:bg-blue-600">
               Submit Product
             </Button>
           </Space>
