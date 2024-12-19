@@ -29,7 +29,7 @@ export const mainTheme = {
     // },
     Menu: {
       iconSize: 24,
-      itemActiveBg: "#1F2852",
+      itemActiveBg: "none",
       itemHoverColor: "#000",
       itemColor: "#000",
       itemSelectedBg: "#fff",

@@ -118,7 +118,7 @@ export const AddOffer = () => {
             onChange={handleUpload}
             className=""
           >
-            <Button icon={<UploadOutlined />} className="w-full p-5" style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }}>Click to Upload</Button>
+            <Button icon={<UploadOutlined />} className="w-full p-5" style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }}>Upload Offer Image</Button>
           </Upload>
         </Form.Item>
 

@@ -25,7 +25,7 @@ const Dashboard = () => {
       {/* Overview Section */}
       <div>
       <div>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-10">
           <div
             className="w-full p-3 bg-[#FFFFFF] flex flex-col"
             style={{ boxShadow: "0px 0px 5px 2px #00000040" }}
@@ -107,7 +107,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="mt-14 text-[#BBB69A] font-semibold tex-2xl">
+        <div className="mt-8 text-[#BBB69A] font-semibold tex-2xl">
           <div className="flex justify-between items-center mb-1">
             <p className="text-lg lg:text-xl font-bold text-[#E6C379]">
               Recent users
