@@ -7,55 +7,47 @@ import logo from "../../../public/images/logo.png";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  // const [login] = useSignInMutation();
+  const [login] = useSignInMutation();
 
   const onFinish = async (values) => {
     const data = {
       email: values.email,
       password: values.password,
     };
-    console.log("Request payload:", data);
-    if (data.email && data.password) {
-          Swal.fire({
-            title: "Login Successfully!",
-            text: "The user has been login!.",
-            icon: "success",
-          });
-          navigate("/");
-        }
 
+    
 
-    // try {
-    //   // Await the mutation response
-    //   const res = await login(data).unwrap();
-    //   // Storing tokens separately
-    //   localStorage.setItem("accessToken", res?.data?.accessToken);
-    //   localStorage.setItem("refreshToken", res?.data?.refreshToken);
+    try {
+      // Await the mutation response
+      const res = await login(data).unwrap();
+      // Storing tokens separately
+      localStorage.setItem("accessToken", res?.data?.accessToken);
+      localStorage.setItem("refreshToken", res?.data?.refreshToken);
 
-    //   if (res.success) {
-    //     Swal.fire({
-    //       title: "Login Successfully!",
-    //       text: "The user has been login!.",
-    //       icon: "success",
-    //     });
-    //     navigate("/");
-    //   } else {
-    //     Swal.fire({
-    //       title: "Error",
-    //       text: "There was an issue user login .",
-    //       icon: "error",
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.error("Error user login:", error);
-    //   if (error.data) {
-    //     Swal.fire({
-    //       title: `${error.data.message}`,
-    //       text: "Something went wrong while login users.",
-    //       icon: "error",
-    //     });
-    //   }
-    // }
+      if (res.success) {
+        Swal.fire({
+          title: "Login Successfully!",
+          text: "The user has been login!.",
+          icon: "success",
+        });
+        navigate("/");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "There was an issue user login .",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error user login:", error);
+      if (error.data) {
+        Swal.fire({
+          title: `${error.data.message}`,
+          text: "Something went wrong while login users.",
+          icon: "error",
+        });
+      }
+    }
   };
   return (
     <div className="min-h-screen bg-[#F4F7FA]">
@@ -110,6 +102,7 @@ const SignIn = () => {
                   type="email"
                   placeholder="Enter your email"
                   className="py-2 px-3 sm:text-xl bg-white border-slate-200  text-black"
+                  required
                 />
               </Form.Item>
 
@@ -121,6 +114,7 @@ const SignIn = () => {
                 <Input.Password
                   placeholder="Enter your password"
                   className="py-2 px-3 sm:text-xl bg-white border-slate-200  text-black focus:outline-none "
+                  required
                 />
               </Form.Item>
 

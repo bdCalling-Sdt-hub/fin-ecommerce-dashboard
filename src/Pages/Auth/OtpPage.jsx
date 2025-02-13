@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "/images/4 1.png";
 import OTPInput from "react-otp-input";
 import {
+  useForgetPasswordMutation,
   useResendOtpMutation,
   useVerifyOtpMutation,
 } from "../../Redux/api/authApi";
@@ -13,11 +14,13 @@ import icon from "../../../public/images/icon/otpMatchicon.png";
 import Swal from "sweetalert2";
 
 const OtpPage = () => {
-  const [otp, setOtp] = useState("");
+  // const [otp, setOtp] = useState("");
   const navigate = useNavigate();
 
-  const [verifyOtp] = useVerifyOtpMutation();
-  const [resendOtp] = useResendOtpMutation();
+  // const [verifyOtp] = useVerifyOtpMutation();
+  // const [resendOtp] = useResendOtpMutation();
+
+   const [forgetPassword] = useForgetPasswordMutation();
 
   const handleOTPSubmit = async () => {
    
@@ -26,7 +29,7 @@ const OtpPage = () => {
       //   text: "The user has been OTP!.",
       //   icon: "success",
       // });
-      navigate("/reset-password");
+      navigate("/signin");
 
 
     // const token = localStorage.getItem("otpToken");
@@ -60,35 +63,32 @@ const OtpPage = () => {
     // }
   };
 
+  const email = localStorage.getItem("userEmail");
+
   const handleResendOtp = async () => {
 
-    Swal.fire({
-      title: "Please check your email!",
-      text: "The user has been OTP!.",
-      icon: "success",
-    });
+    if (!email) {
+      alert("Error!. Please start the reset process again.");
+      toast.success("Error!. Please start the reset process again.");
+      navigate("/forgot-password");
+      return;
+    }
 
-    // const email = localStorage.getItem("userEmail");
-    // if (!email) {
-    //   toast.error("Email not found. Please start the reset process again.");
-    //   navigate("/forgot-password");
-    //   return;
-    // }
-
-    // const data = { email };
-    // try {
-    //   const response = await resendOtp(data).unwrap();
-    //   if (response.success === true) {
-    //     toast.success("An OTP has been sent to your email!");
-    //   }
-    // } catch (error) {
-    //   // console.error("Error sending reset code:", error);
-    //   if (error.data?.message === "User not found") {
-    //     toast.error("Incorrect Email.");
-    //   } else {
-    //     toast.error("Failed to resend OTP. Please try again.");
-    //   }
-    // }
+    const data = { email };
+    console.log("resend mail:", data);
+   
+    try {
+      const response = await forgetPassword(data).unwrap();
+      console.log("response token", response);
+      if (response.success === true) {
+        toast.success("Forgot password link has been again sent to your email!");
+      }
+    } catch (error) {
+      console.error("Error sending reset code:", error);
+      if (error.data?.message === "User not found") {
+        toast.error("Incorrect Email.");
+      }
+    }
   };
 
   return (
@@ -102,8 +102,7 @@ const OtpPage = () => {
                 Check your email
               </p>
               <div className="flex justify-center text-center">
-                
-              <p>We sent a password reset link to <br />user@gmail.com</p></div>
+              <p>We sent a password reset link to <br />{email}</p></div>
             </div>
             <ConfigProvider
               theme={{
@@ -129,7 +128,7 @@ const OtpPage = () => {
                     onClick={handleOTPSubmit}
                     style={{ background: "#E6C379", border: "black", color: "black" }}
                   >
-                    Open email app
+                    Continue again  signIn
                   </Button>
                 </Form.Item>
                 <p className="text-center">Did't receve the email <span className="text-[#E6C379] cursor-pointer" onClick={handleResendOtp}>Click to resent</span> </p>

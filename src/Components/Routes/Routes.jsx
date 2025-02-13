@@ -28,10 +28,10 @@ import Orders from "../Dashboard/Orders/Orders";
 import Offers from "../Dashboard/offers/offers";
 import Products from "../Dashboard/Products/Products";
 import { Earnings } from "../Dashboard/Earnings/Earnings";
-import { AddOffer } from "../Dashboard/AddOffer/AddOffer";
 import { AddProduct } from "../Dashboard/AddProduct/AddProduct";
 import ProductEdit from "../Dashboard/ProductEdit/ProductEdit";
-import Category from "../Dashboard/Category/Category";
+import SubscribsUsers from "../Dashboard/SubscribsUsers/SubscribsUsers";
+
 
 const router = createBrowserRouter([
   {
@@ -83,8 +83,8 @@ const router = createBrowserRouter([
             element: <Users />,
           },
           {
-            path: "category",
-            element: <Category />,
+            path: "subcribers-users",
+            element: <SubscribsUsers />,
           },
           {
             path: "orders",
@@ -106,10 +106,7 @@ const router = createBrowserRouter([
             path: "add-product",
             element: <AddProduct />,
           },
-          {
-            path: "add-offer",
-            element: <AddOffer />,
-          },
+          
           {
             path: "earnings",
             element: <Earnings />,

@@ -2,7 +2,7 @@ import UserTable from "../Tables/UserTable";
 import { InfoCard } from "../Chart/DashboardChart";
 import { NavLink } from "react-router-dom";
 import { useAllUsersQuery } from "../../Redux/api/usersApi";
-import { useGetAllProductsQuery } from "../../Redux/api/shopApi";
+import { useGetAllProductsQuery } from "../../Redux/api/offerProduct";
 import { useGetAllOrdersQuery } from "../../Redux/api/ordersApi";
 import { ConfigProvider, Select } from "antd";
 import Area_Chart from "../Chart/AreaChat";
@@ -14,6 +14,22 @@ import { useEffect, useState } from "react";
 
 
 const Dashboard = () => {
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [earningYear, setEarningYear] = useState(new Date().getFullYear());
+
+  const handleChange = (value)=>{
+    setYear(value);
+
+
+  }
+
+  const earningHandleChange = (value)=>{
+    setEarningYear(value);
+
+
+  }
+
+  console.log('========yerar', year);
   
 
   // if (error) {
@@ -48,13 +64,14 @@ const Dashboard = () => {
                   }}
                 >
                   <Select
-                    defaultValue="2024"
+                    defaultValue="2025"
                     style={{ width: 100 }}
+                    onChange={handleChange}
                     options={[
-                      { value: "2024", label: "2024" },
-                      { value: "2023", label: "2023" },
-                      { value: "2022", label: "2022" },
-                      { value: "2021", label: "2021" },
+                      { value: "2025", label: "2025" },
+                      { value: "2026", label: "2026" },
+                      { value: "2027", label: "2027" },
+                      { value: "2028", label: "2028" },
                     ]}
                   />
                 </ConfigProvider>
@@ -62,7 +79,7 @@ const Dashboard = () => {
             </div>
             <hr />
             <div className="">
-              <Area_Chart />
+              <Area_Chart year={year} />
             </div>
           </div>{" "}
           {/* Bar Chart */}
@@ -89,13 +106,14 @@ const Dashboard = () => {
                   }}
                 >
                   <Select
-                    defaultValue="2024"
+                    defaultValue="2025"
                     style={{ width: 100 }}
+                    onChange={earningHandleChange}
                     options={[
-                      { value: "2024", label: "2024" },
-                      { value: "2023", label: "2023" },
-                      { value: "2022", label: "2022" },
-                      { value: "2021", label: "2021" },
+                      { value: "2025", label: "2025" },
+                      { value: "2026", label: "2026" },
+                      { value: "2027", label: "2027" },
+                      { value: "2028", label: "2028" },
                     ]}
                   />
                 </ConfigProvider>
@@ -103,7 +121,7 @@ const Dashboard = () => {
             </div>
             <hr />
             <div>
-              <Bar_Chart />
+              <Bar_Chart earningYear={earningYear} />
             </div>
           </div>
         </div>

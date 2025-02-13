@@ -24,30 +24,22 @@ const ForgotPassword = () => {
   const onFinish = async () => {
     const data = { email };
     console.log("Success:", data);
-    if (email) {
-              Swal.fire({
-                title: "An OTP has been sent to your email!!",
-                text: "The user has been OTP!.",
-                icon: "success",
-              });
-              navigate("/verify-otp");
-            }
-
-    // try {
-    //   const response = await forgetPassword(data).unwrap();
-    //   console.log("response token", response);
-    //   if (response.success === true) {
-    //     localStorage.setItem("otpToken", response?.data?.forgetToken);
-    //     localStorage.setItem("userEmail", email);
-    //     toast.success("An OTP has been sent to your email!");
-    //     navigate("/verify-otp");
-    //   }
-    // } catch (error) {
-    //   console.error("Error sending reset code:", error);
-    //   if (error.data?.message === "User not found") {
-    //     toast.error("Incorrect Email.");
-    //   }
-    // }
+   
+    try {
+      const response = await forgetPassword(data).unwrap();
+      console.log("response token", response);
+      if (response.success === true) {
+        // localStorage.setItem("otpToken", response?.data?.forgetToken);
+        localStorage.setItem("userEmail", email);
+        toast.success("Forgot password link has been sent to your email!");
+        navigate("/verify-otp");
+      }
+    } catch (error) {
+      console.error("Error sending reset code:", error);
+      if (error.data?.message === "User not found") {
+        toast.error("Incorrect Email.");
+      }
+    }
   };
   return (
     <div className="min-h-screen bg-[#F4F7FA]">
@@ -118,7 +110,7 @@ const ForgotPassword = () => {
                     htmlType="submit"
                     style={{ background: "#E6C379", border: "black", color: "black" }}
                   >
-                    Get OTP
+                    Get Link
                   </Button>
                 </Form.Item>
               </Form>

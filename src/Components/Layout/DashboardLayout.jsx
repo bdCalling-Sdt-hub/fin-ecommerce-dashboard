@@ -136,13 +136,13 @@ const DashboardLayout = () => {
                 },
                 
                 {
-                  key: "category",
+                  key: "subcribers-users",
                   icon: (
                     <img
                       src={orders}
-                      alt="category"
+                      alt="subcribers-users"
                       className={`h-5 menu-icon ${
-                        location.pathname.includes("category")
+                        location.pathname.includes("subcribers-users")
                           ? "active-icon"
                           : ""
                       }`}
@@ -150,14 +150,14 @@ const DashboardLayout = () => {
                   ),
                   label: (
                     <NavLink
-                      to="category"
+                      to="subcribers-users"
                       className={({ isActive }) =>
                         isActive
                           ? "active-menu-item font-semibold"
                           : " font-semibold"
                       }
                     >
-                    Add Category
+                    Subscribers Users
                     </NavLink>
                   ),
                 },
@@ -191,66 +191,29 @@ const DashboardLayout = () => {
                   key: "offers",
                   icon: (
                     <img
-                      src={offers}
+                      src={orders}
                       alt="offers"
-                      width={15}
-                      height={15}
-                      className="menu-icon"
-                      // className={`menu-icon ${
-                      //   isSubMenuActive(["all-stories", "story-request"])
-                      //     ? "active-icon"
-                      //     : ""
-                      // }`}
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("offers")
+                          ? "active-icon"
+                          : ""
+                      }`}
                     />
                   ),
                   label: (
-                    <span
-                      // className={
-                      //   isSubMenuActive(["all-stories", "story-request"])
-                      //     ? "active-menu-item"
-                      //     : ""
-                      // }
-                      className="text-black active:bg-black active:text-black font-semibold"
+                    <NavLink
+                      to="offers"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
+                      }
                     >
-                      Offer
-                    </span>
+                     Offers
+                    </NavLink>
                   ),
-                  children: [
-                    {
-                      key: "offers",
-                      icon: <span>&#8226;</span>,
-                      label: (
-                        <NavLink
-                          to="offers"
-                          className={({ isActive }) =>
-                            isActive
-                              ? "active-menu-item font-semibold"
-                              : " font-semibold"
-                          }
-                        >
-                          Offers
-                        </NavLink>
-                      ),
-                    },
-                    {
-                      key: "add-offer",
-                      icon: <span>&#8226;</span>,
-                      label: (
-                        <NavLink
-                          to="add-offer"
-                          className={({ isActive }) =>
-                            isActive
-                              ? "active-menu-item font-semibold"
-                              : " font-semibold"
-                          }
-                        >
-                          Add Offer
-                        </NavLink>
-                      ),
-                    },
-                    
-                  ],
                 },
+              
                 {
                   key: "products",
                   icon: (

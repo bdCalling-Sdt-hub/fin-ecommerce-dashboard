@@ -9,32 +9,33 @@ import Swal from "sweetalert2";
 
 
 const UserTable = () => {
-  // const { data: allUser, isLoading } = useAllUsersQuery();
+  const { data: allUser, isLoading } = useAllUsersQuery();
 
-  // const userData = allUser?.data;
+  const userData = allUser?.data;
+  console.log('=====userData', userData);
 
-  const [data, setData] = useState([]);
-  console.log(data);
-  const [loading, setLoading] = useState(true);
+  // const [data, setData] = useState([]);
+  // console.log(data);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("data/userData.json");
-        const recentData = response.data?.slice(0, 5);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("data/userData.json");
+  //       const recentData = response.data?.slice(0, 5);
 
-        setData(recentData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setData(recentData);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -62,19 +63,29 @@ const UserTable = () => {
       render: (text, record, index) => index + 1,
     },
     {
+      title: "Acount Name",
+      dataIndex: "fullName",
+      responsive: ["xs", "sm"], // Visible on small and extra-small screens
+    },
+    {
       title: "Acount Email",
       dataIndex: "email",
       responsive: ["xs", "sm"], // Visible on small and extra-small screens
     },
-    {
-      title: "Country/Region",
-      dataIndex: "countryName",
-      responsive: ["lg"], // Hide on screens smaller than large
-    },
+    
     {
       title: "Date",
       dataIndex: "createdAt",
+      render:(text, record) => new Date(record.createdAt).toLocaleDateString('en-US'),
       responsive: ["md"], // Hide on smaller screens
+
+    },
+    {
+      title: "Active/Inactive",
+      dataIndex: "createdAt",
+      render:(text, record) => record.isActive ? "Active" : "Inactive",
+      responsive: ["md"], // Hide on smaller screens
+
     },
     {
       title: "Role",
@@ -84,25 +95,25 @@ const UserTable = () => {
       ),
       responsive: ["xs", "sm", "md"], // Visible on all screen sizes
     },
-    {
-      title: "Action",
-      render: (_, record) => {
-        // console.log('recordsss', record); // Log the record for debugging
+    // {
+    //   title: "Action",
+    //   render: (_, record) => {
+    //     // console.log('recordsss', record); // Log the record for debugging
     
-        return (
-          <Button
-            onClick={() => handleDelete(record.serialId)}
-            style={{
-              border: "none",
-              background: "transparent",
-              boxShadow: "none",
-            }}
-          >
-            <RiDeleteBin6Line />
-          </Button>
-        );
-      },
-    }
+    //     return (
+    //       <Button
+    //         onClick={() => handleDelete(record.serialId)}
+    //         style={{
+    //           border: "none",
+    //           background: "transparent",
+    //           boxShadow: "none",
+    //         }}
+    //       >
+    //         <RiDeleteBin6Line />
+    //       </Button>
+    //     );
+    //   },
+    // }
   ];
 
   return (
@@ -123,8 +134,8 @@ const UserTable = () => {
       <div className="w-full overflow-x-auto ">
         <Table
           columns={columns}
-          dataSource={data}
-          loading={loading}
+          dataSource={userData}
+          loading={isLoading}
           pagination={{ pageSize: 5, responsive: true }}
           // pagination={{ pageSize: 5, showSizeChanger: true, responsive: true }}
           onChange={onChange}

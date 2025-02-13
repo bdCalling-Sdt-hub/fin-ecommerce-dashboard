@@ -8,23 +8,42 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useTotalUsersRasioQuery } from "../../Redux/api/usersApi";
+
+
+
+
 
 const data = [
-  { month: "Jan", income: 475 },
-  { month: "Feb", income: 580 },
-  { month: "Mar", income: 300 },
-  { month: "Apr", income: 525 },
-  { month: "May", income: 375 },
-  { month: "Jun", income: 450 },
-  { month: "Jul", income: 575 },
-  { month: "Aug", income: 360 },
-  { month: "Sep", income: 200 },
-  { month: "Oct", income: 400 },
-  { month: "Nov", income: 300 },
-  { month: "Dec", income: 600 },
+  { month: "Jan", userCount: 5 },
+  { month: "Feb", userCount: 8 },
+  { month: "Mar", userCount: 5 },
+  { month: "Apr", userCount: 55 },
+  { month: "May", userCount: 5 },
+  { month: "Jun", userCount: 5 },
+  { month: "Jul", userCount: 6 },
+  { month: "Aug", userCount: 9 },
+  { month: "Sep", userCount: 5 },
+  { month: "Oct", userCount: 5 },
+  { month: "Nov", userCount: 8 },
+  { month: "Dec", userCount: 7 },
 ];
 
-const Area_Chart = () => {
+const Area_Chart = ({year}) => {
+
+  const {data} = useTotalUsersRasioQuery(year);
+
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  const convertData = data?.data.map(item => ({
+    month: monthNames[item.month - 1],
+    userCount: item.userCount
+  }));
+
+  // console.log('convertData ', convertData);
   // Formatter function to add 'K' suffix to Y-axis values
   const yAxisTickFormatter = (value) => `${value}`;
 
@@ -35,7 +54,7 @@ const Area_Chart = () => {
     <div className="w-full h-80 ">
       <ResponsiveContainer >
         <AreaChart
-          data={data}
+          data={convertData}
           margin={{
             top: 20,
             right: 30,
@@ -61,7 +80,7 @@ const Area_Chart = () => {
           />
           <Area
             type="monotone"
-            dataKey="income"
+            dataKey="userCount"
             stroke=""
             fill="url(#colorName)"
           />

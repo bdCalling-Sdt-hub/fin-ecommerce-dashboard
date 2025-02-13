@@ -1,16 +1,25 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from "react";
-import { Button, ConfigProvider, Input, Modal, Select, Table, Tooltip } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Table,
+  Tooltip,
+} from "antd";
 import axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
 import orders from "../../../../public/images/icon/orders.svg";
-import { EyeOutlined } from "@ant-design/icons";
+import { DeleteFilled, EyeOutlined } from "@ant-design/icons";
 
 export default function Offers() {
-  const [searchText, setSearchText] = useState("");
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [form] = Form.useForm();
+
+ 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,38 +31,10 @@ export default function Offers() {
 
   // console.log("allUser", userData);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("data/offers.json");
-        const recentData = response.data?.slice(0, 5);
-
-        setData(recentData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  console.log({data})
-
-  // Move useMemo before any returns
-  const filteredData = useMemo(() => {
-    if (!searchText) return data;
-    return data.filter((item) =>
-      item.email.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [data, searchText]);
-
-  // The early return happens after all hooks are called
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+  const onFinish = (values) => {
+    console.log("Form Values:", values);
+    handleCancel(); // Close modal after submission
+  };
 
   const handleCancel = () => {
     // setIsViewModalVisible(false);
@@ -62,21 +43,82 @@ export default function Offers() {
   };
 
   const showViewModal = (record) => {
-    console.log('recode ', record);
-    
+    console.log("recode ", record);
+
     console.log("Block");
     setCurrentRecord(record);
     setModalVisible(true);
   };
-  
 
-  console.log({currentRecord});
-  
+  console.log({ currentRecord });
 
+  const deletedHandler = async (id) => {
+    console.log("Block id ", id);
+    if (id) {
+      const result = await Swal.fire({
+        title: "Do you want to Delete it?",
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        buttonsStyling: false,
+        customClass: {
+          confirmButton: "swal2-confirm",
+          cancelButton: "swal2-cancel",
+        },
+        didOpen: () => {
+          // Style the Confirm button
+          const confirmBtn = document.querySelector(".swal2-confirm");
+          if (confirmBtn) {
+            confirmBtn.style.backgroundColor = "#E6C379";
+            confirmBtn.style.color = "#fff";
+            confirmBtn.style.border = "none";
+            confirmBtn.style.padding = "8px 20px";
+            confirmBtn.style.borderRadius = "5px";
+            confirmBtn.style.marginRight = "5px";
+          }
 
+          // Style the Cancel button
+          const cancelBtn = document.querySelector(".swal2-cancel");
+          if (cancelBtn) {
+            cancelBtn.style.backgroundColor = "#d33";
+            cancelBtn.style.color = "#fff";
+            cancelBtn.style.border = "none";
+            cancelBtn.style.padding = "8px 20px";
+            cancelBtn.style.borderRadius = "5px";
+          }
+        },
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const res = await deletedSubscribeUser(id).unwrap();
+          console.log("Subscribe user deleted res", res);
+
+          if (res.success) {
+            await Swal.fire("Deleted!", "", "success");
+            refetch();
+          }
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          Swal.fire("Error!", "Something went wrong.", "error");
+        }
+      } else if (result.isDismissed) {
+        Swal.fire("Action Cancelled", "", "info");
+      }
+    }
+  };
 
   return (
     <div className="min-h-[90vh]">
+      <div>
+        <button
+          onClick={() => showViewModal(true)}
+          className="bg-[#E6C379] px-8 py-2 mb-5 text-[#000] text-xl font-semibold float-right"
+        >
+          Add Offer
+        </button>
+      </div>
       <div className=" rounded-lg">
         <div>
           <ConfigProvider
@@ -98,7 +140,7 @@ export default function Offers() {
             <Table
               dataSource={filteredData}
               loading={loading}
-              pagination={{ pageSize: 10}}
+              pagination={{ pageSize: 10 }}
               rowKey={(record) => record.serialId}
               scroll={{ x: true }}
             >
@@ -108,106 +150,128 @@ export default function Offers() {
                 key="serialId"
                 render={(_, __, index) => index + 1}
               />
-              <Table.Column title="Offer Title" render={(_, record) => record.offerTitle || "N/A"} key="offerTitle" />
-              <Table.Column title="Start Date"  render={(_, record) => record.startDate || "N/A"} key="startDate" />
-              <Table.Column title="End Date" render={(_, record) => record.endDate || "N/A"} key="endDate" />
-              <Table.Column title="Discount Type" render={(_, record) => `${record.discountType}` || "N/A"} key="discountType" />
-              <Table.Column title="Discount Amount" render={(_, record) => `${record.discountAmount}%` || "N/A"} key="discountAmount" />
-              
               <Table.Column
-              
-  title="Action"
-  key="action"
-  render={(_, record) => (
-    <div style={{ display: "flex", gap: "8px" }}>
-      {/* View Button */}
-      <Button
-        type="link"
-        onClick={() => showViewModal(record)}
-        style={{ color: "#E6C379" }}
-      >
-        <EyeOutlined style={{ fontSize: 18 }} />
-      </Button>
+                title="Offer Title"
+                render={(_, record) => record.offerTitle || "N/A"}
+                key="offerTitle"
+              />
+              <Table.Column
+                title="Start Date"
+                render={(_, record) => record.startDate || "N/A"}
+                key="startDate"
+              />
+              <Table.Column
+                title="End Date"
+                render={(_, record) => record.endDate || "N/A"}
+                key="endDate"
+              />
+              <Table.Column
+                title="Discount Type"
+                render={(_, record) => `${record.discountType}` || "N/A"}
+                key="discountType"
+              />
+              <Table.Column
+                title="Discount Amount"
+                render={(_, record) => `${record.discountAmount}%` || "N/A"}
+                key="discountAmount"
+              />
 
-      {/* Delete Button */}
-      
-    </div>
-  )}
-/>
-          
+              <Table.Column
+                title="Action"
+                key="action"
+                render={(_, record) => (
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    {/* View Button */}
+                    <Button
+                      type="link"
+                      onClick={() => deletedHandler(record._id)}
+                      style={{ color: "#E6C379" }}
+                    >
+                      <DeleteFilled style={{ fontSize: 18 }} />
+                    </Button>
+
+                    {/* Delete Button */}
+                  </div>
+                )}
+              />
             </Table>
           </ConfigProvider>
         </div>
 
         {/* View Modal */}
 
-
-         
         <Modal
-  open={modalVisible}
-  onCancel={handleCancel}
-  footer={null}
-  centered
-  style={{ textAlign: "center" }}
-  width={800}
->
-  {currentRecord && (
-    <div className="p-4">
-      {/* Flex container for image and details */}
-      <div className="flex gap-8 items-start">
-        {/* Left Side: Image */}
-        <div className="w-2/3">
-          <img
-            src={currentRecord?.img || "https://via.placeholder.com/150"}
-            alt="Product"
-            className="w-full h-auto"
-          />
-        </div>
-
-        {/* Right Side: Details */}
-        <div className="w-3/4 text-left">
-          <h4 className="text-xl font-bold text-[#E6C379] mb-2">Offer Details</h4>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Offer Title:</span> {currentRecord?.offerTitle}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Offer Type:</span> {currentRecord.offerType}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Discount Type:</span> {currentRecord.discountType}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Start Date:</span>{" "}
-            {currentRecord.startDate ? new Date(currentRecord.startDate).toLocaleDateString() : "N/A"}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">End Date:</span>{" "}
-            {currentRecord.endDate ? new Date(currentRecord.endDate).toLocaleDateString() : "N/A"}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Discount Amount:</span>{" "}
-            {currentRecord.discountAmount}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Offer Details:</span>{" "}
-            {currentRecord.offerDetails}
-          </p>
-        </div>
-      </div>
-
-      {/* Cancel Button */}
-      <button
-        onClick={handleCancel}
-        className="bg-[#E6C379] text-white font-bold py-2 text-lg px-5  mt-6 w-full hover:bg-[#E6C379] transition duration-300"
+      open={modalVisible}
+      onCancel={handleCancel}
+      footer={null}
+      centered
+      width={400}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        initialValues={{
+          productName: "Due Fingerprint Necklace",
+          offerPercentage: 10,
+        }}
       >
-        Cancel
-      </button>
-    </div>
-  )}
-</Modal>
+        <h2 className="text-2xl font-semibold mb-4 text-black text-center">
+          Create Offer
+        </h2>
 
+        {/* Product Name Dropdown */}
+        <Form.Item
+          name="productName"
+          label={<span className="font-medium text-gray-700">Product Name*</span>}
+          rules={[{ required: true, message: "Please select a product" }]}
+        >
+          <Select className="w-full">
+            <Option value="Due Fingerprint Necklace">Due Fingerprint Necklace</Option>
+            <Option value="Silver Ring">Silver Ring</Option>
+            <Option value="Gold Bracelet">Gold Bracelet</Option>
+          </Select>
+        </Form.Item>
 
+        {/* Offer Percentage */}
+        <Form.Item
+          name="offerPercentage"
+          label={<span className="font-medium text-gray-700">Offer Percentage*</span>}
+          rules={[{ required: true, message: "Please enter an offer percentage" }]}
+        >
+          <InputNumber className="w-full" min={1} max={100} addonAfter="%" />
+        </Form.Item>
 
+        {/* Start Date */}
+        <Form.Item
+          name="startDate"
+          label={<span className="font-medium text-gray-700">Start Date*</span>}
+          rules={[{ required: true, message: "Please select a start date" }]}
+        >
+          <DatePicker className="w-full" />
+        </Form.Item>
+
+        {/* End Date */}
+        <Form.Item
+          name="endDate"
+          label={<span className="font-medium text-gray-700">End Date*</span>}
+          rules={[{ required: true, message: "Please select an end date" }]}
+        >
+          <DatePicker className="w-full" />
+        </Form.Item>
+
+        {/* Submit Button */}
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="bg-[#E6C379] text-white font-bold w-full rounded-lg hover:bg-[#caa152] transition duration-300"
+          >
+            Done
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
 
         {/* Block Confirmation Modal */}
         {/* <Modal
@@ -249,8 +313,6 @@ export default function Offers() {
             Are you sure you want to Deleted this user?
           </p>
         </Modal> */}
-
-       
       </div>
     </div>
   );

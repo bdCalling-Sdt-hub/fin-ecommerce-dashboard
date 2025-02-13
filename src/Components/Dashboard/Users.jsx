@@ -1,63 +1,54 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import {
-  ArrowLeftOutlined,
-  SearchOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
 import { Button, ConfigProvider, Input, Modal, Table, Tooltip } from "antd";
-import { useAllUsersQuery } from "../../Redux/api/usersApi";
-import moment from "moment";
-import subscribedImg from "../../../public/images/subscribed.png";
-import axios from "axios";
+import { useAllUsersQuery, useBlockUserMutation } from "../../Redux/api/usersApi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
 
 export default function Users() {
   const [searchText, setSearchText] = useState("");
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isBlockModalVisible, setIsBlockModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
-  // const { data: allUser, isLoading, refetch } = useAllUsersQuery();
+  const { data: allUser, isLoading, refetch } = useAllUsersQuery();
 
-  // const userData = allUser?.data;
+  const [blockUser] = useBlockUserMutation();
+
+  const userData = allUser?.data;
 
   // console.log("allUser", userData);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("data/userData.json");
-        const recentData = response.data?.slice(0, 5);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("data/userData.json");
+  //       const recentData = response.data?.slice(0, 5);
 
-        setData(recentData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setData(recentData);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  console.log({data})
+  // console.log({data})
 
   // Move useMemo before any returns
   const filteredData = useMemo(() => {
-    if (!searchText) return data;
+    if (!searchText) return userData;
     return data.filter((item) =>
-      item.email.toLowerCase().includes(searchText.toLowerCase())
+      item.fullName.toLowerCase().includes(searchText.toLowerCase())
     );
-  }, [data, searchText]);
+  }, [userData, searchText]);
 
   // The early return happens after all hooks are called
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -98,16 +89,49 @@ export default function Users() {
     setCurrentRecord(record);
     setIsBlockModalVisible(true);
   };
-  const handleDeleted = () => {
+  const handleDeleted = async() => {
     console.log("Block");
-    setIsBlockModalVisible(false);
-    if(currentRecord.serialId){
-      Swal.fire({
-        title: "User deleted Successfull!!",
-        text: "The user has been deleted!.",
-        icon: "success",
-      });
-  };
+
+    console.log("currentRecord._id", currentRecord._id);
+
+
+    try {
+
+      const res = await blockUser(currentRecord._id).unwrap();
+      console.log('res',res);
+
+      if (res.success) {
+        Swal.fire({
+          title: "User Block Successfully!",
+          text: "The user has been block!.",
+          icon: "success",
+        });
+        refetch();
+        setIsBlockModalVisible(false);
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "There was an issue user block .",
+          icon: "error",
+        });
+      }
+      
+    } catch (error) {
+      
+    }
+
+
+
+
+
+    
+  //   if(currentRecord.serialId){
+  //     Swal.fire({
+  //       title: "User deleted Successfull!!",
+  //       text: "The user has been deleted!.",
+  //       icon: "success",
+  //     });
+  // };
 }
 
   console.log({currentRecord});
@@ -168,7 +192,7 @@ export default function Users() {
           >
             <Table
               dataSource={filteredData}
-              loading={loading}
+              loading={isLoading}
               pagination={{ pageSize: 10}}
               rowKey={(record) => record.serialId}
               scroll={{ x: true }}
@@ -179,9 +203,14 @@ export default function Users() {
                 key="serialId"
                 render={(_, __, index) => index + 1}
               />
+              <Table.Column title="Full Name" dataIndex="fullName" key="email" />
               <Table.Column title="Email" dataIndex="email" key="email" />
-              <Table.Column title="Country Name" dataIndex="countryName" key="countryName" />
-              <Table.Column title="Joining Date" dataIndex="createdAt" key="createdAt" />
+              <Table.Column title="Active/Inactive" render={(text, record) => record.isActive ? "Active" : "Inactive"} dataIndex="countryName" key="countryName" />
+              <Table.Column 
+              title="Joining Date" 
+              render={(text, record) => new Date(record.createdAt).toLocaleDateString('en-US')}
+              dataIndex="createdAt" 
+              key="createdAt" />
               <Table.Column title="Role" dataIndex="role" key="role" />
               <Table.Column
   title="Action"
@@ -202,9 +231,9 @@ export default function Users() {
         type="link"
         danger
         onClick={() => showDeleteModal(record)}
-        style={{ color: "#ff4d4f" }}
+        style={{ color: "#E6C379", borderColor: "#E6C379" }}
       >
-          <RiDeleteBin6Line />
+        {record.isActive ? "Block" : "Unblock"}
       </Button>
     </div>
   )}
@@ -314,13 +343,13 @@ export default function Users() {
                 style={{ background: "#E6C379" }}
                 onClick={handleDeleted}
               >
-                Deleted
+                submit
               </Button>
             </div>
           }
         >
           <p className="text-lg font-semibold pt-10 pb-4">
-            Are you sure you want to Deleted this user?
+            Are you sure you want to it?
           </p>
         </Modal>
 

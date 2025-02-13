@@ -27,7 +27,7 @@ const authApi = baseApi.injectEndpoints({
         const token = localStorage.getItem("accessToken");
         console.log("Forget Pass Mail Token", token);
         return {
-          url: "/auth/forgot-password-otp",
+          url: "/auth/forgot-password",
           method: "POST",
           body: data,
           headers: {
