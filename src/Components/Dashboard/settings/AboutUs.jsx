@@ -16,61 +16,61 @@ const AboutUs = () => {
 
   const [content, setContent] = useState("");
 
-  // const {
-  //   data: getSettingsData,
-  //   isLoading: isFetching,
-  //   error: fetchError,
-  //   refetch,
-  // } = useGetSettingsQuery();
-  // console.log(getSettingsData?.data.aboutUs);
+  const {
+    data: getSettingsData,
+    isLoading: isFetching,
+    error: fetchError,
+    refetch,
+  } = useGetSettingsQuery();
+  console.log('getSettingsData',getSettingsData?.data);
 
-  // // Mutations for adding and updating aboutUs
-  // const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
-  // const [updateSettings, { isLoading: isUpdating }] =
-  //   useUpdateSettingsMutation();
+  // Mutations for adding and updating aboutUs
+  const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
+  const [updateSettings, { isLoading: isUpdating }] =
+    useUpdateSettingsMutation();
 
-  // // Load aboutUs data on component mount
-  // useEffect(() => {
-  //   if (getSettingsData?.data.aboutUs) {
-  //     setContent(getSettingsData.data.aboutUs); // Load the latest aboutUs
-  //   }
-  // }, [getSettingsData]);
+  // Load aboutUs data on component mount
+  useEffect(() => {
+    if (getSettingsData?.data) {
+      setContent(getSettingsData.data.aboutUs); // Load the latest aboutUs
+    }
+  }, [getSettingsData]);
 
   const handleOnSave = async () => {
-    // try {
-    //   if (getSettingsData?.data.aboutUs) {
-    //     // Update existing aboutUs
-    //     await updateSettings({ aboutUs: content }).unwrap();
-    //     toast.success("aboutUs updated successfully!");
-    //   } else {
-    //     // Add a new aboutUs if not existing
-    //     await addSettings({ aboutUs: content }).unwrap();
-    //     toast.success("aboutUs added successfully!");
-    //   }
-    //   refetch(); // Refresh the data after save
-    // } catch (error) {
-    //   toast.error("Failed to save aboutUs. Please try again.");
-    //   console.error("Save error:", error);
-    // }
+    try {
+      if (getSettingsData?.data) {
+        // Update existing aboutUs
+        await updateSettings({ aboutUs: content }).unwrap();
+        toast.success("aboutUs updated successfully!");
+      } else {
+        // Add a new aboutUs if not existing
+        await addSettings({ aboutUs: content }).unwrap();
+        toast.success("aboutUs added successfully!");
+      }
+      refetch(); // Refresh the data after save
+    } catch (error) {
+      toast.error("Failed to save aboutUs. Please try again.");
+      console.error("Save error:", error);
+    }
   };
 
-  // // Show loading state while fetching data
-  // if (isFetching) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <Spin size="large" tip="Loading aboutUs..." />
-  //     </div>
-  //   );
-  // }
+  // Show loading state while fetching data
+  if (isFetching) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin size="large" tip="Loading aboutUs..." />
+      </div>
+    );
+  }
 
-  // // Show error message if fetch fails
-  // if (fetchError) {
-  //   return (
-  //     <div className="text-white">
-  //       Error loading aboutUs. Please try again later.
-  //     </div>
-  //   );
-  // }
+  // Show error message if fetch fails
+  if (fetchError) {
+    return (
+      <div className="text-white">
+        Error loading aboutUs. Please try again later.
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-2 px-2 ">

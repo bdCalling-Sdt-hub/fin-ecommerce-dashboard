@@ -1,61 +1,40 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from "react";
-import { Button, ConfigProvider, Input, Modal, Select, Table, Tooltip } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  Input,
+  Modal,
+  Select,
+  Table,
+  Tooltip,
+} from "antd";
 import axios from "axios";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import Swal from "sweetalert2";
 import orders from "../../../../public/images/icon/orders.svg";
 import { EyeOutlined } from "@ant-design/icons";
+import {
+  useGetAllOrdersQuery,
+  useUpdateOrderStatusMutation,
+} from "../../../Redux/api/ordersApi";
+import Swal from "sweetalert2";
 
-const statuses = ["pending", "processing", "pelivered", "canceled"];
+const statuses = ["confirmed", "processing", "completed", "cancelled"];
 
 export default function Orders() {
-  const [searchText, setSearchText] = useState("");
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
-  // const { data: allUser, isLoading, refetch } = useAllUsersQuery();
+  const { data: allOrders, isLoading, refetch } = useGetAllOrdersQuery();
+  const [orderUpdateStatus] = useUpdateOrderStatusMutation();
 
-  // const userData = allUser?.data;
-
-  // console.log("allUser", userData);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("data/orders.json");
-        const recentData = response.data?.slice(0, 5);
-
-        setData(recentData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  console.log({data})
-
-  // Move useMemo before any returns
-  const filteredData = useMemo(() => {
-    if (!searchText) return data;
-    return data.filter((item) =>
-      item.email.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [data, searchText]);
+  console.log("orderData", allOrders);
 
   // The early return happens after all hooks are called
-  if (loading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
-
 
   const handleCancel = () => {
     // setIsViewModalVisible(false);
@@ -64,46 +43,72 @@ export default function Orders() {
   };
 
   const showViewModal = (record) => {
-    console.log('recode ', record);
-    
+    console.log("recode ", record);
+
     console.log("Block");
     setCurrentRecord(record);
     setModalVisible(true);
   };
+
+  console.log({ currentRecord });
+
+  const handleStatusChange = async(value, record) => {
   
+    try {
+      const response =await orderUpdateStatus({ id: record._id, data: value });
+      console.log('response status', response);
 
-  console.log({currentRecord});
-  
+      if (response?.data?.success) {
+        Swal.fire({
+          title: "Success!",
+          text: response?.data?.message,
+          icon: "success",
+        })
+        refetch();
+      }
+      else if(response?.error?.data?.success === false) {
+        Swal.fire({
+          title: "Error!",
+          text: response?.error?.data?.message,
+          icon: "success",
+        })
+        refetch();
+      }
+      
+    } catch (error) {
+      console.log('error==', error);
+      if(error?.data?.success === false) {
+        Swal.fire({
+          title: "Error!",
+          text: error?.data?.message,
+          icon: "error",
+        })
 
-  const handleStatusChange = (value, record) => {
-    // setData((prevData) =>
-    //   prevData.map((item) =>
-    //     item.orderId === record.orderId ? { ...item, orderStatus: value } : item
-    //   )
-    // );
+      }
+      
+    }
 
-    console.log('value', value);
-    console.log('record', record);
-    
+    console.log("value", value);
+    console.log("record", record);
   };
-
 
   return (
     <div className="min-h-[90vh]">
       <div className=" rounded-lg">
         <div className=" flex mb-5">
-            <div className="flex justify-start bg-[#E6C379] px-5 py-2">
+          <div className="flex justify-start bg-[#E6C379] px-5 py-2">
             <div className="mr-2">
-                <img src={orders} alt="" className="w-10" />
+              <img src={orders} alt="" className="w-10" />
             </div>
             <div>
-                <h3>Total Order Completed</h3>
-                <p className="font-bold">30</p>
+              <h3>Total Order Completed</h3>
+              <p className="font-bold">
+                {allOrders?.data?.totalCompletedOrders}
+              </p>
             </div>
-            </div>
-            <div></div>
-            <div></div>
-           
+          </div>
+          <div></div>
+          <div></div>
         </div>
         <div>
           <ConfigProvider
@@ -123,9 +128,9 @@ export default function Orders() {
             }}
           >
             <Table
-              dataSource={filteredData}
-              loading={loading}
-              pagination={{ pageSize: 10}}
+              dataSource={allOrders?.data?.result}
+              loading={isLoading}
+              pagination={{ pageSize: 10 }}
               rowKey={(record) => record.serialId}
               scroll={{ x: true }}
             >
@@ -135,207 +140,209 @@ export default function Orders() {
                 key="serialId"
                 render={(_, __, index) => index + 1}
               />
-              <Table.Column title="Email" render={(_, record) => record.userId?.email || "N/A"} key="email" />
-              <Table.Column title="Country Name"  render={(_, record) => record.userId?.countryName || "N/A"} key="countryName" />
-              <Table.Column title="Product Name" render={(_, record) => record.orderId?.productName || "N/A"} key="createdAt" />
-              <Table.Column title="Quantity" render={(_, record) => `${record.orderId?.quantity}` || "N/A"} key="createdAt" />
-              <Table.Column title="Product Price" render={(_, record) => `$${record.orderId?.price}` || "N/A"} key="createdAt" />
               <Table.Column
-  title="Status"
-  key="status"
-  render={(_, record) => {
-    let color = ""; // Default color
-    switch (record.status.toLowerCase()) {
-      case "pending":
-        color = "black";
-        break;
-      case "delivered":
-        color = "green";
-        break;
-      case "processing":
-        color = "orange"; // Yellow-like color
-        break;
-      case "cancelled":
-        color = "red";
-        break;
-      default:
-        color = "gray";
-    }
+                title="Order Number"
+                render={(_, record) => record.orderNumber || "N/A"}
+                key="email"
+              />
+              <Table.Column
+                title="Customer Email"
+                render={(_, record) => record.email || "N/A"}
+                key="countryName"
+              />
+              <Table.Column
+                title="Customer Address"
+                render={(_, record) => record.address || "N/A"}
+                key="createdAt"
+              />
+              <Table.Column
+                title="Customer City"
+                render={(_, record) => `${record.city}` || "N/A"}
+                key="createdAt"
+              />
+              <Table.Column
+                title="Cupon Code"
+                render={(_, record) => `${record.cuponCode ? record.cuponCode : "N/A"}` }
+                key="createdAt"
+              />
+              <Table.Column
+                title="Order Price"
+                render={(_, record) => `$${record.totalPrice}` || "N/A"}
+                key="createdAt"
+              />
+              <Table.Column
+                title="Status"
+                key="status"
+                render={(_, record) => {
+                  let color = ""; 
+                  switch (record.status.toLowerCase()) {
+                    case "pending":
+                      color = "black";
+                      break;
+                    case "delivered":
+                      color = "green";
+                      break;
+                    case "processing":
+                      color = "orange"; 
+                      break;
+                    case "cancelled":
+                      color = "red";
+                      break;
+                    default:
+                      color = "gray";
+                  }
 
-    return (
-      <span style={{ color: color, fontWeight: "bold", textTransform: "capitalize" }}>
-        {record.status}
-      </span>
-    );
-  }}
-/>
-
-<Table.Column
-            title="Change Status"
-            dataIndex="status"
-            key="changeStatus"
-            render={(status, record) => (
-              <ConfigProvider
-                theme={{
-                  components: {
-                    Select: {
-                      optionSelectedBg: "rgb(254,188,96)",
-                      optionActiveBg: "rgb(255,217,165)",
-                    },
-                  },
+                  return (
+                    <span
+                      style={{
+                        color: color,
+                        fontWeight: "bold",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {record.status}
+                    </span>
+                  );
                 }}
-              >
-                <Select
-                  value={status}
-                  onChange={(value) => handleStatusChange(value, record)}
-                  options={statuses.map((status) => ({
-                    value: status,
-                    label: status,
-                  }))}
-                  style={{
-                    width: 150,
-                    backgroundColor: "!black", // Sets the background color for the select box itself
-                    color: "white",
-                    zIndex: 1,
-                  }}
-                />
-              </ConfigProvider>
-            )}
-          />
-
-
+              />
 
               <Table.Column
-              
-  title="Action"
-  key="action"
-  render={(_, record) => (
-    <div style={{ display: "flex", gap: "8px" }}>
-      {/* View Button */}
-      <Button
-        type="link"
-        onClick={() => showViewModal(record)}
-        style={{ color: "#E6C379" }}
-      >
-        <EyeOutlined style={{ fontSize: 18 }} />
-      </Button>
+                title="Change Status"
+                dataIndex="status"
+                key="changeStatus"
+                render={(status, record) => (
+                  <ConfigProvider
+                    theme={{
+                      components: {
+                        Select: {
+                          optionSelectedBg: "rgb(254,188,96)",
+                          optionActiveBg: "rgb(255,217,165)",
+                        },
+                      },
+                    }}
+                  >
+                    <Select
+                      value={status}
+                      onChange={(value) => handleStatusChange(value, record)}
+                      options={statuses.map((status) => ({
+                        value: status,
+                        label: status,
+                      }))}
+                      style={{
+                        width: 150,
+                        backgroundColor: "!black", // Sets the background color for the select box itself
+                        color: "white",
+                        zIndex: 1,
+                      }}
+                    />
+                  </ConfigProvider>
+                )}
+              />
 
-      {/* Delete Button */}
-      
-    </div>
-  )}
-/>
-          
+              <Table.Column
+                title="Action"
+                key="action"
+                render={(_, record) => (
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    {/* View Button */}
+                    <Button
+                      type="link"
+                      onClick={() => showViewModal(record)}
+                      style={{ color: "#E6C379" }}
+                    >
+                      <EyeOutlined style={{ fontSize: 18 }} />
+                    </Button>
+
+                    {/* Delete Button */}
+                  </div>
+                )}
+              />
             </Table>
           </ConfigProvider>
         </div>
 
         {/* View Modal */}
 
-
-         
         <Modal
-  open={modalVisible}
-  onCancel={handleCancel}
-  footer={null}
-  centered
-  style={{ textAlign: "center" }}
-  width={800}
->
-  {currentRecord && (
-    <div className="p-4">
-      {/* Flex container for image and details */}
-      <div className="flex gap-8 items-start">
-        {/* Left Side: Image */}
-        <div className="w-2/3">
-          <img
-            src={currentRecord.orderId?.images[0] || "https://via.placeholder.com/150"}
-            alt="Product"
-            className="w-full h-auto  shadow-lg"
-          />
-        </div>
+          open={modalVisible}
+          onCancel={handleCancel}
+          footer={null}
+          centered
+          // style={{ textAlign: "center" }}
+          width={700}
+        >
+          {currentRecord && (
+            <div className="p-4">
+              {/* Flex container for image and details */}
+             <div>
+              <div>
+                {
+                  currentRecord?.productsList?.map((item, index) => (
+                    <div key={index} className="border border-gray-200 mb-5 rounded">
+                      <div className="">
 
-        {/* Right Side: Details */}
-        <div className="w-3/4 text-left">
-          <h4 className="text-xl font-bold text-[#E6C379] mb-2">Order Details</h4>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Product:</span> {currentRecord.orderId?.productName}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Price:</span> ${currentRecord.orderId?.price}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Discount Total Price:</span> ${currentRecord.totalAmount}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Status:</span>{" "}
-            <span
-              className={`font-bold ${
-                currentRecord.status === "pending"
-                  ? "text-black"
-                  : currentRecord.status === "delivered"
-                  ? "text-green-500"
-                  : currentRecord.status === "processing"
-                  ? "text-yellow-500"
-                  : "text-red-500"
-              }`}
-            >
-              {currentRecord.status.charAt(0).toUpperCase() + currentRecord.status.slice(1)}
-            </span>
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Delivery Address:</span>{" "}
-            {currentRecord.deliveryAddress}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Order Date:</span>{" "}
-            {currentRecord.orderDate ? new Date(currentRecord.orderDate).toLocaleDateString() : "N/A"}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Postal Code:</span>{" "}
-            {currentRecord.postalCode}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">City:</span>{" "}
-            {currentRecord.city}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Shiping Method:</span>{" "}
-            {currentRecord.shippingMethod}
-          </p>
-          <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Payment Method:</span>{" "}
-            {currentRecord.paymentMethod}
-          </p>
+                        <div className="grid grid-cols-4 gap-2">
+                          {
+                            item?.productId?.images?.map((image, index) => (
+                              <img
+                                key={index}
+                                src={ `http://10.0.70.35:8025/${image}`}
+                                alt={item.productName}
+                                className="w-40 h-40"
+                              />
+                            ))
+                          }
+                        </div>
+                        <div className="p-4">
+                          <p className="text-base "><span className="text-gray-600">Product Name:</span> {item.productId.name}</p>
+                          <p className="text-base"><span className="text-gray-600">Quantity:</span> {item.quantity}</p>
+                          <p className="text-base"><span className="text-gray-600">Select Material:</span> {item.selectMaterial}</p>
+                          <p className="text-base"><span className="text-gray-600">Product Price:</span> {item.price}</p>
+                          <p className="text-base"><span className="text-gray-600">Product Discount:</span> {item.discount}</p>
+                          <p className="text-base"><span className="text-gray-600">Product Discount Price:</span> {item.discountPrice}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+              <div>
+                <h3><span className="text-gray-600 mr-2 font-bold" >Use Coupon Code :</span>(Extra 10% discount)</h3>
+                <p>{currentRecord?.cuponCode ? currentRecord?.cuponCode : "N/A"}</p>
+              </div>
 
-          <div>
-            <h4 className="text-xl font-bold text-[#E6C379] mb-2 mt-4">User Details</h4>
-            <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Email:</span> {currentRecord.userId?.email}
-          </p>
-            <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Country Name:</span> {currentRecord.userId?.countryName}
-          </p>
-            <p className="text-gray-700 mb-1 text-base">
-            <span className="font-semibold">Phone no:</span> {currentRecord.userId?.phone}
-          </p>
-          </div>
-        </div>
-      </div>
+              <div>
+                <h3 className="font-bold mt-3 text-gray-600">Order Delivery Location :</h3>
+                <div>
+                  <p className="text-base"><span className="text-gray-600 mr-2">Email:</span>{currentRecord?.email ? currentRecord?.email : "N/A"}</p>
+                  <p className="text-base"><span className="text-gray-600 mr-2">Address:</span>{currentRecord?.address ? currentRecord?.address : "N/A"}</p>
+                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">City:</span>{currentRecord?.city ? currentRecord?.city : "N/A"}</p>
+                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Phone Number:</span>{currentRecord?.phoneNumber ? currentRecord?.phoneNumber : "N/A"}</p>
+                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Post Code:</span>{currentRecord?.postalCode ? currentRecord?.postalCode : "N/A"}</p>
+                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Order Note:</span>{currentRecord?.orderNote ? currentRecord?.orderNote : "N/A"}</p>
+                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Payment Status:</span>{currentRecord?.paymentStatus ? currentRecord?.paymentStatus ? "Paid" : "Unpaid" : "N/A"}</p>  
+                </div>
+              </div>
 
-      {/* Cancel Button */}
-      <button
-        onClick={handleCancel}
-        className="bg-[#E6C379] text-white font-bold py-2 text-lg px-5  mt-6 w-full hover:bg-[#E6C379] transition duration-300"
-      >
-        Cancel
-      </button>
-    </div>
-  )}
-</Modal>
+              <div>
+                <hr  className="mt-5"/>
+                <div className="flex justify-between items-center">
+                <h3 className="font-bold mt-3 text-gray-600">Total Paid Amount :</h3>
+                <p className="text-base font-bold">${currentRecord?.totalPrice}</p>
+                </div>
+              </div>
+             </div>
 
-
-
+              {/* Cancel Button */}
+              <button
+                onClick={handleCancel}
+                className="bg-[#E6C379] text-white font-bold py-2 text-lg px-5  mt-6 w-full hover:bg-[#E6C379] transition duration-300"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+        </Modal>
 
         {/* Block Confirmation Modal */}
         {/* <Modal
@@ -377,8 +384,6 @@ export default function Orders() {
             Are you sure you want to Deleted this user?
           </p>
         </Modal> */}
-
-       
       </div>
     </div>
   );

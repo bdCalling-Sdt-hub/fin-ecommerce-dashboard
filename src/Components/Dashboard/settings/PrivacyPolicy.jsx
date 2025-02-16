@@ -17,61 +17,61 @@ const PrivacyPolicy = () => {
   const [content, setContent] = useState("");
 
   // Fetch privacy policy data
-  // const {
-  //   data: getSettingsData,
-  //   isLoading: isFetching,
-  //   error: fetchError,
-  //   refetch,
-  // } = useGetSettingsQuery();
-  // console.log(getSettingsData?.data.privacyPolicy);
+  const {
+    data: getSettingsData,
+    isLoading: isFetching,
+    error: fetchError,
+    refetch,
+  } = useGetSettingsQuery();
+  console.log(getSettingsData?.data.privacyPolicy);
 
-  // // Mutations for adding and updating privacy policy
-  // const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
-  // const [updateSettings, { isLoading: isUpdating }] =
-  //   useUpdateSettingsMutation();
+  // Mutations for adding and updating privacy policy
+  const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
+  const [updateSettings, { isLoading: isUpdating }] =
+    useUpdateSettingsMutation();
 
-  // // Load privacy policy data on component mount
-  // useEffect(() => {
-  //   if (getSettingsData?.data.privacyPolicy) {
-  //     setContent(getSettingsData.data.privacyPolicy); // Load the latest policy
-  //   }
-  // }, [getSettingsData]);
+  // Load privacy policy data on component mount
+  useEffect(() => {
+    if (getSettingsData?.data) {
+      setContent(getSettingsData.data.privacyPolicy); // Load the latest policy
+    }
+  }, [getSettingsData]);
 
   const handleOnSave = async () => {
-    // try {
-    //   if (getSettingsData?.data.privacyPolicy) {
-    //     // Update existing privacy policy
-    //     await updateSettings({ privacyPolicy: content }).unwrap();
-    //     toast.success("Privacy Policy updated successfully!");
-    //   } else {
-    //     // Add a new privacy policy if not existing
-    //     await addSettings({ privacyPolicy: content }).unwrap();
-    //     toast.success("Privacy Policy added successfully!");
-    //   }
-    //   refetch(); // Refresh the data after save
-    // } catch (error) {
-    //   toast.error("Failed to save Privacy Policy. Please try again.");
-    //   console.error("Save error:", error);
-    // }
+    try {
+      if (getSettingsData?.data) {
+        // Update existing privacy policy
+        await updateSettings({ privacyPolicy: content }).unwrap();
+        toast.success("Privacy Policy updated successfully!");
+      } else {
+        // Add a new privacy policy if not existing
+        await addSettings({ privacyPolicy: content }).unwrap();
+        toast.success("Privacy Policy added successfully!");
+      }
+      refetch(); // Refresh the data after save
+    } catch (error) {
+      toast.error("Failed to save Privacy Policy. Please try again.");
+      console.error("Save error:", error);
+    }
   };
 
   // Show loading state while fetching data
-  // if (isFetching) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <Spin size="large" tip="Loading Privacy Policy..." />
-  //     </div>
-  //   );
-  // }
+  if (isFetching) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin size="large" tip="Loading Privacy Policy..." />
+      </div>
+    );
+  }
 
-  // // Show error message if fetch fails
-  // if (fetchError) {
-  //   return (
-  //     <div className="text-white">
-  //       Error loading Privacy Policy. Please try again later.
-  //     </div>
-  //   );
-  // }
+  // Show error message if fetch fails
+  if (fetchError) {
+    return (
+      <div className="text-white">
+        Error loading Privacy Policy. Please try again later.
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-2 px-2 ">

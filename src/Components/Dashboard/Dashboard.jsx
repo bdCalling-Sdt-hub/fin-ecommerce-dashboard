@@ -1,14 +1,9 @@
 import UserTable from "../Tables/UserTable";
-import { InfoCard } from "../Chart/DashboardChart";
 import { NavLink } from "react-router-dom";
-import { useAllUsersQuery } from "../../Redux/api/usersApi";
-import { useGetAllProductsQuery } from "../../Redux/api/offerProduct";
-import { useGetAllOrdersQuery } from "../../Redux/api/ordersApi";
 import { ConfigProvider, Select } from "antd";
 import Area_Chart from "../Chart/AreaChat";
 import Bar_Chart from "../Chart/Bar_Chart";
-import DashboardTable from "../Table/DashboardTable";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 
 

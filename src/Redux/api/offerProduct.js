@@ -1,4 +1,5 @@
 // import Cookies from "universal-cookie";
+
 import { baseApi } from "../baseApi";
 
 // const cookie = new Cookies();
@@ -9,12 +10,12 @@ import { baseApi } from "../baseApi";
 
 const offerProductApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllOffers: builder.query({
+    getAllProductOffers: builder.query({
       query: () => ({
         url: "/offer",
         method: "GET",
       }),
-      providesTags: ["offers"],
+      // providesTags: ["offers"],
     }),
     createOffer: builder.mutation({
       query: (formData) => ({
@@ -22,20 +23,19 @@ const offerProductApi = baseApi.injectEndpoints({
         method: "POST",
         body: formData,
         headers: {
-          "Content-type": "multipart/form-data",
+          "Content-type": "application/json",
         },
-        invalidatesTags: ["offers"],
+        // invalidatesTags: ["offers"],
       }),
     }),
     deleteOffer: builder.mutation({
       query: (id) => ({
         url: `/offer/${id}`,
         method: "DELETE",
-        body: data,
         headers: {
-          "Content-type": "multipart/form-data",
+          "Content-type": "application/json",
         },
-        invalidatesTags: ["offers"],
+        // invalidatesTags: ["offers"],
       }),
     }),
   }),
@@ -46,7 +46,7 @@ const offerProductApi = baseApi.injectEndpoints({
 
 
 export const {
-  useGetAllOffersQuery,
+  useGetAllProductOffersQuery,
   useCreateOfferMutation,
   useDeleteOfferMutation
 } = offerProductApi;

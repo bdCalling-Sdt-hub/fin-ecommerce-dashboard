@@ -4,7 +4,7 @@ const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllOrders: builder.query({
       query: () => ({
-        url: "/orders/",
+        url: "/order",
         method: "GET",
       }),
       providesTags: ["orders"],
@@ -12,13 +12,12 @@ const orderApi = baseApi.injectEndpoints({
 
     updateOrderStatus: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/orders/status/${id}`,
+        url: `/order/status/${id}?status=${data}`,
         method: "PATCH",
-        body: data,
         headers: {
           "Content-type": "application/json",
         },
-        invalidatesTags: ["updateOrder"],
+        invalidatesTags: ["orders"],
       }),
     }),
   }),

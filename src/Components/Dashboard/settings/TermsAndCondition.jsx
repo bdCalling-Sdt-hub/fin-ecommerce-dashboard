@@ -16,42 +16,42 @@ const TermsAndCondition = () => {
 
   const [content, setContent] = useState("");
 
-  // const {
-  //   data: getSettingsData,
-  //   isLoading: isFetching,
-  //   error: fetchError,
-  //   refetch,
-  // } = useGetSettingsQuery();
-  // console.log(getSettingsData?.data.termsOfService);
+  const {
+    data: getSettingsData,
+    isLoading: isFetching,
+    error: fetchError,
+    refetch,
+  } = useGetSettingsQuery();
+  console.log(getSettingsData?.data.termsOfService);
 
-  // // Mutations for adding and updating Terms & Condition
-  // const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
-  // const [updateSettings, { isLoading: isUpdating }] =
-  //   useUpdateSettingsMutation();
+  // Mutations for adding and updating Terms & Condition
+  const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
+  const [updateSettings, { isLoading: isUpdating }] =
+    useUpdateSettingsMutation();
 
-  // // Load Terms & Condition data on component mount
-  // useEffect(() => {
-  //   if (getSettingsData?.data.termsOfService) {
-  //     setContent(getSettingsData.data.termsOfService); // Load the latest policy
-  //   }
-  // }, [getSettingsData]);
+  // Load Terms & Condition data on component mount
+  useEffect(() => {
+    if (getSettingsData?.data) {
+      setContent(getSettingsData.data.termsOfService); // Load the latest policy
+    }
+  }, [getSettingsData]);
 
   const handleOnSave = async () => {
-    // try {
-    //   if (getSettingsData?.data.termsOfService) {
-    //     // Update existing Terms & Condition
-    //     await updateSettings({ termsOfService: content }).unwrap();
-    //     toast.success("Terms & Condition updated successfully!");
-    //   } else {
-    //     // Add a new Terms & Condition if not existing
-    //     await addSettings({ termsOfService: content }).unwrap();
-    //     toast.success("Terms & Condition added successfully!");
-    //   }
-    //   refetch(); // Refresh the data after save
-    // } catch (error) {
-    //   toast.error("Failed to save Terms & Condition. Please try again.");
-    //   console.error("Save error:", error);
-    // }
+    try {
+      if (getSettingsData?.data) {
+        // Update existing Terms & Condition
+        await updateSettings({ termsOfService: content }).unwrap();
+        toast.success("Terms & Condition updated successfully!");
+      } else {
+        // Add a new Terms & Condition if not existing
+        await addSettings({ termsOfService: content }).unwrap();
+        toast.success("Terms & Condition added successfully!");
+      }
+      refetch(); // Refresh the data after save
+    } catch (error) {
+      toast.error("Failed to save Terms & Condition. Please try again.");
+      console.error("Save error:", error);
+    }
   };
 
   // Show loading state while fetching data

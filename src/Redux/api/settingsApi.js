@@ -12,34 +12,34 @@ const settingsApi = baseApi.injectEndpoints({
           url: "/auth/change-password",
           method: "PATCH",
           body: data,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
+          // headers: {
+          //   Authorization: `Bearer ${accessToken}`,
+          //   "Content-Type": "application/json",
+          // },
         };
       },
     }),
     getSettings: builder.query({
       query: () => ({
-        url: "/settings",
+        url: "/setting",
         method: "GET",
       }),
       providesTags: ["settings"],
     }),
     addSettings: builder.mutation({
       query: (data) => ({
-        url: "/settings/",
+        url: "/setting/",
         method: "POST",
         body: data,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${accessToken}`,
+        // },
         invalidatesTags: ["settings"],
       }),
     }),
     updateSettings: builder.mutation({
       query: (data) => ({
-        url: "/settings",
+        url: "/setting",
         method: "PATCH",
         body: data,
         // headers: {
