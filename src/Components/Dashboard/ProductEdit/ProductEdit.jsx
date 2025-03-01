@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Upload, Select, Space } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
 import Swal from "sweetalert2";
@@ -10,27 +10,28 @@ import {
   useGetSingleProductQuery,
   useUpdateProductMutation,
 } from "../../../Redux/api/productsApi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-export const ProductEdit = () => {
-  const { id } = useParams();
+export const AddProduct = () => {
   const [form] = Form.useForm();
-  const [categorySelect, setCategorySelect] = useState();
   const [color, setColor] = useColor("#561ecb");
-  const [colors, setColors] = useState([]);
-  const [fileList, setFileList] = useState([]);
-  const [fileList2, setFileList2] = useState([]);
-  const [deletedImageUrls, setDeletedImageUrls] = useState([]);
+  const [categorySelect, setCategorySelect] = useState();
+  const [fileList, setFileList] = useState();
+  const [imageList, setImageList] = useState([]); // 
   const navigate = useNavigate();
-
+  const [productCreate] = useCreateProductMutation();
   const {
     data: allProducts,
     isLoading,
     refetch,
   } = useGetAllProductsQuery(null);
+
+  console.log(imageList);
+
+
 
   const { data: singleProduct } = useGetSingleProductQuery(id);
   const [updateProduct] = useUpdateProductMutation();
@@ -76,143 +77,124 @@ export const ProductEdit = () => {
 
   console.log("deletedImageUrls ===", deletedImageUrls);
 
-  // const handleUpload = ({ fileList }) => {
-  //   setFileList(fileList);
-  // };
 
-  const handleUpload = ({ fileList }) => {
-    setFileList(fileList);
+  
+  const handleColorChange = (newColor) => {
+    setColor(newColor);
   };
 
-  console.log('fileList',fileList);
-
-  const handleRemove = (file) => {
-    setDeletedImageUrls((prevDeleted) => [...prevDeleted, file.url]);
-    setFileList((prevList) => prevList.filter((item) => item.uid !== file.uid));
-  };
-
-  const handleUpload2 = ({ fileList }) => {
-    setFileList2(fileList);
+  // Handle file upload
+  const handleUpload = (info) => {
+    const newFileList = info.fileList;
+    console.log("newFileList==", newFileList);
+    setFileList(newFileList);
   };
 
 
-  const handleAddColor = () => {
-    setColors((prevColors) => [...prevColors, color.hex]);
+
+  const handleAddImageColor = () => {
+    if (fileList.length > 0) {
+      const newImageList = fileList.map((file) => file.originFileObj); // Get the uploaded image file objects
+      const newColorList = newImageList.map(() => color); // Assign the selected color to each image
+
+      // Update the state with the new image and color
+      setImageList((prev) => [
+        ...prev,
+        {
+          color: newColorList,
+          image: newImageList,
+        },
+      ]);
+
+      setFileList(null);
+    }
   };
 
-  const handleRemoveColor = (index) => {
-    setColors((prevColors) => prevColors.filter((_, i) => i !== index));
+  // console.log("colorList==", colorList);
+  // console.log("imageList==", imageList);
+
+  const handleDeleteImageColor = (index) => {
+    const updatedImageList = [...imageList];
+    updatedImageList.splice(index, 1);
+    setImageList(updatedImageList);
   };
-
-  // const handleUpload = (info) => {
-  //   if (info.file.status === "done") {
-  //     console.log(`${info.file.name} file uploaded successfully.`);
-  //   } else if (info.file.status === "error") {
-  //     console.log(`${info.file.name} file upload failed.`);
-  //   }
-  // };
-
-  console.log("colors ====", colors);
-
-  // const onFinish = async (values) => {
-  //   if (!values.images || values.images.fileList.length === 0) {
-  //     Swal.fire('Please upload at least one product image!');
-  //     return;
-  //   }
-
-  //   if (!values.coverImage || values.coverImage.fileList.length === 0) {
-  //     Swal.fire('Please upload a cover image!');
-  //     return;
-  //   }
-
-  //   console.log("Form values: ", values);
-
-  //   // Extract images (file objects or URLs)
-  //   const coverImage = values.coverImage.fileList.map(file => file.originFileObj || file.url);
-  //   const images = values.images.fileList.map(file => file.originFileObj || file.url);
-
-  //   console.log('colors:', colors);
-  //   console.log('coverImage:', coverImage);
-  //   console.log('images:', images);
-
-  //   const formData = new FormData();
-
-  //   // Append text data
-  //   formData.append('name', values.name);
-  //   formData.append('description', values.description);
-  //   formData.append('price', values.price);
-  //   formData.append('stock', values.stock);
-  //   formData.append('category', values.category);
-  //   formData.append('subCategory', values.subCategory);
-  //   formData.append('colors', JSON.stringify(colors)); // Convert array to string
-  //   // formData.append('colors', colors); // Convert array to string
-
-  //   // Append cover image (assuming one cover image)
-  //   formData.append('coverImage', coverImage[0]);
-
-  //   // Append all images
-  //   images.forEach((image, index) => {
-  //     formData.append(`images`, image);
-  //   });
-
-  //   try {
-  //     const res = await productCreate(formData).unwrap();
-  //     console.log('Product Create Response:', res);
-
-  //     if (res.success) {
-  //       Swal.fire({
-  //         icon: 'success',
-  //         title: 'Product Created Successfully!',
-  //         text: 'Your product has been added.',
-  //       });
-  //       refetch();
-  //       navigate('/products')
-  //     }
-  //   } catch (error) {
-  //     console.error('Error creating product:', error);
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Failed to Create Product',
-  //       text: error.message || 'Something went wrong!',
-  //     });
-  //   }
-  // };
 
   const onFinish = async (values) => {
-    const coverImage = fileList2?.map((file) => file.originFileObj || file.url);
-    const images = fileList?.map((file) => file.originFileObj) || [];
-    const filterImages = images.filter((image) => image !== undefined);
-   
 
-    console.log("coverImage === frontend", coverImage);
-    console.log("images === frontend", images);
-    console.log("filterImages === frontend", filterImages);
+    // if (!values.coverImage || values.coverImage.fileList.length === 0) {
+    //   Swal.fire("Please upload a cover image!");
+    //   return;
+    // }
+
+    if(imageList.length === 0) {
+      Swal.fire("Please upload at least one image and color!");
+      return;
+    }
+
+
+    const imageAndColor = imageList.map((item) => {
+      return {
+        color: item.color.length > 0 ? item.color[0].hex : '',
+        image: item.image.length > 0 ? item.image[0] : null // Send the file itself, not the uid
+      };
+    });
+
+    console.log('imageAndColor====',imageAndColor);
+
+
+    // Extract images (file objects or URLs)
+    // const coverImage = values.coverImage.fileList.map(
+    //   (file) => file.originFileObj || file.url
+    // );
+   
+    // console.log("coverImage:--", coverImage);
 
     const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("description", values.description);
-    formData.append("price", values.price);
-    formData.append("stock", values.stock);
-    formData.append("category", values.category);
-    formData.append("subCategory", values.subCategory);
-    formData.append("colors", JSON.stringify(colors));
-    if (coverImage?.length) formData.append("coverImage", coverImage[0]);
-    filterImages.forEach((image) => formData.append("images", image));
 
-    // Append deleted images list to formData
-    formData.append("deletedImageUrls", JSON.stringify(deletedImageUrls));
+    // // Append text data
+    formData.append('name', values.name);
+    formData.append('description', values.description);
+    formData.append('price', values.price);
+    formData.append('stock', values.stock);
+    formData.append('category', values.category);
+    formData.append('subCategory', values.subCategory);
+    // formData.append('images', JSON.stringify(imageAndColor));
+    // imageAndColor.map((item)=>{
+    //   formData.append(`productImages_${item.color}`, item.image);
+    // })
 
-    console.log("update product data", formData);
+    imageAndColor.forEach((item) => {
+      console.log('item====',item);
+      if (item.image) {
+        formData.append(`images_${item.color}`, item.image); 
+      }
+    });
+
+    
+    // Append cover image (assuming one cover image)
+    // formData.append('coverImage', coverImage[0]);
+
 
     try {
-      const res = await updateProduct({ id, data: formData }).unwrap();
+      const res = await productCreate(formData).unwrap();
+      console.log('Product Create Response:', res);
+
       if (res.success) {
-        Swal.fire("Success", "Product updated successfully!", "success");
+        Swal.fire({
+          icon: 'success',
+          title: 'Product Created Successfully!',
+          text: 'Your product has been added.',
+        });
         refetch();
-        navigate("/products");
+        navigate('/products')
       }
     } catch (error) {
-      Swal.fire("Error", error.message || "Something went wrong!", "error");
+      console.error('Error creating product:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed to Create Product',
+        text: error.message || 'Something went wrong!',
+      });
     }
   };
 
@@ -229,12 +211,14 @@ export const ProductEdit = () => {
         <Form.Item
           label={<span className="text-black">Product Name</span>}
           name="name"
+          rules={[{ required: true, message: "Please enter product name!" }]}
         >
-          <Input required placeholder="Enter Product Name" />
+          <Input required placeholder="Enter Product Name" className="p-2" />
         </Form.Item>
         <Form.Item
           label={<span className="text-black">Product Category</span>}
           name="category"
+          rules={[{ required: true, message: "Please select a category!" }]}
         >
           <Select
             onChange={(value) => setCategorySelect(value)}
@@ -276,119 +260,28 @@ export const ProductEdit = () => {
         <Form.Item
           label={<span className="text-black">Product Price</span>}
           name="price"
+          rules={[{ required: true, message: "Please enter product price!" }]}
         >
           <Input placeholder="Enter Price" type="number" />
         </Form.Item>
         <Form.Item
           label={<span className="text-black">Product Stock</span>}
           name="stock"
+          rules={[{ required: true, message: "Please enter product stock!" }]}
         >
           <Input placeholder="Enter stock" type="number" />
         </Form.Item>
         <Form.Item
           label={<span className="text-black">Product Details</span>}
           name="description"
+          rules={[{ required: true, message: "Please enter product details!" }]}
         >
           <TextArea
             placeholder="Luxury gold necklace with embedded diamond."
             rows={4}
           />
         </Form.Item>
-
-        {/* <Form.Item label={<span className="text-black">Color Picker</span>}>
-          <div className=" ">
-            <ColorPicker
-              width={1000}
-              height={100}
-              color={color}
-              onChange={setColor}
-            />
-          </div>
-          <Button
-            onClick={handleAddColor}
-            style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }}
-            className="float-right mt-2"
-          >
-            Add Color
-          </Button>
-          <div className="mt-4">
-            <span className="text-black font-semibold">Selected Colors: </span>
-            <div className="flex gap-1 mt-1">
-              {colors.map((c, index) => (
-                <div
-                  key={index}
-                  className="w-6 h-6 rounded-full border border-gray-300"
-                  style={{ backgroundColor: c }}
-                ></div>
-              ))}
-            </div>
-          </div>
-        </Form.Item> */}
-
-        <Form.Item label={<span className="text-black">Color Picker</span>}>
-          <div>
-            <ColorPicker
-              width={1000}
-              height={100}
-              color={color}
-              onChange={setColor}
-            />
-          </div>
-
-          <Button
-            onClick={handleAddColor}
-            style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }}
-            className="float-right mt-2"
-          >
-            Add Color
-          </Button>
-
-          <div className="mt-4">
-            <span className="text-black font-semibold">Selected Colors: </span>
-            <div className="flex gap-2 mt-2">
-              {colors.map((c, index) => (
-                <div key={index} className="flex items-center gap-1">
-                  <div
-                    className="w-6 h-6 rounded-full border border-gray-300"
-                    style={{ backgroundColor: c }}
-                  ></div>
-                  <button
-                    onClick={() => handleRemoveColor(index)}
-                    className="text-red-500 text-xs font-bold"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Form.Item>
-
-        <Form.Item
-          label={<span className="text-black">Product Images</span>}
-          name="images"
-        >
-          <Upload
-            name="file"
-            listType="picture"
-            beforeUpload={() => false}
-            fileList={fileList}
-            onChange={handleUpload}
-            multiple
-            onRemove={handleRemove}
-          >
-            <Button
-              icon={<UploadOutlined />}
-              className="p-10"
-              style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }}
-            >
-              Upload Images
-            </Button>
-          </Upload>
-        </Form.Item>
-
-        {/* Cover Image */}
-        <Form.Item
+        {/* <Form.Item
           label={<span className="text-black">Cover Image</span>}
           name="coverImage"
         >
@@ -398,16 +291,89 @@ export const ProductEdit = () => {
             beforeUpload={() => false}
             fileList={fileList2}
             onChange={handleUpload2}
+            rules={[
+              { required: true, message: "Please enter product cover image!" },
+            ]}
           >
             <Button
               icon={<UploadOutlined />}
               className="p-10"
-              style={{ backgroundColor: "#E6C379", borderColor: "#E6C379" }}
+              style={{
+                backgroundColor: "#E6C379",
+                borderColor: "#E6C379",
+                borderRadius: "none",
+              }}
             >
               Upload Cover Image
             </Button>
           </Upload>
-        </Form.Item>
+        </Form.Item> */}
+
+        <div>
+          <Form.Item label={<span className="text-black">Color Picker</span>}>
+            <ColorPicker
+              width={500}
+              height={80}
+              color={color}
+              onChange={handleColorChange}
+              // onChange={color => setColor(color.hex)}
+            />
+          </Form.Item>
+
+          <Form.Item label={<span className="text-black">Product Images</span>}>
+            <Upload
+              name="file"
+              listType="picture"
+              beforeUpload={() => false} // Disable auto upload
+              fileList={fileList}
+              onChange={handleUpload}
+              rules={[
+                { required: true, message: "Please enter product Images!" },
+              ]}
+            >
+              <Button
+                icon={<UploadOutlined />}
+                className="p-10"
+                style={{
+                  backgroundColor: "#E6C379",
+                  borderColor: "#E6C379",
+                  borderRadius: "none",
+                }}
+              >
+                Upload Images
+              </Button>
+            </Upload>
+          </Form.Item>
+
+          <button
+          type="button"
+            className="bg-[#E6C379] px-4 py-2 text-base float-right"
+            onClick={handleAddImageColor}
+          >
+            Add Image Color
+          </button>
+        </div>
+
+        <div className="mt-4">
+          <h3 className="mb-2">Preview Image And Color:</h3>
+          {imageList.map((item, index) => (
+            <div key={index} className="flex items-center gap-4 mb-4 w-full border p-1 rounded ">
+              <div className="flex items-center border rounded p-2 justify-between w-96 ">
+              <img
+                src={URL.createObjectURL(item?.image[0])}
+                alt={`image-${index}`}
+                className="w-20 h-20 object-cover border-2 border-gray-300 rounded-full mr-14"
+              />
+              <div
+                className="w-10 h-10 rounded-full"
+                style={{ backgroundColor: item?.color?.[0]?.hex }}
+              ></div>
+              </div>
+              <div className="cursor-pointer ml-10 "> <DeleteOutlined onClick={() => handleDeleteImageColor(index)} className="text-[#E6C379] text-xl" /> </div>
+              
+            </div>
+          ))}
+        </div>
 
         {/* Buttons */}
         <Form.Item className="col-span-1 md:col-span-3 flex justify-end gap-4">
@@ -438,4 +404,4 @@ export const ProductEdit = () => {
   );
 };
 
-export default ProductEdit;
+export default AddProduct;

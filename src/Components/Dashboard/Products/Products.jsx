@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Modal } from "antd";
 import { NavLink } from "react-router-dom";
@@ -22,6 +22,38 @@ function Products() {
 
   console.log("===products====", allProducts);
 
+  const [selectedImage, setSelectedImage] = useState({});
+  const [selectedColors, setSelectedColors] = useState({});
+
+  // Function to handle color click and show the corresponding image
+  const handleColorClick = (productId,image, color) => {
+    // setSelectedImage({ image, color }); // Set both image and color
+    setSelectedImage((prevState) => ({
+      ...prevState,
+      [productId]: { image, color },
+    }));
+    setSelectedColors((prevState) => ({
+      ...prevState,
+      [productId]: color,
+    }));
+  };
+
+  console.log('selectedImage===',selectedImage);
+  useEffect(() => {
+    const defaultImages = {};
+    const defaultColors = {};
+    allProducts?.data?.result?.forEach((product) => {
+      // Set the first image and color as the default image and color for each product
+      defaultImages[product._id] = {
+        image: product?.images?.[0]?.image,
+        color: product?.images?.[0]?.color,
+      };
+      defaultColors[product._id] = product?.images?.[0]?.color; // Set default color
+    });
+    setSelectedImage(defaultImages); // Set default images for each product
+    setSelectedColors(defaultColors); // Set default colors for each product
+  }, [allProducts]);
+
   const handleCancel = () => {
     // setIsViewModalVisible(false);
     // setIsDeleteModalVisible(false);
@@ -39,6 +71,8 @@ function Products() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+ 
 
   const deleteHandler = async (id) => {
     console.log("Block id ", id);
@@ -103,19 +137,27 @@ function Products() {
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {allProducts?.data?.result?.length > 0 && allProducts?.data?.result?.map((product, index) => (
           <div className="bg-white p-4 rounded-none shadow-md" key={index}>
-            <img
-              //  src={product.image || juwelary}
-              // src={product.image ? juwelary : product.image}
-              src={`${url}${product.coverImage}`}
-              alt={product.name}
-              className="w-full h-60 object-cover mb-4"
-            />
+            {selectedImage[product._id] && selectedImage[product._id].image && (
+              <div className="mt-4">
+                <img
+                  // src={`${url}${selectedImage.image}`} // Show image associated with selected color
+                  src={`${url}${selectedImage[product._id].image}`}
+                  alt="Selected Color"
+                  className="w-full h-56 object-cover mt-2 border rounded mb-3"
+                />
+              </div>
+            )}
             <p className="text-gray-600 flex ">
-              {product?.colors?.map((c, index) => (
+              {product?.images?.map((c, index) => (
                 <div
                   key={index}
-                  className="w-6 h-6 rounded-full border border-gray-300 mr-2"
-                  style={{ backgroundColor: c }}
+                  className={`w-6 h-6 rounded-full border border-gray-300 mr-2 cursor-pointer ${
+                    selectedColors[product._id] === c.color
+                      ? 'border-2  border-blue-500'
+                      : ''
+                  }`} 
+                  style={{ backgroundColor: c.color }}
+                  onClick={() => handleColorClick(product._id,c.image, c.color)} 
                 ></div>
               ))}
             </p>
