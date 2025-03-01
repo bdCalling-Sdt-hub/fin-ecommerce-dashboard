@@ -45,6 +45,17 @@ const productsApi = baseApi.injectEndpoints({
         // invalidatesTags: [""],
       }),
     }),
+    deletedProductImageColor: builder.mutation({
+      query: ({id, data}) => ({
+        url: `/product/image/${id}`,
+        method: "PATCH",
+        body: data,
+        headers: {
+          "Content-type": "application/json",
+        },
+        // invalidatesTags: [""],
+      }),
+    }),
     updateProduct: builder.mutation({
       query: ({id, data}) => ({
         url: `/product/${id}`,
@@ -68,5 +79,6 @@ export const {
     useCreateProductMutation,
     useDeleteProductMutation,
     useGetSingleProductQuery,
-    useUpdateProductMutation
+    useUpdateProductMutation,
+    useDeletedProductImageColorMutation
 } = productsApi;

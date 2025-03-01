@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Upload, Select, Space } from "antd";
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import { ColorPicker, useColor } from "react-color-palette";
@@ -6,21 +6,23 @@ import "react-color-palette/css";
 import Swal from "sweetalert2";
 import {
   useCreateProductMutation,
+  useDeletedProductImageColorMutation,
   useGetAllProductsQuery,
   useGetSingleProductQuery,
   useUpdateProductMutation,
 } from "../../../Redux/api/productsApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-export const AddProduct = () => {
+export const ProductEdit = () => {
+  const { id } = useParams();
   const [form] = Form.useForm();
   const [color, setColor] = useColor("#561ecb");
   const [categorySelect, setCategorySelect] = useState();
   const [fileList, setFileList] = useState();
-  const [imageList, setImageList] = useState([]); // 
+  const [imageList, setImageList] = useState([]);
   const navigate = useNavigate();
   const [productCreate] = useCreateProductMutation();
   const {
@@ -29,12 +31,9 @@ export const AddProduct = () => {
     refetch,
   } = useGetAllProductsQuery(null);
 
-  console.log(imageList);
-
-
-
   const { data: singleProduct } = useGetSingleProductQuery(id);
   const [updateProduct] = useUpdateProductMutation();
+  const [updateProductImageColor] = useDeletedProductImageColorMutation();
 
   // console.log('==single product',singleProduct);
 
@@ -49,36 +48,15 @@ export const AddProduct = () => {
         description: singleProduct.data.description || "",
       });
       setCategorySelect(singleProduct.data.category || "");
-      setColors(singleProduct.data.colors || []);
 
-      setFileList(
-        singleProduct.data.images
-          ? singleProduct.data.images.map((url, index) => ({
-              uid: index,
-              name: `Image-${index}`,
-              url,
-            }))
-          : []
-      );
-
-      setFileList2(
-        singleProduct.data.coverImage
-          ? [
-              {
-                uid: "cover",
-                name: "Cover Image",
-                url: singleProduct.data.coverImage,
-              },
-            ]
-          : []
-      );
+      
     }
   }, [singleProduct?.data]);
 
-  console.log("deletedImageUrls ===", deletedImageUrls);
+  console.log('single data', singleProduct)
 
+ 
 
-  
   const handleColorChange = (newColor) => {
     setColor(newColor);
   };
@@ -113,6 +91,24 @@ export const AddProduct = () => {
   // console.log("colorList==", colorList);
   // console.log("imageList==", imageList);
 
+  const handleDeleteImageColorFromDatabase = async(productId, imageId) => {
+    const deletedImageDate ={
+      imageColorId: imageId
+    }
+    console.log('data',deletedImageDate)
+
+    try {
+      const res = await updateProductImageColor({ id:productId, data: deletedImageDate }).unwrap();
+      if (res.success) {
+        Swal.fire("Success", "Product Image deleted successfully!", "success");
+        window.location.reload();
+      }
+    } catch (error) {
+      Swal.fire("Error", error.message || "Something went wrong!", "error");
+    }
+
+  };
+
   const handleDeleteImageColor = (index) => {
     const updatedImageList = [...imageList];
     updatedImageList.splice(index, 1);
@@ -121,25 +117,16 @@ export const AddProduct = () => {
 
   const onFinish = async (values) => {
 
-    // if (!values.coverImage || values.coverImage.fileList.length === 0) {
-    //   Swal.fire("Please upload a cover image!");
-    //   return;
-    // }
-
-    if(imageList.length === 0) {
-      Swal.fire("Please upload at least one image and color!");
-      return;
-    }
-
-
     const imageAndColor = imageList.map((item) => {
       return {
         color: item.color.length > 0 ? item.color[0].hex : '',
-        image: item.image.length > 0 ? item.image[0] : null // Send the file itself, not the uid
+        image: item.image.length > 0 ? item.image[0] : null
       };
     });
 
+    console.log('values====',values);
     console.log('imageAndColor====',imageAndColor);
+
 
 
     // Extract images (file objects or URLs)
@@ -176,25 +163,14 @@ export const AddProduct = () => {
 
 
     try {
-      const res = await productCreate(formData).unwrap();
-      console.log('Product Create Response:', res);
-
+      const res = await updateProduct({ id, data: formData }).unwrap();
       if (res.success) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Product Created Successfully!',
-          text: 'Your product has been added.',
-        });
+        Swal.fire("Success", "Product updated successfully!", "success");
         refetch();
-        navigate('/products')
+        navigate("/products");
       }
     } catch (error) {
-      console.error('Error creating product:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Failed to Create Product',
-        text: error.message || 'Something went wrong!',
-      });
+      Swal.fire("Error", error.message || "Something went wrong!", "error");
     }
   };
 
@@ -281,34 +257,7 @@ export const AddProduct = () => {
             rows={4}
           />
         </Form.Item>
-        {/* <Form.Item
-          label={<span className="text-black">Cover Image</span>}
-          name="coverImage"
-        >
-          <Upload
-            name="file"
-            listType="picture"
-            beforeUpload={() => false}
-            fileList={fileList2}
-            onChange={handleUpload2}
-            rules={[
-              { required: true, message: "Please enter product cover image!" },
-            ]}
-          >
-            <Button
-              icon={<UploadOutlined />}
-              className="p-10"
-              style={{
-                backgroundColor: "#E6C379",
-                borderColor: "#E6C379",
-                borderRadius: "none",
-              }}
-            >
-              Upload Cover Image
-            </Button>
-          </Upload>
-        </Form.Item> */}
-
+       
         <div>
           <Form.Item label={<span className="text-black">Color Picker</span>}>
             <ColorPicker
@@ -374,6 +323,26 @@ export const AddProduct = () => {
             </div>
           ))}
         </div>
+        <div className="mt-4">
+          <h3 className="mb-2">Database Image And Color:</h3>
+          {singleProduct?.data?.images.map((item, index) => (
+            <div key={index} className="flex items-center gap-4 mb-4 w-full border p-1 rounded ">
+              <div className="flex items-center border rounded p-2 justify-between w-96 ">
+              <img
+                src={`http://localhost:8025/${item?.image}`}
+                alt={`image-${index}`}
+                className="w-20 h-20 object-cover border-2 border-gray-300 rounded-full mr-14"
+              />
+              <div
+                className="w-10 h-10 rounded-full"
+                style={{ backgroundColor: item?.color }}
+              ></div>
+              </div>
+              <div className="cursor-pointer ml-10 "> <DeleteOutlined onClick={() => handleDeleteImageColorFromDatabase(singleProduct?.data?._id, item._id)} className="text-[#E6C379] text-xl" /> </div>
+              
+            </div>
+          ))}
+        </div>
 
         {/* Buttons */}
         <Form.Item className="col-span-1 md:col-span-3 flex justify-end gap-4">
@@ -395,7 +364,7 @@ export const AddProduct = () => {
               }}
               className="bg-blue-500 hover:bg-blue-600"
             >
-              Submit Product
+              Update Product
             </Button>
           </Space>
         </Form.Item>
@@ -404,4 +373,4 @@ export const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default ProductEdit;
