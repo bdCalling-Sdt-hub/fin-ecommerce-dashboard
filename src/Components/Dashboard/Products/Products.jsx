@@ -204,9 +204,9 @@ function Products() {
                 {currentRecord?.images?.map((image, index) => (
                   <img
                     key={index}
-                    src={`${url}${image}`}
+                    src={`${url}${image.image}`}
                     alt="Product"
-                    className="w-full h-auto"
+                    className="w-full h-52"
                   />
                 ))}
               </div>
@@ -263,11 +263,11 @@ function Products() {
                   <span className="font-semibold mr-2">
                     Product Color Code:
                   </span>{" "}
-                  {currentRecord?.colors?.map((c, index) => (
+                  {currentRecord?.images?.map((c, index) => (
                     <div
                       key={index}
                       className="w-6 h-6 rounded-full border border-gray-300 mr-2"
-                      style={{ backgroundColor: c }}
+                      style={{ backgroundColor: c.color }}
                     ></div>
                   ))}
                 </p>
