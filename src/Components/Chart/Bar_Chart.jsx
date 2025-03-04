@@ -77,8 +77,8 @@ const Bar_Chart = ({earningYear}) => {
           <ReferenceLine y={100} stroke="#BBB69A" strokeWidth={1} />
           <Bar
             dataKey="totalIncome"
-            fill="#BBB69A" // Bar color
-            barSize={20} // Width of each bar
+            fill="#BBB69A"
+            barSize={20}
           />
         </BarChart>
       </ResponsiveContainer>

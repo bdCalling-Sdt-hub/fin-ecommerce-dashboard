@@ -27,7 +27,6 @@ const Profile = () => {
   //   fullName: "Dr Mathews",
   //   email: "dr.mathews@example.com",
   //   phone: "01846875456",
-  
   // });
   const navigate = useNavigate();
 

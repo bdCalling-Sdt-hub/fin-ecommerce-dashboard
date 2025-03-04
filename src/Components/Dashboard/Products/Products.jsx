@@ -7,7 +7,9 @@ import {
   useGetAllProductsQuery,
 } from "../../../Redux/api/productsApi";
 
-const url = "http://10.0.70.35:8025/";
+// const url = "http://10.0.70.35:8025/";
+const url = "http://139.59.0.25:8025/";
+// http://10.0.70.35:8025/uploads//products//2-1741068078797-610931184.jpg
 
 function Products() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -135,7 +137,7 @@ function Products() {
       <h1 className="text-3xl font-bold mb-4">All Products</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {allProducts?.data?.result?.length > 0 && allProducts?.data?.result?.map((product, index) => (
+        {allProducts?.data?.result?.length > 0 ? allProducts?.data?.result?.map((product, index) => (
           <div className="bg-white p-4 rounded-none shadow-md" key={index}>
             {selectedImage[product._id] && selectedImage[product._id].image && (
               <div className="mt-4">
@@ -184,7 +186,11 @@ function Products() {
               </button>
             </div>
           </div>
-        ))}
+        )) : (
+          <h1 className="text-3xl text-center mt-64 font-bold text-[#E6C379]">
+            No Products Found
+          </h1>
+        )}
       </div>
       <Modal
         open={modalVisible}

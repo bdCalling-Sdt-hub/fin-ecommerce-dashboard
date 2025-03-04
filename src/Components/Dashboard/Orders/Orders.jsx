@@ -18,6 +18,8 @@ import {
 } from "../../../Redux/api/ordersApi";
 import Swal from "sweetalert2";
 
+// const url = "http://10.0.70.35:8025/";
+const url = "http://139.59.0.25:8025/";
 const statuses = ["confirmed", "processing", "completed", "cancelled"];
 
 export default function Orders() {
@@ -283,23 +285,24 @@ export default function Orders() {
 
                         <div className="grid grid-cols-4 gap-2">
                           {
-                            item?.productId?.images?.map((image, index) => (
+                            item?.productId?.images?.map((item, index) => (
                               <img
                                 key={index}
-                                src={ `http://10.0.70.35:8025/${image}`}
-                                alt={item.productName}
+                                src={ `${url}${item.image}`}
+                                // src={ `http://139.59.0.25:8025/${item?.image}`}
+                                alt={item?.color}
                                 className="w-40 h-40"
                               />
                             ))
                           }
                         </div>
                         <div className="p-4">
-                          <p className="text-base "><span className="text-gray-600">Product Name:</span> {item.productId.name}</p>
-                          <p className="text-base"><span className="text-gray-600">Quantity:</span> {item.quantity}</p>
-                          <p className="text-base"><span className="text-gray-600">Select Material:</span> {item.selectMaterial}</p>
-                          <p className="text-base"><span className="text-gray-600">Product Price:</span> {item.price}</p>
-                          <p className="text-base"><span className="text-gray-600">Product Discount:</span> {item.discount}</p>
-                          <p className="text-base"><span className="text-gray-600">Product Discount Price:</span> {item.discountPrice}</p>
+                          <p className="text-base "><span className="text-gray-600">Product Name:</span> {item?.productId?.name}</p>
+                          <p className="text-base"><span className="text-gray-600">Quantity:</span> {item?.quantity}</p>
+                          <p className="text-base"><span className="text-gray-600">Select Material:</span> {item?.selectMaterial}</p>
+                          <p className="text-base"><span className="text-gray-600">Product Price:</span> {item?.price}</p>
+                          <p className="text-base"><span className="text-gray-600">Product Discount:</span> {item?.discount}</p>
+                          <p className="text-base"><span className="text-gray-600">Product Discount Price:</span> {item?.discountPrice}</p>
                         </div>
                       </div>
                     </div>

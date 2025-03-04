@@ -190,7 +190,7 @@ export default function Offers() {
               />
               <Table.Column
                 title="Offter Parcentage"
-                render={(_, record) => `${record?.offer} %` || "N/A"}
+                render={(_, record) => `${record?.offer}%` || "N/A"}
                 key="offerTitle"
               />
               <Table.Column
