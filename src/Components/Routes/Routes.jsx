@@ -89,10 +89,7 @@ const router = createBrowserRouter([
             path: "orders",
             element: <Orders />,
           },
-          {
-            path: "offers",
-            element: <Offers />,
-          },
+          
           {
             path: "products",
             element: <Products />,
