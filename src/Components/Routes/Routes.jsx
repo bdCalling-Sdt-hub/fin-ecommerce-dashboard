@@ -25,7 +25,6 @@ import Users from "../Dashboard/Users";
 import TermsAndCondition from "../Dashboard/settings/TermsAndCondition";
 import CreateAdmin from "../Dashboard/CreateAdmin";
 import Orders from "../Dashboard/Orders/Orders";
-import Offers from "../Dashboard/offers/offers";
 import Products from "../Dashboard/Products/Products";
 import { Earnings } from "../Dashboard/Earnings/Earnings";
 import { AddProduct } from "../Dashboard/AddProduct/AddProduct";
