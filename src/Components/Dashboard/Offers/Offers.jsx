@@ -12,7 +12,11 @@ import {
 } from "antd";
 import Swal from "sweetalert2";
 import { DeleteFilled } from "@ant-design/icons";
-import { useCreateOfferMutation, useDeleteOfferMutation,  useGetAllProductOffersQuery } from "../../../Redux/api/offerProduct";
+import {
+  useCreateOfferMutation,
+  useDeleteOfferMutation,
+  useGetAllProductOffersQuery,
+} from "../../../Redux/api/offerProduct";
 import { useGetAllProductsQuery } from "../../../Redux/api/productsApi";
 import axios from "axios";
 import { el } from "react-day-picker/locale";
@@ -25,45 +29,45 @@ export default function Offers() {
   const [currentRecord, setCurrentRecord] = useState(null);
 
   const { data: allProducts } = useGetAllProductsQuery(null);
-  const { data: allOffers, isLoading, refetch } = useGetAllProductOffersQuery(null);
-  console.log('allProducts',allProducts);
-  const [addOffer] = useCreateOfferMutation ();
+  const {
+    data: allOffers,
+    isLoading,
+    refetch,
+  } = useGetAllProductOffersQuery(null);
+  console.log("allProducts", allProducts);
+  const [addOffer] = useCreateOfferMutation();
   const [deleteOffer] = useDeleteOfferMutation();
 
   const offerData = allOffers?.data;
 
   console.log("offerData", offerData);
 
- 
-
-  const onFinish = async(values) => {
+  const onFinish = async (values) => {
     console.log("Form Values:", values);
     try {
       const res = await addOffer(values).unwrap();
-      console.log('add offer res', res);
-      if(res.success) {
+      console.log("add offer res", res);
+      if (res.success) {
         Swal.fire({
           title: "Offer Created Successfully!",
           text: "The offer has been created.",
           icon: "success",
-        })
+        });
         refetch();
         handleCancel();
       }
-      
     } catch (error) {
-      if(error?.data?.message) {
+      if (error?.data?.message) {
         Swal.fire({
           title: "Error!",
           text: error?.data?.message,
           icon: "error",
-        })
-      console.log('offer create error', error);
-      
+        });
+        console.log("offer create error", error);
+      }
+      // Close modal after submission
     }
-    // Close modal after submission
   };
-}
 
   const handleCancel = () => {
     // setIsViewModalVisible(false);
@@ -78,12 +82,6 @@ export default function Offers() {
     setCurrentRecord(data);
     setModalVisible(true);
   };
-
- 
-  
-
-
-
 
   console.log({ currentRecord });
 
@@ -187,25 +185,44 @@ export default function Offers() {
               />
               <Table.Column
                 title="Product Name"
-                render={(_, record) => record.productId.name || "N/A"}
+                render={(_, record) => record?.productId?.name || "N/A"}
                 key="offerTitle"
               />
               <Table.Column
-                title="Offter Parcentage" 
-                render={(_, record) => `${record.offer} %` || "N/A"}
+                title="Offter Parcentage"
+                render={(_, record) => `${record?.offer} %` || "N/A"}
                 key="offerTitle"
               />
+              <Table.Column
+                title="Offer Active/Expired"
+                render={(_, record) => (
+                  <span
+                    style={{
+                      color: record?.active ? "green" : "red",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {record?.active ? "Active" : "Expired"}
+                  </span>
+                )}
+                key="offerTitle"
+              />
+
               <Table.Column
                 title="Start Date"
-                render={(_, record) => 
-                  record.startDate ? new Date(record.startDate).toLocaleDateString("en-US") : "N/A"
+                render={(_, record) =>
+                  record.startDate
+                    ? new Date(record?.startDate).toLocaleDateString("en-US")
+                    : "N/A"
                 }
                 key="startDate"
               />
               <Table.Column
                 title="End Date"
-                render={(_, record) => 
-                  record.startDate ? new Date(record.endDate).toLocaleDateString("en-US") : "N/A"
+                render={(_, record) =>
+                  record.startDate
+                    ? new Date(record?.endDate).toLocaleDateString("en-US")
+                    : "N/A"
                 }
                 key="endDate"
               />
@@ -214,7 +231,6 @@ export default function Offers() {
                 key="action"
                 render={(_, record) => (
                   <div style={{ display: "flex", gap: "8px" }}>
-                    {/* View Button */}
                     <Button
                       type="link"
                       onClick={() => deletedHandler(record._id)}
@@ -222,8 +238,6 @@ export default function Offers() {
                     >
                       <DeleteFilled style={{ fontSize: 18 }} />
                     </Button>
-
-                    {/* Delete Button */}
                   </div>
                 )}
               />
@@ -234,84 +248,101 @@ export default function Offers() {
         {/* View Modal */}
 
         <Modal
-      open={modalVisible}
-      onCancel={handleCancel}
-      footer={null}
-      centered
-      width={400}
-      style={{ borderRadius: "none" }}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={{
-          productName: "Due Fingerprint Necklace",
-          offerPercentage: 10,
-        }}
-      >
-        <h2 className="text-2xl font-semibold mb-4 text-black text-center">
-          Create Offer
-        </h2>
-
-        {/* Product Name Dropdown */}
-        <Form.Item
-          name="productId"
-          label={<span className="font-medium text-gray-700">Product Name*</span>}
-          rules={[{ required: true, message: "Please select a product" }]}
+          open={modalVisible}
+          onCancel={handleCancel}
+          footer={null}
+          centered
+          width={400}
+          style={{ borderRadius: "none" }}
         >
-          <Select className="w-full">
-            {
-              allProducts?.data?.result?.map((product) => (
-                <Option key={product._id} value={product._id}>
-                  {product.name}
-                </Option>
-              ))
-            }
-          </Select>
-        </Form.Item>
-
-        {/* Offer Percentage */}
-        <Form.Item
-          name="offer"
-          label={<span className="font-medium text-gray-700">Offer Percentage*</span>}
-      
-          rules={[{ required: true, message: "Please enter an offer percentage" }]}
-        >
-          <InputNumber type="number" className="w-full" min={1} max={100} addonAfter="%" />
-        </Form.Item>
-
-        {/* Start Date */}
-        <Form.Item
-          name="startDate"
-          label={<span className="font-medium text-gray-700">Start Date*</span>}
-          rules={[{ required: true, message: "Please select a start date" }]}
-        >
-          <DatePicker type="date" className="w-full" />
-        </Form.Item>
-
-        {/* End Date */}
-        <Form.Item
-          name="endDate"
-          label={<span className="font-medium text-gray-700">End Date*</span>}
-          rules={[{ required: true, message: "Please select an end date" }]}
-        >
-          <DatePicker type="date" className="w-full" />
-        </Form.Item>
-
-        {/* Submit Button */}
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{ background: "#E6C379" }}
-            className="bg-[#E6C379] text-white font-bold w-full rounded-none hover:bg-[#caa152] transition duration-300"
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={onFinish}
+            initialValues={{
+              productName: "Due Fingerprint Necklace",
+              offerPercentage: 10,
+            }}
           >
-            submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </Modal>
+            <h2 className="text-2xl font-semibold mb-4 text-black text-center">
+              Create Offer
+            </h2>
+
+            {/* Product Name Dropdown */}
+            <Form.Item
+              name="productId"
+              label={
+                <span className="font-medium text-gray-700">Product Name*</span>
+              }
+              rules={[{ required: true, message: "Please select a product" }]}
+            >
+              <Select className="w-full">
+                {allProducts?.data?.result?.map((product) => (
+                  <Option key={product._id} value={product._id}>
+                    {product?.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+            {/* Offer Percentage */}
+            <Form.Item
+              name="offer"
+              label={
+                <span className="font-medium text-gray-700">
+                  Offer Percentage*
+                </span>
+              }
+              rules={[
+                { required: true, message: "Please enter an offer percentage" },
+              ]}
+            >
+              <InputNumber
+                type="number"
+                className="w-full"
+                min={1}
+                max={100}
+                addonAfter="%"
+              />
+            </Form.Item>
+
+            {/* Start Date */}
+            <Form.Item
+              name="startDate"
+              label={
+                <span className="font-medium text-gray-700">Start Date*</span>
+              }
+              rules={[
+                { required: true, message: "Please select a start date" },
+              ]}
+            >
+              <DatePicker type="date" className="w-full" />
+            </Form.Item>
+
+            {/* End Date */}
+            <Form.Item
+              name="endDate"
+              label={
+                <span className="font-medium text-gray-700">End Date*</span>
+              }
+              rules={[{ required: true, message: "Please select an end date" }]}
+            >
+              <DatePicker type="date" className="w-full" />
+            </Form.Item>
+
+            {/* Submit Button */}
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ background: "#E6C379" }}
+                className="bg-[#E6C379] text-white font-bold w-full rounded-none hover:bg-[#caa152] transition duration-300"
+              >
+                submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
 
         {/* Block Confirmation Modal */}
         {/* <Modal
