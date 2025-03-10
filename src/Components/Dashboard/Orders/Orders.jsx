@@ -303,6 +303,7 @@ export default function Orders() {
                           <p className="text-base"><span className="text-gray-600">Product Price:</span> {item?.price}</p>
                           <p className="text-base"><span className="text-gray-600">Product Discount:</span> {item?.discount}</p>
                           <p className="text-base"><span className="text-gray-600">Product Discount Price:</span> {item?.discountPrice}</p>
+                          <p className="text-base"><span className="text-gray-600">Previews Order ID:</span> {item?.previewsOrderId ? item?.previewsOrderId : "N/A"}</p>
                         </div>
                       </div>
                     </div>
