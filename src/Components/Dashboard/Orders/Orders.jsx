@@ -54,40 +54,35 @@ export default function Orders() {
 
   console.log({ currentRecord });
 
-  const handleStatusChange = async(value, record) => {
-  
+  const handleStatusChange = async (value, record) => {
     try {
-      const response =await orderUpdateStatus({ id: record._id, data: value });
-      console.log('response status', response);
+      const response = await orderUpdateStatus({ id: record._id, data: value });
+      console.log("response status", response);
 
       if (response?.data?.success) {
         Swal.fire({
           title: "Success!",
           text: response?.data?.message,
           icon: "success",
-        })
+        });
         refetch();
-      }
-      else if(response?.error?.data?.success === false) {
+      } else if (response?.error?.data?.success === false) {
         Swal.fire({
           title: "Error!",
           text: response?.error?.data?.message,
           icon: "success",
-        })
+        });
         refetch();
       }
-      
     } catch (error) {
-      console.log('error==', error);
-      if(error?.data?.success === false) {
+      console.log("error==", error);
+      if (error?.data?.success === false) {
         Swal.fire({
           title: "Error!",
           text: error?.data?.message,
           icon: "error",
-        })
-
+        });
       }
-      
     }
 
     console.log("value", value);
@@ -164,7 +159,9 @@ export default function Orders() {
               />
               <Table.Column
                 title="Cupon Code"
-                render={(_, record) => `${record.cuponCode ? record.cuponCode : "N/A"}` }
+                render={(_, record) =>
+                  `${record.cuponCode ? record.cuponCode : "N/A"}`
+                }
                 key="createdAt"
               />
               <Table.Column
@@ -176,7 +173,7 @@ export default function Orders() {
                 title="Status"
                 key="status"
                 render={(_, record) => {
-                  let color = ""; 
+                  let color = "";
                   switch (record.status.toLowerCase()) {
                     case "pending":
                       color = "black";
@@ -185,7 +182,7 @@ export default function Orders() {
                       color = "green";
                       break;
                     case "processing":
-                      color = "orange"; 
+                      color = "orange";
                       break;
                     case "cancelled":
                       color = "red";
@@ -276,66 +273,206 @@ export default function Orders() {
           {currentRecord && (
             <div className="p-4">
               {/* Flex container for image and details */}
-             <div>
               <div>
-                {
-                  currentRecord?.productsList?.map((item, index) => (
-                    <div key={index} className="border border-gray-200 mb-5 rounded">
+                <div>
+                  {currentRecord?.productsList?.map((item, index) => (
+                    <div
+                      key={index}
+                      className="border border-gray-200 mb-5 rounded"
+                    >
                       <div className="">
-
                         <div className="grid grid-cols-4 gap-2">
-                          {
-                            item?.productId?.images?.map((item, index) => (
-                              <img
-                                key={index}
-                                src={ `${url}${item.image}`}
-                                // src={ `http://139.59.0.25:8025/${item?.image}`}
-                                alt={item?.color}
-                                className="w-40 h-40"
-                              />
-                            ))
-                          }
+                          {item?.productId?.images?.map((item, index) => (
+                            <img
+                              key={index}
+                              src={`${url}${item.image}`}
+                              // src={ `http://139.59.0.25:8025/${item?.image}`}
+                              alt={item?.color}
+                              className="w-40 h-40"
+                            />
+                          ))}
                         </div>
                         <div className="p-4">
-                          <p className="text-base "><span className="text-gray-600">Product Name:</span> {item?.productId?.name}</p>
-                          <p className="text-base"><span className="text-gray-600">Quantity:</span> {item?.quantity}</p>
-                          <p className="text-base"><span className="text-gray-600">Select Material:</span> {item?.selectMaterial}</p>
-                          <p className="text-base"><span className="text-gray-600">Product Price:</span> {item?.price}</p>
-                          <p className="text-base"><span className="text-gray-600">Product Discount:</span> {item?.discount}</p>
-                          <p className="text-base"><span className="text-gray-600">Product Discount Price:</span> {item?.discountPrice}</p>
-                          <p className="text-base"><span className="text-gray-600">Previews Order ID:</span> {item?.previewsOrderId ? item?.previewsOrderId : "N/A"}</p>
+                          <p className="text-base ">
+                            <span className="text-gray-600">Product Name:</span>{" "}
+                            {item?.productId?.name}
+                          </p>
+                          <p className="text-base">
+                            <span className="text-gray-600">Quantity:</span>{" "}
+                            {item?.quantity}
+                          </p>
+                          <p className="text-base">
+                            <span className="text-gray-600">
+                              Select Material:
+                            </span>{" "}
+                            {item?.selectMaterial}
+                          </p>
+                          <p className="text-base">
+                            <span className="text-gray-600">
+                              Product Price:
+                            </span>{" "}
+                            {item?.price}
+                          </p>
+                          <p className="text-base">
+                            <span className="text-gray-600">
+                              Product Discount:
+                            </span>{" "}
+                            {item?.discount}
+                          </p>
+                          <p className="text-base">
+                            <span className="text-gray-600">
+                              Product Discount Price:
+                            </span>{" "}
+                            {item?.discountPrice}
+                          </p>
+                          <p className="text-base">
+                            <span className="text-gray-600">
+                              Previews Order ID:
+                            </span>{" "}
+                            {item?.previewsOrderId
+                              ? item?.previewsOrderId
+                              : "N/A"}
+                          </p>
+                          <div>
+                            {item?.productId?.category === "fingerprint" && (
+                              <>
+                                <p>
+                                  <span className="text-gray-600 mr-2">
+                                    NeedFingerPrint:
+                                  </span>
+                                  {item?.needFingerPrint === true
+                                    ? "Yes"
+                                    : "No"}
+                                </p>
+
+                                {item?.needFingerPrint === false && (
+                                  <div className="grid grid-cols-3 gap-2">
+                                    {item?.finger1Image && (
+                                      <img
+                                        key={index}
+                                        src={`${url}${item.finger1Image}`}
+                                        alt={item.needFingerPrint}
+                                        className="w-40 h-40"
+                                      />
+                                    )}
+                                    {item?.finger2Image && (
+                                      <img
+                                        key={index}
+                                        src={`${url}${item.finger2Image}`}
+                                        alt={item.needFingerPrint}
+                                        className="w-40 h-40"
+                                      />
+                                    )}
+                                    {item?.finger3Image && (
+                                      <img
+                                        key={index}
+                                        src={`${url}${item.finger3Image}`}
+                                        alt={item.needFingerPrint}
+                                        className="w-40 h-40"
+                                      />
+                                    )}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                            {item?.productId?.category === "handwriting" &&
+                              (item?.handRightingImage ? (
+                                <div>
+                                  <span className="text-gray-600 mr-2">
+                                    HandRighting Custom Design: Yes
+                                  </span>
+                                  <img
+                                    key={index}
+                                    src={`${url}${item.handRightingImage}`}
+                                    alt={item.needFingerPrint}
+                                    className="w-40 h-40"
+                                  />
+                                </div>
+                              ) : (
+                                <span className="text-gray-600 mr-2">
+                                  HandRighting Custom Design: No
+                                </span>
+                              ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  ))
-                }
-              </div>
-              <div>
-                <h3><span className="text-gray-600 mr-2 font-bold" >Use Coupon Code :</span>(Extra 10% discount)</h3>
-                <p>{currentRecord?.cuponCode ? currentRecord?.cuponCode : "N/A"}</p>
-              </div>
-
-              <div>
-                <h3 className="font-bold mt-3 text-gray-600">Order Delivery Location :</h3>
+                  ))}
+                </div>
                 <div>
-                  <p className="text-base"><span className="text-gray-600 mr-2">Email:</span>{currentRecord?.email ? currentRecord?.email : "N/A"}</p>
-                  <p className="text-base"><span className="text-gray-600 mr-2">Address:</span>{currentRecord?.address ? currentRecord?.address : "N/A"}</p>
-                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">City:</span>{currentRecord?.city ? currentRecord?.city : "N/A"}</p>
-                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Phone Number:</span>{currentRecord?.phoneNumber ? currentRecord?.phoneNumber : "N/A"}</p>
-                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Post Code:</span>{currentRecord?.postalCode ? currentRecord?.postalCode : "N/A"}</p>
-                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Order Note:</span>{currentRecord?.orderNote ? currentRecord?.orderNote : "N/A"}</p>
-                  <p className="text-base mr-2"><span className="text-gray-600 mr-2">Payment Status:</span>{currentRecord?.paymentStatus ? currentRecord?.paymentStatus ? "Paid" : "Unpaid" : "N/A"}</p>  
+                  <h3>
+                    <span className="text-gray-600 mr-2 font-bold">
+                      Use Coupon Code :
+                    </span>
+                    (Extra 10% discount)
+                  </h3>
+                  <p>
+                    {currentRecord?.cuponCode
+                      ? currentRecord?.cuponCode
+                      : "N/A"}
+                  </p>
                 </div>
-              </div>
 
-              <div>
-                <hr  className="mt-5"/>
-                <div className="flex justify-between items-center">
-                <h3 className="font-bold mt-3 text-gray-600">Total Paid Amount :</h3>
-                <p className="text-base font-bold">${currentRecord?.totalPrice}</p>
+                <div>
+                  <h3 className="font-bold mt-3 text-gray-600">
+                    Order Delivery Location :
+                  </h3>
+                  <div>
+                    <p className="text-base">
+                      <span className="text-gray-600 mr-2">Email:</span>
+                      {currentRecord?.email ? currentRecord?.email : "N/A"}
+                    </p>
+                    <p className="text-base">
+                      <span className="text-gray-600 mr-2">Address:</span>
+                      {currentRecord?.address ? currentRecord?.address : "N/A"}
+                    </p>
+                    <p className="text-base mr-2">
+                      <span className="text-gray-600 mr-2">City:</span>
+                      {currentRecord?.city ? currentRecord?.city : "N/A"}
+                    </p>
+                    <p className="text-base mr-2">
+                      <span className="text-gray-600 mr-2">Phone Number:</span>
+                      {currentRecord?.phoneNumber
+                        ? currentRecord?.phoneNumber
+                        : "N/A"}
+                    </p>
+                    <p className="text-base mr-2">
+                      <span className="text-gray-600 mr-2">Post Code:</span>
+                      {currentRecord?.postalCode
+                        ? currentRecord?.postalCode
+                        : "N/A"}
+                    </p>
+                    <p className="text-base mr-2">
+                      <span className="text-gray-600 mr-2">Order Note:</span>
+                      {currentRecord?.orderNote
+                        ? currentRecord?.orderNote
+                        : "N/A"}
+                    </p>
+                    <p className="text-base mr-2">
+                      <span className="text-gray-600 mr-2">
+                        Payment Status:
+                      </span>
+                      {currentRecord?.paymentStatus
+                        ? currentRecord?.paymentStatus
+                          ? "Paid"
+                          : "Unpaid"
+                        : "N/A"}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <hr className="mt-5" />
+                  <div className="flex justify-between items-center">
+                    <h3 className="font-bold mt-3 text-gray-600">
+                      Total Paid Amount :
+                    </h3>
+                    <p className="text-base font-bold">
+                      ${currentRecord?.totalPrice}
+                    </p>
+                  </div>
                 </div>
               </div>
-             </div>
 
               {/* Cancel Button */}
               <button
