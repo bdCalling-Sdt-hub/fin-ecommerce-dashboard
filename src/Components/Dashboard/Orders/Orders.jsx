@@ -23,15 +23,15 @@ const url = "http://139.59.0.25:8025/";
 const statuses = ["confirmed", "processing", "completed", "cancelled"];
 
 export default function Orders() {
-  const [isViewModalVisible, setIsViewModalVisible] = useState(false);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  // const [isViewModalVisible, setIsViewModalVisible] = useState(false);
+  // const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
 
   const { data: allOrders, isLoading, refetch } = useGetAllOrdersQuery();
   const [orderUpdateStatus] = useUpdateOrderStatusMutation();
 
-  console.log("orderData", allOrders);
+  // console.log("orderData", allOrders);
 
   // The early return happens after all hooks are called
   if (isLoading) {
@@ -485,46 +485,7 @@ export default function Orders() {
           )}
         </Modal>
 
-        {/* Block Confirmation Modal */}
-        {/* <Modal
-          open={isBlockModalVisible}
-          // onOk={handleBlock}
-          onCancel={handleCancel}
-          okText="Block"
-          cancelText="Cancel"
-          centered
-          style={{ textAlign: "center" }}
-          footer={
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                paddingBottom: "40px",
-              }}
-            >
-              <Button
-                onClick={handleCancel}
-                style={{
-                  marginRight: 12,
-                  background: "rgba(221, 221, 221, 1)",
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="primary"
-                style={{ background: "#E6C379" }}
-                onClick={handleDeleted}
-              >
-                Deleted
-              </Button>
-            </div>
-          }
-        >
-          <p className="text-lg font-semibold pt-10 pb-4">
-            Are you sure you want to Deleted this user?
-          </p>
-        </Modal> */}
+      
       </div>
     </div>
   );
