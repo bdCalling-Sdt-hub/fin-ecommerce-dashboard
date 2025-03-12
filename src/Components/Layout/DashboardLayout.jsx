@@ -6,7 +6,7 @@ import users from "../../../public/images/dashboard-logo/users.svg";
 import setting from "../../../public/images/dashboard-logo/Setting.svg";
 import logout from "../../../public/images/dashboard-logo/logout.svg";
 import orders from "../../../public/images/icon/orders.svg";
-import offers from "../../../public/images/icon/offer.svg";
+// import offers from "../../../public/images/icon/offer.svg";
 import products from "../../../public/images/icon/create_product.svg";
 import earnings from "../../../public/images/icon/earning.svg";
 import {
@@ -28,12 +28,10 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const [openKeys, setOpenKeys] = useState([]);
 
-  // Function to check if any submenu under "Stories" is active
   const isSubMenuActive = (paths) => {
     return paths.some((path) => location.pathname.includes(path));
   };
 
-  // Detect active menu item and open the corresponding submenu
   useEffect(() => {
     if (isSubMenuActive(["all-stories", "story-request"])) {
       setOpenKeys(["stories"]);
@@ -43,7 +41,6 @@ const DashboardLayout = () => {
   // handleLogout function
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    // cookie.remove("authToken", { path: "/" });
 
     navigate("/signin", { replace: true });
   };
@@ -61,9 +58,6 @@ const DashboardLayout = () => {
           style={{
             background: "#EBEBEB",
            
-            // color:'black'
-            // marginRight: "10px",
-            // borderRadius: "5px",
           }}
         >
           <Link to="/">
