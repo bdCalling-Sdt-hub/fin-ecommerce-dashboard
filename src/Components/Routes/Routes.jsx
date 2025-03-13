@@ -31,6 +31,7 @@ import { AddProduct } from "../Dashboard/AddProduct/AddProduct";
 import ProductEdit from "../Dashboard/ProductEdit/ProductEdit";
 import SubscribsUsers from "../Dashboard/SubscribsUsers/SubscribsUsers";
 import Offers from "../Dashboard/Offers/Offers";
+import ProtectedRoute from "../ProtectedRoute";
 
 
 const router = createBrowserRouter([
