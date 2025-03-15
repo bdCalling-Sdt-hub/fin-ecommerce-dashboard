@@ -19,7 +19,7 @@ import {
 import Swal from "sweetalert2";
 
 // const url = "http://10.0.70.35:8025/";
-const url = "http://139.59.0.25:8025/";
+const url = "http://209.38.133.53:8025/";
 const statuses = ["confirmed", "processing", "completed", "cancelled"];
 
 export default function Orders() {

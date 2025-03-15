@@ -8,7 +8,7 @@ import {
 } from "../../../Redux/api/productsApi";
 
 // const url = "http://10.0.70.35:8025/";
-const url = "http://139.59.0.25:8025/";
+const url = "http://209.38.133.53:8025/";
 // http://10.0.70.35:8025/uploads//products//2-1741068078797-610931184.jpg
 
 function Products() {
