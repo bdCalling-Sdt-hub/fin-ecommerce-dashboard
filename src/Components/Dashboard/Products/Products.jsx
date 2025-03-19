@@ -165,26 +165,38 @@ function Products() {
             </p>
             <h2 className="text-lg font-semibold">{product.name}</h2>
             <p className="text-gray-600">Price: ${product.price}</p>
-            <div className="flex gap-3 mt-4">
+            <div className="flex justify-between mt-4">
               <button
                 onClick={() => showViewModal(product)}
-                className="bg-[#EAEAEA]  text-black px-4 py-2 rounded transition duration-300"
+                className="bg-[#EAEAEA]  text-black px-4 py-2 rounded-none transition duration-300"
               >
                 See Details
               </button>
               <NavLink to={`/products/${product._id}`}>
-                <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition duration-300">
+                <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-none transition duration-300">
                   Edit
                 </button>
               </NavLink>
 
               <button
                 onClick={() => deleteHandler(product._id)}
-                className="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded transition duration-300"
+                className="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-none transition duration-300"
               >
                 Delete
               </button>
+            
             </div>
+            <NavLink to={`/product-other-info/${product._id}`}>
+            {
+              product?.faqAdd?.length !== 0 || Object.keys(product?.sizeMaterialAdd).length > 0  ? <><button className="bg-[#bda46f] hover:bg-yellow-600 text-white px-4 py-2 rounded-none transition duration-300 w-full mt-4">
+              edit-info
+            </button></> : <> <button className="bg-[#bda46f] hover:bg-yellow-600 text-white px-4 py-2 rounded-none transition duration-300 w-full mt-4">
+                  add-info
+                </button></>
+            }
+               
+                
+              </NavLink>
           </div>
         )) : (
           <h1 className="text-3xl text-center mt-64 font-bold text-[#E6C379]">

@@ -67,6 +67,17 @@ const productsApi = baseApi.injectEndpoints({
         // invalidatesTags: [""],
       }),
     }),
+    updateProductFaqSizeMaterial: builder.mutation({
+      query: ({id, data}) => ({
+        url: `/product/faq-size-material/${id}`,
+        method: "PATCH",
+        body: data,
+        headers: {
+          "Content-type": "application/json",
+        },
+        // invalidatesTags: [""],
+      }),
+    }),
   }),
 });
 
@@ -80,5 +91,6 @@ export const {
     useDeleteProductMutation,
     useGetSingleProductQuery,
     useUpdateProductMutation,
+    useUpdateProductFaqSizeMaterialMutation,
     useDeletedProductImageColorMutation
 } = productsApi;

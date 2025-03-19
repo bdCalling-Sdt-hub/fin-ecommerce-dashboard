@@ -32,6 +32,7 @@ import ProductEdit from "../Dashboard/ProductEdit/ProductEdit";
 import SubscribsUsers from "../Dashboard/SubscribsUsers/SubscribsUsers";
 import Offers from "../Dashboard/Offers/Offers";
 import ProtectedRoute from "../ProtectedRoute";
+import ProductOtherInfo from "../Dashboard/ProductOtherInfo";
 
 
 const router = createBrowserRouter([
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
           {
             path: "add-product",
             element: <AddProduct />,
+          },
+          {
+            path: "product-other-info/:id",
+            element: <ProductOtherInfo />,
           },
           
           {
