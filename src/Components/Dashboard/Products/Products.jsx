@@ -294,6 +294,59 @@ function Products() {
                   {currentRecord?.description}
                 </p>
               </div>
+              <div>
+              <h2 className="text-lg font-semibold mb-2 ">
+                FAQ All Show here
+              </h2>
+              {currentRecord?.faqAdd?.length > 0 ? currentRecord?.faqAdd?.map((faq, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center mb-2 p-2 border rounded"
+                >
+                  <div>
+                    <h2>
+                      <span className="font-semibold">Question:</span>{" "}
+                      {faq.question}
+                    </h2>
+                    <p>
+                      <span className="font-semibold">Answer:</span>{" "}
+                      {faq.answer}
+                    </p>
+                  </div>
+                  {/* <button
+                    onClick={() => handleDelete(index)}
+                    className="text-red-500 hover:text-red-700 font-semibold"
+                  >
+                    Delete
+                  </button> */}
+                </div>
+              )): <h2>faq not available </h2>}
+              </div>
+
+              <div>
+              <h2 className="text-lg font-semibold mb-2 ">
+                Size Material Here
+              </h2>
+                {
+                  Object.keys(currentRecord?.sizeMaterialAdd).length > 0 ? <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div>
+                    <p><span className="font-semibold text-base">id : </span>{currentRecord?.sizeMaterialAdd?.id}</p>
+                    <p><span className="font-semibold text-base">Chain : </span>{currentRecord?.sizeMaterialAdd?.chain}</p>
+                    <p><span className="font-semibold text-base">ChainLength : </span>{currentRecord?.sizeMaterialAdd?.chainLength}</p>
+                    <p><span className="font-semibold text-base">MainMaterial : </span>{currentRecord?.sizeMaterialAdd?.mainMaterial}</p>
+                    </div>
+                    <div>
+                    <p><span className="font-semibold text-base">PendantHeight : </span>{currentRecord?.sizeMaterialAdd?.pendantHeight}</p>
+                    <p><span className="font-semibold text-base">PendantThickness : </span>{currentRecord?.sizeMaterialAdd?.pendantThickness}</p>
+                    <p><span className="font-semibold text-base">StyleCollection : </span>{currentRecord?.sizeMaterialAdd?.styleCollection}</p>
+                    </div>
+                    
+                    
+                    </div>
+                    </> : <><h2>size an dmaterial not available</h2></> 
+                }
+              </div>
             </div>
 
             {/* Cancel Button */}
