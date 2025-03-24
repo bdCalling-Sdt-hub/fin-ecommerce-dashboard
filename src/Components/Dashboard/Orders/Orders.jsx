@@ -260,8 +260,6 @@ export default function Orders() {
           </ConfigProvider>
         </div>
 
-        {/* View Modal */}
-
         <Modal
           open={modalVisible}
           onCancel={handleCancel}
@@ -272,102 +270,147 @@ export default function Orders() {
         >
           {currentRecord && (
             <div className="p-4">
-              {/* Flex container for image and details */}
               <div>
                 <div>
-                  {currentRecord?.productsList?.map((item, index) => (
+                  {currentRecord?.productsList?.map((pItem, index) => (
                     <div
                       key={index}
                       className="border border-gray-200 mb-5 rounded"
                     >
                       <div className="">
-                        <div className="grid grid-cols-4 gap-2">
-                          {item?.productId?.images?.map((item, index) => (
-                            <img
-                              key={index}
-                              src={`${url}${item.image}`}
-                              // src={ `http://139.59.0.25:8025/${item?.image}`}
-                              alt={item?.color}
-                              className="w-40 h-40"
-                            />
-                          ))}
+                        {/* <div className="grid grid-cols-4 gap-2">
+                          {pItem?.productId?.selectMaterialpItems?.map(
+                            (item, index) => {
+                              if (
+                                item._id && pItem.materialId && item._id.toString() === pItem.materialId.toString()
+                              ) {
+                                return (
+                                  <div key={index}>
+                                    {item?.images?.map((img, imgIndex) => ( 
+                                      <img 
+                                        key={imgIndex} 
+                                        src={`${url}${img}`} 
+                                        alt={item?.selectMaterial} 
+                                        className="w-40 h-40" 
+                                      />
+                                    ))}
+                                  </div>
+                                );
+                              }else{
+                                return <div> no image show</div>
+                              }
+                            }
+                          )}
+                        </div> */}
+                        <div className="">
+                          {pItem?.productId?.selectMaterialItems?.map(
+                            (item, index) => {
+                              // Ensure materialId exists and matches the item._id
+                              if (
+                                item._id &&
+                                pItem.materialId &&
+                                item._id.toString() ===
+                                  pItem.materialId.toString()
+                              ) {
+                                return (
+                                  <div key={index} className="grid grid-cols-4 gap-2">
+                                    {item?.images?.length > 0 ? (
+                                      item.images.map((img, imgIndex) => (
+                                        <img
+                                          key={imgIndex}
+                                          src={`${url}${img}`} 
+                                          alt={item?.selectMaterial} 
+                                          className="w-40 h-40" 
+                                        />
+                                      ))
+                                    ) : (
+                                      <div>No images available</div> 
+                                    )}
+                                  </div>
+                                );
+                              } else {
+                                return null; 
+                              }
+                            }
+                          )}
                         </div>
+
                         <div className="p-4">
                           <p className="text-base ">
                             <span className="text-gray-600">Product Name:</span>{" "}
-                            {item?.productId?.name}
+                            {pItem?.productId?.name}
                           </p>
                           <p className="text-base">
                             <span className="text-gray-600">Quantity:</span>{" "}
-                            {item?.quantity}
+                            {pItem?.quantity}
                           </p>
                           <p className="text-base">
                             <span className="text-gray-600">
                               Select Material:
                             </span>{" "}
-                            {item?.selectMaterial}
+                            {pItem?.selectMaterial}
                           </p>
                           <p className="text-base">
                             <span className="text-gray-600">
                               Product Price:
                             </span>{" "}
-                            {item?.price}
+                            {pItem?.price}
                           </p>
                           <p className="text-base">
                             <span className="text-gray-600">
                               Product Discount:
                             </span>{" "}
-                            {item?.discount}
+                            {pItem?.discount}
                           </p>
                           <p className="text-base">
                             <span className="text-gray-600">
                               Product Discount Price:
                             </span>{" "}
-                            {item?.discountPrice}
+                            {pItem?.discountPrice}
                           </p>
                           <p className="text-base">
                             <span className="text-gray-600">
                               Previews Order ID:
                             </span>{" "}
-                            {item?.previewsOrderId
-                              ? item?.previewsOrderId
+                            {pItem?.previewsOrderId
+                              ? pItem?.previewsOrderId
                               : "N/A"}
                           </p>
                           <div>
-                            {item?.productId?.category === "fingerprint" && (
+                            {pItem?.productId?.category === "fingerprint" && (
                               <>
                                 <p>
                                   <span className="text-gray-600 mr-2">
                                     NeedFingerPrint:
                                   </span>
-                                  {item?.needFingerPrint === true
+                                  {pItem?.needFingerPrint === true
                                     ? "Yes"
                                     : "No"}
                                 </p>
 
-                                {item?.needFingerPrint === false && (
+                                {pItem?.needFingerPrint === false && (
                                   <div className="grid grid-cols-3 gap-2">
-                                    {item?.finger1Image && (
+                                    {pItem?.finger1Image && (
                                       <img
                                         key={index}
-                                        src={`${url}${item.finger1Image}`}
-                                        alt={item.needFingerPrint}
+                                        src={`${url}${pItem.finger1Image}`}
+                                        alt={pItem.needFingerPrint}
                                         className="w-40 h-40"
                                       />
                                     )}
-                                    {item?.finger2Image && (
+                                    {pItem?.finger2Image && (
                                       <img
                                         key={index}
-                                        src={`${url}${item.finger2Image}`}
-                                        alt={item.needFingerPrint}
+                                        src={`${url}${pItem.finger2Image}`}
+                                        alt={pItem.needFingerPrint}
                                         className="w-40 h-40"
                                       />
                                     )}
-                                    {item?.finger3Image && (
+                                    {pItem?.finger3Image && (
                                       <img
                                         key={index}
-                                        src={`${url}${item.finger3Image}`}
-                                        alt={item.needFingerPrint}
+                                        src={`${url}${pItem.finger3Image}`}
+                                        alt={pItem.needFingerPrint}
                                         className="w-40 h-40"
                                       />
                                     )}
@@ -375,16 +418,16 @@ export default function Orders() {
                                 )}
                               </>
                             )}
-                            {item?.productId?.category === "handwriting" &&
-                              (item?.handRightingImage ? (
+                            {pItem?.productId?.category === "handwriting" &&
+                              (pItem?.handRightingImage ? (
                                 <div>
                                   <span className="text-gray-600 mr-2">
                                     HandRighting Custom Design: Yes
                                   </span>
                                   <img
                                     key={index}
-                                    src={`${url}${item.handRightingImage}`}
-                                    alt={item.needFingerPrint}
+                                    src={`${url}${pItem.handRightingImage}`}
+                                    alt={pItem.needFingerPrint}
                                     className="w-40 h-40"
                                   />
                                 </div>
@@ -463,7 +506,7 @@ export default function Orders() {
 
                 <div>
                   <hr className="mt-5" />
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between pItems-center">
                     <h3 className="font-bold mt-3 text-gray-600">
                       Total Paid Amount :
                     </h3>
@@ -484,8 +527,6 @@ export default function Orders() {
             </div>
           )}
         </Modal>
-
-      
       </div>
     </div>
   );

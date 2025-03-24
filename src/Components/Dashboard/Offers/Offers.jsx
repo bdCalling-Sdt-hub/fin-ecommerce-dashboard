@@ -185,13 +185,13 @@ export default function Offers() {
               />
               <Table.Column
                 title="Product Name"
-                render={(_, record) => record?.productId?.name || "N/A"}
+                render={(_, record) => record?.firstMaterialName || "N/A"}
                 key="offerTitle"
               />
               <Table.Column
                 title="Offter Parcentage"
                 render={(_, record) => `${record?.offer}%` || "N/A"}
-                key="offerTitle"
+                key="offer"
               />
               <Table.Column
                 title="Offer Active/Expired"
@@ -268,7 +268,6 @@ export default function Offers() {
               Create Offer
             </h2>
 
-            {/* Product Name Dropdown */}
             <Form.Item
               name="productId"
               label={
@@ -279,9 +278,11 @@ export default function Offers() {
               <Select className="w-full">
                 {allProducts?.data?.result?.map((product) => (
                   <Option key={product._id} value={product._id}>
-                    {product?.name}
+                    {product?.selectMaterialItems[0].name}
                   </Option>
+                 
                 ))}
+               
               </Select>
             </Form.Item>
 

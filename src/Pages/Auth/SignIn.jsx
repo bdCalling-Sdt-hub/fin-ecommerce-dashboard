@@ -15,11 +15,13 @@ const SignIn = () => {
       password: values.password,
     };
 
+    console.log('login data', data)
     
 
     try {
       // Await the mutation response
       const res = await login(data).unwrap();
+      console.log('res login', res)
       // Storing tokens separately
       localStorage.setItem("accessToken", res?.data?.accessToken);
       localStorage.setItem("refreshToken", res?.data?.refreshToken);

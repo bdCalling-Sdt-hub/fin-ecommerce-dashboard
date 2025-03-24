@@ -70,11 +70,11 @@ const Bar_Chart = ({earningYear}) => {
             }}
             tickMargin={16}
           />
-          <ReferenceLine y={20} stroke="#BBB69A" strokeWidth={1} />
+          {/* <ReferenceLine y={20} stroke="#BBB69A" strokeWidth={1} />
           <ReferenceLine y={40} stroke="#BBB69A" strokeWidth={1} />
           <ReferenceLine y={60} stroke="#BBB69A" strokeWidth={1} />
           <ReferenceLine y={80} stroke="#BBB69A" strokeWidth={1} />
-          <ReferenceLine y={100} stroke="#BBB69A" strokeWidth={1} />
+          <ReferenceLine y={100} stroke="#BBB69A" strokeWidth={1} /> */}
           <Bar
             dataKey="totalIncome"
             fill="#BBB69A"
