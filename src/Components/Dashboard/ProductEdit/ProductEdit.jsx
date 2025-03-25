@@ -10,7 +10,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 // const dburl = "http://10.0.70.35:8025/";
-const url = "http://209.38.133.53:8025/";
+const dburl = "http://209.38.133.53:8025/";
 
 const { TextArea } = Input;
 
@@ -149,7 +149,7 @@ export const ProductEdit = () => {
 
     const deleteUrl = imageList
       .filter((file) => file.status === "done") 
-      .map((file) => file.url.replace("http://209.38.133.53:8025/", "")); 
+      .map((file) => file.url.replace(dburl, "")); 
 
 
       if(deleteUrl.length > 0){
