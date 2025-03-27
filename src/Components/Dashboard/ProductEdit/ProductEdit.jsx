@@ -8,9 +8,10 @@ import {
   useUpdateProductMutation,
 } from "../../../Redux/api/productsApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { getImageUrl } from "../../../utils/baseUrl";
 
 // const dburl = "http://10.0.70.35:8025/";
-const dburl = "http://209.38.133.53:8025/";
+const dburl = getImageUrl();
 
 const { TextArea } = Input;
 
@@ -22,7 +23,7 @@ export const ProductEdit = () => {
   const [updateProduct] = useUpdateProductMutation();
   const { data: singleProduct } = useGetSingleProductQuery(id);
 
-  console.log('singleProduct******',singleProduct)
+  console.log("singleProduct******", singleProduct);
 
   // State to store selected material details
   const [selectedMaterial, setSelectedMaterial] = useState(null);
@@ -46,7 +47,6 @@ export const ProductEdit = () => {
         // images: defaultMaterial?.images,
       });
 
-
       setImageList(
         defaultMaterial?.images.map((url) => {
           const fullUrl = `${dburl}${url.replace(/\\/g, "/")}`;
@@ -58,8 +58,6 @@ export const ProductEdit = () => {
           };
         })
       );
-
-
     }
   }, [singleProduct, form]);
 
@@ -71,12 +69,12 @@ export const ProductEdit = () => {
   //           console.log('image length', item.images.length)
   //           const initialImageList = item.images.map((url) => {
   //             console.log('url url',url);
-  //             const fullUrl = `${dburl}${url.replace(/\\/g, "/")}`; 
+  //             const fullUrl = `${dburl}${url.replace(/\\/g, "/")}`;
   //             return {
-  //               uid: fullUrl, 
-  //               name: fullUrl.split("/").pop(), 
-  //               status: "done", 
-  //               url: fullUrl, 
+  //               uid: fullUrl,
+  //               name: fullUrl.split("/").pop(),
+  //               status: "done",
+  //               url: fullUrl,
   //             };
   //           });
   //           console.log('initialImageList00000',initialImageList);
@@ -104,23 +102,19 @@ export const ProductEdit = () => {
       // images: material?.images,
     });
 
-
     // Update the image list when a new material is selected
-  const updatedImageList = material?.images.map((url) => {
-    const fullUrl = `${dburl}${url.replace(/\\/g, "/")}`;
-    return {
-      uid: fullUrl,
-      name: fullUrl.split("/").pop(),
-      status: "done",
-      url: fullUrl,
-    };
-  });
+    const updatedImageList = material?.images.map((url) => {
+      const fullUrl = `${dburl}${url.replace(/\\/g, "/")}`;
+      return {
+        uid: fullUrl,
+        name: fullUrl.split("/").pop(),
+        status: "done",
+        url: fullUrl,
+      };
+    });
 
-  // Set the image list dynamically based on the selected material
-  setImageList(updatedImageList);
-
-
-
+    // Set the image list dynamically based on the selected material
+    setImageList(updatedImageList);
   };
 
   // Handle file upload changes
@@ -142,20 +136,18 @@ export const ProductEdit = () => {
     const formData = {
       ...values,
       images: imageList
-      .filter(img => img !== undefined && img.originFileObj)
-    .map(file => file.originFileObj),
-      materialId:selectedMaterial._id
+        .filter((img) => img !== undefined && img.originFileObj)
+        .map((file) => file.originFileObj),
+      materialId: selectedMaterial._id,
     };
 
     const deleteUrl = imageList
-      .filter((file) => file.status === "done") 
-      .map((file) => file.url.replace(dburl, "")); 
+      .filter((file) => file.status === "done")
+      .map((file) => file.url.replace(dburl, ""));
 
-
-      if(deleteUrl.length > 0){
-        formData.deleteUrl = deleteUrl;
-      }
-
+    if (deleteUrl.length > 0) {
+      formData.deleteUrl = deleteUrl;
+    }
 
     console.log("formData=", formData);
 

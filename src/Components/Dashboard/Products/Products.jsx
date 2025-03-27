@@ -6,8 +6,12 @@ import {
   useDeleteProductMutation,
   useGetAllProductsQuery,
 } from "../../../Redux/api/productsApi";
+import { getImageUrl } from "../../../utils/baseUrl";
 
-const url = "http://10.0.70.35:8025/";
+// const url = "http://10.0.70.35:8025/";
+
+const url = getImageUrl();
+
 // const url = "http://209.38.133.53:8025/";
 // http://10.0.70.35:8025/uploads//products//2-1741068078797-610931184.jpg
 
@@ -309,8 +313,8 @@ function Products() {
                     </button>
                   )} */}
                   <button className="bg-[#bda46f] hover:bg-yellow-600 text-white px-4 py-2 rounded-none transition duration-300 w-full mt-4">
-                      Add Info
-                    </button>
+                    Add Info
+                  </button>
                 </NavLink>
               </div>
             );
@@ -321,8 +325,6 @@ function Products() {
           </h1>
         )}
       </div>
-
-     
 
       <Modal
         open={modalVisible}
@@ -430,74 +432,77 @@ function Products() {
                 {selectedMaterial?.description || "N/A"}
               </p>
               <div className="mb-6">
-              <h2 className="text-lg font-semibold mb-2">FAQs</h2>
-              {selectedMaterial?.faqAdd?.length > 0 ? (
-                selectedMaterial?.faqAdd?.map((faq, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between items-center mb-4 p-4 border rounded-lg shadow-sm"
-                  >
+                <h2 className="text-lg font-semibold mb-2">FAQs</h2>
+                {selectedMaterial?.faqAdd?.length > 0 ? (
+                  selectedMaterial?.faqAdd?.map((faq, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center mb-4 p-4 border rounded-lg shadow-sm"
+                    >
+                      <div>
+                        <h3 className="font-semibold text-gray-800">
+                          {faq.question}
+                        </h3>
+                        <p className="text-gray-600">{faq.answer}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No FAQs available.</p>
+                )}
+              </div>
+
+              <div>
+                <h2 className="text-lg font-semibold mb-2">
+                  Size and Material Details
+                </h2>
+                {Object.keys(selectedMaterial?.sizeMaterialAdd || {}).length >
+                0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <h3 className="font-semibold text-gray-800">
-                        {faq.question}
-                      </h3>
-                      <p className="text-gray-600">{faq.answer}</p>
+                      <p>
+                        <span className="font-semibold">ID:</span>{" "}
+                        {selectedMaterial?.sizeMaterialAdd?.id || "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Chain:</span>{" "}
+                        {selectedMaterial?.sizeMaterialAdd?.chain || "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Chain Length:</span>{" "}
+                        {selectedMaterial?.sizeMaterialAdd?.chainLength ||
+                          "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Main Material:</span>{" "}
+                        {selectedMaterial?.sizeMaterialAdd?.mainMaterial ||
+                          "N/A"}
+                      </p>
+                    </div>
+                    <div>
+                      <p>
+                        <span className="font-semibold">Pendant Height:</span>{" "}
+                        {selectedMaterial?.sizeMaterialAdd?.pendantHeight ||
+                          "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold">
+                          Pendant Thickness:
+                        </span>{" "}
+                        {selectedMaterial?.sizeMaterialAdd?.pendantThickness ||
+                          "N/A"}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Style Collection:</span>{" "}
+                        {selectedMaterial?.sizeMaterialAdd?.styleCollection ||
+                          "N/A"}
+                      </p>
                     </div>
                   </div>
-                ))
-              ) : (
-                <p>No FAQs available.</p>
-              )}
-            </div>
-
-            <div>
-              <h2 className="text-lg font-semibold mb-2">
-                Size and Material Details
-              </h2>
-              {Object.keys(selectedMaterial?.sizeMaterialAdd || {}).length >
-              0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <p>
-                      <span className="font-semibold">ID:</span>{" "}
-                      {selectedMaterial?.sizeMaterialAdd?.id || "N/A"}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Chain:</span>{" "}
-                      {selectedMaterial?.sizeMaterialAdd?.chain || "N/A"}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Chain Length:</span>{" "}
-                      {selectedMaterial?.sizeMaterialAdd?.chainLength || "N/A"}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Main Material:</span>{" "}
-                      {selectedMaterial?.sizeMaterialAdd?.mainMaterial || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p>
-                      <span className="font-semibold">Pendant Height:</span>{" "}
-                      {selectedMaterial?.sizeMaterialAdd?.pendantHeight ||
-                        "N/A"}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Pendant Thickness:</span>{" "}
-                      {selectedMaterial?.sizeMaterialAdd?.pendantThickness ||
-                        "N/A"}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Style Collection:</span>{" "}
-                      {selectedMaterial?.sizeMaterialAdd?.styleCollection ||
-                        "N/A"}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <p>No size and material information available.</p>
-              )}
-            </div>
-
+                ) : (
+                  <p>No size and material information available.</p>
+                )}
+              </div>
             </div>
 
             {/* FAQ Section */}

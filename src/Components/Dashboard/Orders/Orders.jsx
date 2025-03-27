@@ -17,9 +17,11 @@ import {
   useUpdateOrderStatusMutation,
 } from "../../../Redux/api/ordersApi";
 import Swal from "sweetalert2";
+import { getImageUrl } from "../../../utils/baseUrl";
 
 // const url = "http://10.0.70.35:8025/";
-const url = "http://209.38.133.53:8025/";
+const url = getImageUrl();
+
 const statuses = ["confirmed", "processing", "completed", "cancelled"];
 
 export default function Orders() {
@@ -313,23 +315,26 @@ export default function Orders() {
                                   pItem.materialId.toString()
                               ) {
                                 return (
-                                  <div key={index} className="grid grid-cols-4 gap-2">
+                                  <div
+                                    key={index}
+                                    className="grid grid-cols-4 gap-2"
+                                  >
                                     {item?.images?.length > 0 ? (
                                       item.images.map((img, imgIndex) => (
                                         <img
                                           key={imgIndex}
-                                          src={`${url}${img}`} 
-                                          alt={item?.selectMaterial} 
-                                          className="w-40 h-40" 
+                                          src={`${url}${img}`}
+                                          alt={item?.selectMaterial}
+                                          className="w-40 h-40"
                                         />
                                       ))
                                     ) : (
-                                      <div>No images available</div> 
+                                      <div>No images available</div>
                                     )}
                                   </div>
                                 );
                               } else {
-                                return null; 
+                                return null;
                               }
                             }
                           )}
