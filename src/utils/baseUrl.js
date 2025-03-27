@@ -5,5 +5,5 @@ export const getBaseUrl = () => {
 
 export const getImageUrl = () => {
   // return "http://10.0.70.35:8025/api/v1";
-  return "https://api.your-jewel.com";
+  return "https://api.your-jewel.com/";
 };
