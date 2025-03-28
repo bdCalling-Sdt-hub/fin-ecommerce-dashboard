@@ -177,7 +177,7 @@ const DashboardLayout = () => {
                           : " font-semibold"
                       }
                     >
-                     orders
+                     Orders
                     </NavLink>
                   ),
                 },
@@ -296,6 +296,32 @@ const DashboardLayout = () => {
                       }
                     >
                      Earning
+                    </NavLink>
+                  ),
+                },
+                {
+                  key: "contact",
+                  icon: (
+                    <img
+                      src={users}
+                      alt="contact"
+                      className={`h-5 menu-icon ${
+                        location.pathname.includes("contact")
+                          ? "active-icon"
+                          : ""
+                      }`}
+                    />
+                  ),
+                  label: (
+                    <NavLink
+                      to="contact"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "active-menu-item font-semibold"
+                          : " font-semibold"
+                      }
+                    >
+                     Contact Users
                     </NavLink>
                   ),
                 },

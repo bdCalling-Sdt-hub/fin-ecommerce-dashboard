@@ -33,6 +33,7 @@ import SubscribsUsers from "../Dashboard/SubscribsUsers/SubscribsUsers";
 import Offers from "../Dashboard/Offers/Offers";
 import ProtectedRoute from "../ProtectedRoute";
 import ProductOtherInfo from "../Dashboard/ProductOtherInfo";
+import Contact from "../Dashboard/Contact/Contact";
 
 
 const router = createBrowserRouter([
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
           {
             path: "offers",
             element: <Offers />,
+          },
+          {
+            path: "contact",
+            element: <Contact />,
           },
           {
             path: "products",
