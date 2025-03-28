@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Modal } from "antd";
 import { NavLink } from "react-router-dom";
@@ -12,13 +12,9 @@ import { getImageUrl } from "../../../utils/baseUrl";
 
 const url = getImageUrl();
 
-// const url = "http://209.38.133.53:8025/";
-// http://10.0.70.35:8025/uploads//products//2-1741068078797-610931184.jpg
-
 function Products() {
   const [modalVisible, setModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState(null);
-  const [selectedColors, setSelectedColors] = useState({});
   const [selectedImage, setSelectedImage] = useState({});
 
   // Handle the color click to update the selected image for the product
@@ -29,21 +25,6 @@ function Products() {
     refetch,
   } = useGetAllProductsQuery(null);
   const [deleteProduct] = useDeleteProductMutation();
-
-  console.log("===products====", allProducts);
-
-  // Function to handle color click and show the corresponding image
-  // const handleColorClick = (productId, image, color) => {
-  //   setSelectedColors((prev) => ({
-  //     ...prev,
-  //     [productId]: color, // Update selected color
-  //   }));
-
-  //   setSelectedImage((prev) => ({
-  //     ...prev,
-  //     [productId]: { image: image }, // Update selected image for the specific product
-  //   }));
-  // };
 
   const [selectedMaterials, setSelectedMaterials] = useState({});
 
@@ -68,7 +49,6 @@ function Products() {
       defaultColors[product._id] = product?.images?.[0]?.color; // Set default color
     });
     setSelectedImage(defaultImages); // Set default images for each product
-    setSelectedColors(defaultColors); // Set default colors for each product
   }, [allProducts]);
 
   const handleCancel = () => {
@@ -165,76 +145,7 @@ function Products() {
     <div className="min-h-[90vh]">
       <h1 className="text-3xl font-bold mb-4">All Products</h1>
 
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {allProducts?.data?.result?.length > 0 ? allProducts?.data?.result?.map((product, index) => (
-          <div className="bg-white p-4 rounded-none shadow-md" key={index}>
-            {selectedImage[product._id] && selectedImage[product._id].image && (
-              <div className="mt-4">
-                <img
-                  // src={`${url}${selectedImage.image}`} // Show image associated with selected color
-                  src={`${url}${selectedImage[product._id].image}`}
-                  alt="Selected Color"
-                  className="w-full h-56 object-cover mt-2 border rounded mb-3"
-                />
-              </div>
-            )}
-            <p className="text-gray-600 flex ">
-              {product?.images?.map((c, index) => (
-                <div
-                  key={index}
-                  className={`w-6 h-6 rounded-full border border-gray-300 mr-2 cursor-pointer ${
-                    selectedColors[product._id] === c.color
-                      ? 'border-2  border-blue-500'
-                      : ''
-                  }`} 
-                  style={{ backgroundColor: c.color }}
-                  onClick={() => handleColorClick(product._id,c.image, c.color)} 
-                ></div>
-              ))}
-            </p>
-            <h2 className="text-lg font-semibold">{product.name}</h2>
-            <p className="text-gray-600">Price: ${product.price}</p>
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={() => showViewModal(product)}
-                className="bg-[#EAEAEA]  text-black px-4 py-2 rounded-none transition duration-300"
-              >
-                See Details
-              </button>
-              <NavLink to={`/products/${product._id}`}>
-                <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-none transition duration-300">
-                  Edit
-                </button>
-              </NavLink>
-
-              <button
-                onClick={() => deleteHandler(product._id)}
-                className="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-none transition duration-300"
-              >
-                Delete
-              </button>
-            
-            </div>
-            <NavLink to={`/product-other-info/${product._id}`}>
-            {
-              product?.faqAdd?.length !== 0 || Object.keys(product?.sizeMaterialAdd).length > 0  ? <><button className="bg-[#bda46f] hover:bg-yellow-600 text-white px-4 py-2 rounded-none transition duration-300 w-full mt-4">
-              edit-info
-            </button></> : <> <button className="bg-[#bda46f] hover:bg-yellow-600 text-white px-4 py-2 rounded-none transition duration-300 w-full mt-4">
-                  add-info
-                </button></>
-            }
-               
-                
-              </NavLink>
-          </div>
-        )) : (
-          <h1 className="text-3xl text-center mt-64 font-bold text-[#E6C379]">
-            No Products Found
-          </h1>
-        )}
-      </div> */}
-
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8">
         {allProducts?.data?.result?.length > 0 ? (
           allProducts?.data?.result?.map((product, index) => {
             // Get the selected material or default to the first material
