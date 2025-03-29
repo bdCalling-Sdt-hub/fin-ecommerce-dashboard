@@ -181,26 +181,34 @@ function Products() {
                   ))}
                 </div>
 
-                {/* Display the product name and price */}
+
                 <h2 className="text-lg font-semibold">
-                  {selectedMaterial.name}
+                  {typeof selectedMaterial.name === "string"
+                    ? selectedMaterial.name.split(" ").slice(0, 5).join(" ") +
+                      (selectedMaterial.name.split(" ").length > 5
+                        ? "..."
+                        : "")
+                    : selectedMaterial.name}
                 </h2>
-                <p className="text-gray-600">
-                  Price: ${selectedMaterial.price}
+
+                <p className="text-gray-600 mb-2">
+                  Price: $
+                  {selectedMaterial.price}
                 </p>
 
                 {/* Action buttons */}
-                <div className="flex justify-between mt-4">
+                <div className="grid grid-cols-3 gap-1  mt-auto ">
                   <button
                     onClick={() => showViewModal(product)}
                     className="bg-[#EAEAEA] text-black px-4 py-2 rounded-none transition duration-300"
                   >
                     See Details
                   </button>
-                  <NavLink to={`/products/${product._id}`}>
-                    <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-none transition duration-300">
-                      Edit
-                    </button>
+                  <NavLink
+                    to={`/products/${product._id}`}
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 text-center items-center rounded-none transition duration-300"
+                  >
+                    <button className="">Edit</button>
                   </NavLink>
 
                   <button

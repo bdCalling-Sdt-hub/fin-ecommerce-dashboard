@@ -132,7 +132,7 @@ export const ProductEdit = () => {
   };
   // Handle form submission
   const onFinish = async (values) => {
-    console.log("values==", values);
+    console.log("values==111", values);
     const formData = {
       ...values,
       images: imageList
@@ -155,7 +155,7 @@ export const ProductEdit = () => {
       const res = await updateProduct({ id, data: formData }).unwrap();
       if (res.success) {
         Swal.fire("Success", "Product updated successfully!", "success");
-        // navigate("/products");
+        navigate("/products");
       }
     } catch (error) {
       Swal.fire("Error", error.message || "Something went wrong!", "error");
