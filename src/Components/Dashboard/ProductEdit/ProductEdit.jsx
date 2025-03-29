@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, Button, Upload, Space, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
 import {
-  useCreateProductMutation,
   useGetSingleProductQuery,
   useUpdateProductMutation,
 } from "../../../Redux/api/productsApi";

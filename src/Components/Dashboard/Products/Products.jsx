@@ -181,19 +181,15 @@ function Products() {
                   ))}
                 </div>
 
-
                 <h2 className="text-lg font-semibold">
                   {typeof selectedMaterial.name === "string"
                     ? selectedMaterial.name.split(" ").slice(0, 5).join(" ") +
-                      (selectedMaterial.name.split(" ").length > 5
-                        ? "..."
-                        : "")
+                      (selectedMaterial.name.split(" ").length > 5 ? "..." : "")
                     : selectedMaterial.name}
                 </h2>
 
                 <p className="text-gray-600 mb-2">
-                  Price: $
-                  {selectedMaterial.price}
+                  Price: ${selectedMaterial.price}
                 </p>
 
                 {/* Action buttons */}
