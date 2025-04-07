@@ -198,7 +198,7 @@ export const Earnings = () => {
                       Order Details
                     </h4>
                     <p className="text-gray-700 mb-1 text-base">
-                      <span className="font-semibold">Product ID:</span>{" "}
+                      <span className="font-semibold">Order ID:</span>{" "}
                       {currentRecord.orderId?.orderNumber}
                     </p>
                     <p className="text-gray-700 mb-1 text-base">
@@ -254,7 +254,7 @@ export const Earnings = () => {
                       </p>
                       <p className="text-gray-700 mb-1 text-base">
                         <span className="font-semibold">Phone no:</span>{" "}
-                        {currentRecord.orderId?.orderNumber}
+                        {currentRecord.orderId?.phoneNumber}
                       </p>
                     </div>
                   </div>

@@ -429,12 +429,28 @@ export default function Orders() {
                                   <span className="text-gray-600 mr-2">
                                     HandRighting Custom Design: Yes
                                   </span>
-                                  <img
+                                  <div className="flex gap-1">
+                                    <div>
+                                    <img
                                     key={index}
-                                    src={`${url}${pItem.handRightingImage}`}
+                                    src={`${url}${pItem.handRightingImage[0]}`}
                                     alt={pItem.needFingerPrint}
                                     className="w-40 h-40"
                                   />
+                                    </div>
+                                    {
+                                      pItem.handRightingImage[1] && <div>
+                                      <img
+                                      key={index}
+                                      src={`${url}${pItem.handRightingImage[1]}`}
+                                      alt={pItem.needFingerPrint}
+                                      className="w-40 h-40"
+                                    />
+                                      </div>
+                                    }
+                                    
+                                  </div>
+                                  
                                 </div>
                               ) : (
                                 <span className="text-gray-600 mr-2">
