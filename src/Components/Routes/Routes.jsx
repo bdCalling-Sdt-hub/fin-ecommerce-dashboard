@@ -35,7 +35,6 @@ import ProtectedRoute from "../ProtectedRoute";
 import ProductOtherInfo from "../Dashboard/ProductOtherInfo";
 import Contact from "../Dashboard/Contact/Contact";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,7 +65,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <DashboardLayout />
-           </ProtectedRoute>
+          </ProtectedRoute>
         ),
         children: [
           {
@@ -117,7 +116,7 @@ const router = createBrowserRouter([
             path: "product-other-info/:id",
             element: <ProductOtherInfo />,
           },
-          
+
           {
             path: "earnings",
             element: <Earnings />,
