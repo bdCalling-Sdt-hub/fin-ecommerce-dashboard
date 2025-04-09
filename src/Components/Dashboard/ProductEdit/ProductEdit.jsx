@@ -41,7 +41,7 @@ export const ProductEdit = () => {
       form.setFieldsValue({
         name: defaultMaterial?.name,
         price: defaultMaterial?.price,
-        stock: defaultMaterial?.stock,
+        availableStock: defaultMaterial?.availableStock,
         description: defaultMaterial?.description,
         // images: defaultMaterial?.images,
       });
@@ -96,7 +96,7 @@ export const ProductEdit = () => {
     form.setFieldsValue({
       name: material?.name,
       price: material?.price,
-      stock: material?.stock,
+      availableStock: material?.availableStock,
       description: material?.description,
       // images: material?.images,
     });
@@ -214,8 +214,8 @@ export const ProductEdit = () => {
 
         {/* Product Stock */}
         <Form.Item
-          label={<span className="text-black">Product Stock</span>}
-          name="stock"
+          label={<span className="text-black">Product Available Stock</span>}
+          name="availableStock"
           rules={[{ required: true, message: "Please enter product stock!" }]}
         >
           <Input placeholder="Enter stock" type="number" />
