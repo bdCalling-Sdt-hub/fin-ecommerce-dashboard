@@ -145,6 +145,11 @@ export default function Orders() {
                 key="email"
               />
               <Table.Column
+                title="Customer Name"
+                render={(_, record) => record.fullName || "N/A"}
+                key="countryName"
+              />
+              <Table.Column
                 title="Customer Email"
                 render={(_, record) => record.email || "N/A"}
                 key="countryName"
@@ -482,6 +487,10 @@ export default function Orders() {
                     Order Delivery Location :
                   </h3>
                   <div>
+                    <p className="text-base">
+                      <span className="text-gray-600 mr-2">Name:</span>
+                      {currentRecord?.fullName ? currentRecord?.fullName : "N/A"}
+                    </p>
                     <p className="text-base">
                       <span className="text-gray-600 mr-2">Email:</span>
                       {currentRecord?.email ? currentRecord?.email : "N/A"}
