@@ -18,6 +18,7 @@ import {
 } from "../../../Redux/api/ordersApi";
 import Swal from "sweetalert2";
 import { getImageUrl } from "../../../utils/baseUrl";
+import moment from "moment/moment";
 
 // const url = "http://10.0.70.35:8025/";
 const url = getImageUrl();
@@ -155,15 +156,17 @@ export default function Orders() {
                 key="countryName"
               />
               <Table.Column
-                title="Customer Address"
-                render={(_, record) => record.address || "N/A"}
+                title="Order Date"
+                render={(_, record) => {
+                  return record.orderDate ? moment(record.orderDate).format('YYYY-MM-DD') : "N/A";
+                }}
                 key="createdAt"
               />
-              <Table.Column
+              {/* <Table.Column
                 title="Customer City"
                 render={(_, record) => `${record.city}` || "N/A"}
                 key="createdAt"
-              />
+              /> */}
               <Table.Column
                 title="Cupon Code"
                 render={(_, record) =>
@@ -204,6 +207,7 @@ export default function Orders() {
                         color: color,
                         fontWeight: "bold",
                         textTransform: "capitalize",
+                       
                       }}
                     >
                       {record.status}
@@ -235,7 +239,7 @@ export default function Orders() {
                         label: status,
                       }))}
                       style={{
-                        width: 150,
+                        width: 120,
                         backgroundColor: "!black", // Sets the background color for the select box itself
                         color: "white",
                         zIndex: 1,
