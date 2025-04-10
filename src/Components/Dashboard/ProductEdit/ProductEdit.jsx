@@ -20,7 +20,7 @@ export const ProductEdit = () => {
   const [imageList, setImageList] = useState([]);
   const navigate = useNavigate();
   const [updateProduct] = useUpdateProductMutation();
-  const { data: singleProduct } = useGetSingleProductQuery(id);
+  const { data: singleProduct, refetch } = useGetSingleProductQuery(id);
 
   console.log("singleProduct******", singleProduct);
 
@@ -154,7 +154,9 @@ export const ProductEdit = () => {
       const res = await updateProduct({ id, data: formData }).unwrap();
       if (res.success) {
         Swal.fire("Success", "Product updated successfully!", "success");
+        refetch();
         navigate("/products");
+        
       }
     } catch (error) {
       Swal.fire("Error", error.message || "Something went wrong!", "error");
