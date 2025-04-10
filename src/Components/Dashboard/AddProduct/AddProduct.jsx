@@ -40,7 +40,7 @@ export const AddProduct = () => {
   const selectMaterialOptions = [
     { value: "Gold Plating", label: "Gold Plating", color: "#EEE08A" },
     { value: "18K Gold Vermeil", label: "18K Gold Vermeil", color: "#EDDE8B" },
-    { value: "14K Solid Gold", label: "Gold Plated", color: "#DBC883" },
+    { value: "14K Solid Gold", label: "14K Solid Gold", color: "#DBC883" },
     {
       value: "925 Sterling Silver",
       label: "925 Sterling Silver",
