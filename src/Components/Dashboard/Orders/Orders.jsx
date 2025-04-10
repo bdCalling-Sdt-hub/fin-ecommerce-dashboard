@@ -390,6 +390,14 @@ export default function Orders() {
                               ? pItem?.previewsOrderId
                               : "N/A"}
                           </p>
+                          <p className="text-base">
+                            <span className="text-gray-600">
+                            initialText:
+                            </span>{" "}
+                            {pItem?.initialText
+                              ? pItem?.initialText
+                              : "N/A"}
+                          </p>
                           <div>
                             {pItem?.productId?.category === "fingerprint" && (
                               <>
